@@ -34,3 +34,9 @@ exports.callUser = (userEmail) => {
     return call;
   });
 };
+
+exports.hangupCall = (call) => {
+  call.hangup();
+  $('#incoming_call').attr('src', '');
+  $('#outgoing_call').attr('src', '');
+};

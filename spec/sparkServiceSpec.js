@@ -5,7 +5,8 @@ describe('SparkService', () => {
 
   beforeEach(() => {
     mockCall = {
-      on: jasmine.createSpy()
+      on: jasmine.createSpy('on'),
+      hangup: jasmine.createSpy('hangup')
     };
 
     mockLocalMediaStream = {};
@@ -15,9 +16,10 @@ describe('SparkService', () => {
         list: () => {}
       },
       phone: {
-        register: jasmine.createSpy(),
-        createLocalMediaStream: jasmine.createSpy().and.returnValue(Promise.resolve(mockLocalMediaStream)),
-        dial: jasmine.createSpy().and.returnValue(mockCall)
+        register: jasmine.createSpy('register'),
+        createLocalMediaStream: jasmine.createSpy('createLocalMediaStream')
+          .and.returnValue(Promise.resolve(mockLocalMediaStream)),
+        dial: jasmine.createSpy('dial').and.returnValue(mockCall)
       }
     };
 
@@ -91,6 +93,13 @@ describe('SparkService', () => {
         expect(mockCall.on).toHaveBeenCalledWith('localMediaStream:change', jasmine.any(Function));
         done();
       });
+    });
+  });
+
+  describe('hangupCall', () => {
+    it('calls Spark hangup', () => {
+      SparkService.hangupCall(mockCall);
+      expect(mockCall.hangup).toHaveBeenCalled();
     });
   });
 });
