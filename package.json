@@ -20,5 +20,11 @@
     "proxyquire": "^1.7.11",
     "proxyquire-universal": "^1.0.8",
     "proxyquireify": "^3.2.1"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "start-dev": "watchify src/js/index.js -o src/js/bundle.js & watchify src/js/loginController -o src/js/loginBundle.js & node server.js",
+    "build": "browserify src/js/index.js -o src/js/bundle.js & browserify src/js/loginController -o src/js/loginBundle.js",
+    "test": "jasmine"
   }
 }
