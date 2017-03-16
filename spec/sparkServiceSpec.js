@@ -23,7 +23,13 @@ describe('SparkService', () => {
       }
     };
 
-    SparkService = proxyquire('../src/js/sparkService', { 'ciscospark': mockSpark });
+    SparkService = proxyquire('../src/js/sparkService', {
+      'ciscospark': mockSpark,
+      'jquery': () => {
+        return {
+          attr: () => {}
+        };
+    }});
   });
 
   describe('getUser', () => {
