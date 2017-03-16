@@ -1,18 +1,22 @@
 require('./env.js');
-const spark = require('ciscospark');
 const $ = require('jquery');
+const SparkService = require('./sparkService');
 
-$('#submit_user_email').on('click', function(event) {
+SparkService.register();
+
+$('#submit_user_email').on('click', (event) => {
   event.preventDefault();
 
   const email = $('#user_email').val();
-  spark.people.list({ email: email }).then(function(page) {
-    if (page.items.length > 0) {
-      $('#display_name').html(page.items[0].displayName);
+
+  SparkService.getUser(email).then((user) => {
+    if (user) {
+      $('#display_name').html('Calling: ' + user.displayName);
+      SparkService.callUser(email);
     } else {
       $('#display_name').html('No user found');
     }
-  }).catch(function(error) {
+  }).catch((error) => {
     $('#display_name').html('Error: Spark failure');
   });
 });
