@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.asynchrony.com:proj-1274/spark-js-sdk-example.git"
+    "url": "git@github.com:ciscospark/spark-js-sdk-example.git"
   },
   "author": "Asynchrony",
   "license": "MIT",
