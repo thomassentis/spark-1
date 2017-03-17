@@ -17,14 +17,20 @@
   },
   "devDependencies": {
     "jasmine": "^2.5.3",
+    "node-sass": "^4.5.0",
     "proxyquire": "^1.7.11",
     "proxyquire-universal": "^1.0.8",
     "proxyquireify": "^3.2.1"
   },
   "scripts": {
     "start": "npm run build && node server.js",
-    "start-dev": "npm run build && watchify js/index.js -o js/bundle.js & watchify js/loginController -o js/loginBundle.js & node server.js",
-    "build": "browserify js/index.js -o js/bundle.js & browserify js/loginController -o js/loginBundle.js",
+    "start-dev": "npm run build && npm run watch & node server.js",
+    "build": "npm run build-js && npm run build-css",
+    "watch": "npm run watch & npm run watch-css",
+    "build-js": "browserify js/index.js -o js/bundle.js & browserify js/loginController -o js/loginBundle.js",
+    "watch-js": "watchify js/index.js -o js/bundle.js & watchify js/loginController -o js/loginBundle.js",
+    "build-css": "node-sass --include-path scss scss/main.scss css/main.css",
+    "watch-css": "node-sass -w --include-path scss scss/main.scss css/main.css",
     "test": "jasmine"
   }
 }
