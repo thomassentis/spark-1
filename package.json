@@ -22,8 +22,8 @@
     "proxyquireify": "^3.2.1"
   },
   "scripts": {
-    "start": "node server.js",
-    "start-dev": "watchify js/index.js -o js/bundle.js & watchify js/loginController -o js/loginBundle.js & node server.js",
+    "start": "npm run build && node server.js",
+    "start-dev": "npm run build && watchify js/index.js -o js/bundle.js & watchify js/loginController -o js/loginBundle.js & node server.js",
     "build": "browserify js/index.js -o js/bundle.js & browserify js/loginController -o js/loginBundle.js",
     "test": "jasmine"
   }
