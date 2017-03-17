@@ -26,7 +26,7 @@
     "start": "npm run build && node server.js",
     "start-dev": "npm run build && npm run watch & node server.js",
     "build": "npm run build-js && npm run build-css",
-    "watch": "npm run watch & npm run watch-css",
+    "watch": "npm run watch-js & npm run watch-css",
     "build-js": "browserify js/index.js -o js/bundle.js & browserify js/loginController -o js/loginBundle.js",
     "watch-js": "watchify js/index.js -o js/bundle.js & watchify js/loginController -o js/loginBundle.js",
     "build-css": "node-sass --include-path scss scss/main.scss css/main.css",
