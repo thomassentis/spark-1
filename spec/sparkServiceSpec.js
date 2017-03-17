@@ -46,7 +46,7 @@ describe('SparkService', () => {
 
     spyOn(mockSpark, 'on').and.callThrough();
 
-    SparkService = proxyquire('../src/js/sparkService', {
+    SparkService = proxyquire('../js/sparkService', {
       'ciscospark': mockSpark,
       'jquery': () => {
         return {
