@@ -1,2 +1,4 @@
 node_modules/
 .env*
+js/loginBundle.js
+js/bundle.js
