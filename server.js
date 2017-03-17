@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+app.get('/', (req, res) => res.sendFile(__dirname + '/login.html'));
 app.use('/index.html', express.static('index.html'));
 app.use('/login.html', express.static('login.html'));
 app.use('/js/bundle.js', express.static('js/bundle.js'));
