@@ -1,17 +1,31 @@
-var proxyquire = require('proxyquire');
+const proxyquire = require('proxyquire');
 
 describe('SparkService', () => {
-  var mockSpark, mockCall, mockLocalMediaStream, SparkService = null;
+  let mockSpark, mockCall, mockLocalMediaStream, SparkService, authenticationCallback, fakeListener = null;
 
   beforeEach(() => {
+    process.env = {
+      CISCOSPARK_CLIENT_ID: 'PHIL',
+      CISCOSPARK_CLIENT_SECRET: 'WILL',
+      CISCOSPARK_SCOPE: 'BREAK',
+      CISCOSPARK_REDIRECT_URI: 'YOU!'
+    };
+
     mockCall = {
-      on: jasmine.createSpy('on'),
+      on: jasmine.createSpy('call.on'),
       hangup: jasmine.createSpy('hangup')
     };
 
     mockLocalMediaStream = {};
 
+    fakeListener = 'TWICE';
+
     mockSpark = {
+      on: (event, callback) => {
+        authenticationCallback = callback;
+        return fakeListener;
+      },
+      off: jasmine.createSpy('off'),
       people: {
         list: () => {}
       },
@@ -20,8 +34,17 @@ describe('SparkService', () => {
         createLocalMediaStream: jasmine.createSpy('createLocalMediaStream')
           .and.returnValue(Promise.resolve(mockLocalMediaStream)),
         dial: jasmine.createSpy('dial').and.returnValue(mockCall)
-      }
+      },
+      authorize: jasmine.createSpy('authorize'),
+      config: {
+        credentials: {
+          oauth: {}
+        }
+      },
+      isAuthenticated: jasmine.createSpy('isAuthenticated').and.returnValues(false, true)
     };
+
+    spyOn(mockSpark, 'on').and.callThrough();
 
     SparkService = proxyquire('../src/js/sparkService', {
       'ciscospark': mockSpark,
@@ -32,35 +55,45 @@ describe('SparkService', () => {
     }});
   });
 
-  describe('getUser', () => {
-    describe('when given valid user email', () => {
-      beforeEach(() => {
-        spyOn(mockSpark.people, 'list').and.returnValue(Promise.resolve({ items: ['user'] }));
-      });
+  describe('authorize', () => {
+    it('sets Spark OAuth credentials', () => {
+      SparkService.authorize();
+      let oauthValues = mockSpark.config.credentials.oauth;
 
-      it('returns the user', (done) => {
-        var email = 'valid@gmail.com';
-        SparkService.getUser(email).then((user) => {
-          expect(user).toEqual('user');
-          expect(mockSpark.people.list).toHaveBeenCalledWith({ email: email });
-          done();
-        });
-      });
+      expect(oauthValues.client_id).toEqual(process.env.CISCOSPARK_CLIENT_ID);
+      expect(oauthValues.client_secret).toEqual(process.env.CISCOSPARK_CLIENT_SECRET);
+      expect(oauthValues.scope).toEqual(process.env.CISCOSPARK_SCOPE);
+      expect(oauthValues.redirect_uri).toEqual(process.env.CISCOSPARK_REDIRECT_URI);
     });
 
-    describe('when given invalid user email', () => {
-      beforeEach(() => {
-        spyOn(mockSpark.people, 'list').and.returnValue(Promise.resolve({ items: [] }));
-      });
+    it('calls Spark authorize', () => {
+      SparkService.authorize();
+      expect(mockSpark.authorize).toHaveBeenCalled();
+    });
+  });
 
-      it('returns null', (done) => {
-        var email = 'invalid@gmail.com';
-        SparkService.getUser(email).then((user) => {
-          expect(user).toEqual(null);
-          expect(mockSpark.people.list).toHaveBeenCalledWith({ email: email });
-          done();
-        });
+  describe('waitForAuthorization', () => {
+    it('registers listener for Spark authentication changes', (done) => {
+      SparkService.waitForAuthentication();
+      expect(mockSpark.on).toHaveBeenCalledWith('change:isAuthenticated', jasmine.any(Function));
+      done();
+    });
+
+    it('removes the listener for Spark authentication changes and completes', (done) => {
+      SparkService.waitForAuthentication().then(() => {
+        expect(mockSpark.off).toHaveBeenCalledWith('change:isAuthenticated', fakeListener);
+        done();
       });
+      authenticationCallback();
+    });
+
+    it('does not complete', (done) => {
+      SparkService.waitForAuthentication().then(() => {
+        fail('Promise unexpectedly resolved');
+      });
+      mockSpark.isAuthenticated = false;
+      authenticationCallback();
+      done();
     });
   });
 

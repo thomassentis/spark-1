@@ -1,17 +1,31 @@
+require('./env.js');
 const $ = require('jquery');
 const spark = require('ciscospark');
 
-exports.getUser = (email) => {
-  return spark.people.list({ email: email }).then((page) => {
-    if (page.items.length > 0) {
-      return page.items[0];
-    }
-    return null;
+exports.authorize = () => {
+  Object.assign(spark.config.credentials.oauth, {
+    client_id: process.env.CISCOSPARK_CLIENT_ID,
+    client_secret: process.env.CISCOSPARK_CLIENT_SECRET,
+    scope: process.env.CISCOSPARK_SCOPE,
+    redirect_uri: process.env.CISCOSPARK_REDIRECT_URI
+  });
+
+  return spark.authorize();
+};
+
+exports.waitForAuthentication = () => {
+  return new Promise((resolve, reject) => {
+    let authenticatedListener = spark.on('change:isAuthenticated', () => {
+      if (spark.isAuthenticated) {
+        spark.off('change:isAuthenticated', authenticatedListener);
+        resolve();
+      }
+    });
   });
 };
 
 exports.register = () => {
-  spark.phone.register();
+  return spark.phone.register();
 };
 
 exports.callUser = (userEmail) => {
@@ -22,7 +36,7 @@ exports.callUser = (userEmail) => {
   };
 
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    var call = spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
+    let call = spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
 
     call.on('connected', () => {
       $('#incoming_call').attr('src', call.remoteMediaStreamUrl);
