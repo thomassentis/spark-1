@@ -9,9 +9,9 @@ describe('SparkService', () => {
       hangup: jasmine.createSpy('hangup')
     };
 
-    mockLocalMediaStream = {};
+    mockLocalMediaStream = 'BATMAN';
 
-    fakeListener = 'TWICE';
+    fakeListener = 'BEES!?';
 
     mockSpark = {
       on: (event, callback) => {
@@ -34,7 +34,7 @@ describe('SparkService', () => {
           oauth: {}
         }
       },
-      isAuthenticated: jasmine.createSpy('isAuthenticated').and.returnValues(false, true)
+      isAuthenticated: true
     };
 
     spyOn(mockSpark, 'on').and.callThrough();
@@ -111,10 +111,17 @@ describe('SparkService', () => {
       });
     });
 
+    it('resolves with a call', (done) => {
+      SparkService.callUser(email).then((call) => {
+        expect(call).toEqual(mockCall);
+        done();
+      });
+    });
+
     it('registers listener for call connected and localMediaStream:change events', (done) => {
-      SparkService.callUser(email).then(() => {
-        expect(mockCall.on).toHaveBeenCalledWith('connected', jasmine.any(Function));
-        expect(mockCall.on).toHaveBeenCalledWith('localMediaStream:change', jasmine.any(Function));
+      SparkService.callUser(email).then((call) => {
+        expect(call.on).toHaveBeenCalledWith('connected', jasmine.any(Function));
+        expect(call.on).toHaveBeenCalledWith('localMediaStream:change', jasmine.any(Function));
         done();
       });
     });
