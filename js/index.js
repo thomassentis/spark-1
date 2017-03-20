@@ -9,9 +9,7 @@ SparkService.waitForAuthentication().then(() => {
       event.preventDefault();
       clearMessage();
 
-      const email = $('#user_email').val();
-
-      SparkService.callUser(email).then((sparkCall) => {
+      SparkService.callUser($('#user_email').val()).then((sparkCall) => {
         call = sparkCall;
         call.on('error', (error) => {
           $('#spark_message').html('Error: Spark failure: ' + error.message);
