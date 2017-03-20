@@ -4,13 +4,6 @@ describe('SparkService', () => {
   let mockSpark, mockCall, mockLocalMediaStream, SparkService, authenticationCallback, fakeListener = null;
 
   beforeEach(() => {
-    process.env = {
-      CISCOSPARK_CLIENT_ID: 'PHIL',
-      CISCOSPARK_CLIENT_SECRET: 'WILL',
-      CISCOSPARK_SCOPE: 'BREAK',
-      CISCOSPARK_REDIRECT_URI: 'YOU!'
-    };
-
     mockCall = {
       on: jasmine.createSpy('call.on'),
       hangup: jasmine.createSpy('hangup')
