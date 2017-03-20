@@ -25,8 +25,9 @@ Each html page within the app has an associated javascript file to handle busine
 {
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
-  "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write"
+  "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write",
   "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
+}
 ```
 * `$ npm install -g browserify node-sass`
 * `$ npm start`
