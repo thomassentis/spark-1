@@ -45,7 +45,7 @@ form.container {
     margin: 10px;
   }
 
-  input[type=submit] {
+  button {
     margin: 10px;
   }
 }
@@ -57,6 +57,7 @@ form.container {
   color: white;
   font-size: 1.5rem;
   border: none;
+  cursor: pointer;
 
   &.large {
     font-size: 2.5rem;
@@ -66,6 +67,7 @@ form.container {
   &:disabled {
     background: none;
     color: $medium-gray;
+    cursor: auto;
   }
 }
 

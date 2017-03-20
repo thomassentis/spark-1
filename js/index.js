@@ -9,7 +9,15 @@ SparkService.register().then(() => {
       displayCall(sparkCall);
     });
   });
-  $('#submit_user_email').attr('disabled', false);
+
+  $('#user_email').on('input propertychange paste', (event) => {
+    let disabled = true;
+    if ($('#user_email').val().length > 0) {
+      disabled = false;
+    }
+
+    $('#submit_user_email').attr('disabled', disabled);
+  });
 });
 
 function displayCall(call) {

@@ -6,6 +6,7 @@
     <title>Spark JavaScript SDK Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
   </head>
   <body>
     <main>
@@ -17,7 +18,9 @@
         <h1>Initiate call with user</h1>
         <form class="container">
           <input type="text" id="user_email" placeholder="Email" />
-          <input class="primary-button" type="submit" id="submit_user_email" value="Call" disabled />
+          <button class="primary-button" id="submit_user_email" disabled>
+            <i class="fa fa-video-camera" aria-hidden="true"></i>
+          </button>
         </form>
 
         <section id="overlay"></section>
