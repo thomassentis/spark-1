@@ -4,7 +4,9 @@ This demo app is designed to provide a clear understanding of the process of int
 
 ## General description
 
-In creating this demo application, we decided not to use any frameworks in attempts to not obfuscate the details of the actual integration process for the SDK. The application is built with npm & browserify. Each html page within the app has an associated javascript file to handle all of its logic. Shared code for interacting directly with the Spark SDK is located within the sparkService.js file. We also maintain a collection of tests corresponding to our service logic and UI functionality.
+In creating this demo application, we decided not to use any major JS frameworks/libraries such as React or Angular 2 to keep the example clear to all JavaScript developers.
+
+Each html page within the app has an associated javascript file to handle all of its logic. Shared code for interacting directly with the Spark SDK is located within the sparkService.js file. We also maintain a collection of tests corresponding to our service logic and UI functionality.
 
 ## How to Host the App
 
