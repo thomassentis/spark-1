@@ -56,20 +56,12 @@ describe('SparkService', () => {
   });
 
   describe('authorize', () => {
-    it('sets Spark OAuth credentials', () => {
-      SparkService.authorize();
-      let oauthValues = mockSpark.config.credentials.oauth;
-
-      expect(oauthValues.client_id).toEqual(process.env.CISCOSPARK_CLIENT_ID);
-      expect(oauthValues.client_secret).toEqual(process.env.CISCOSPARK_CLIENT_SECRET);
-      expect(oauthValues.scope).toEqual(process.env.CISCOSPARK_SCOPE);
-      expect(oauthValues.redirect_uri).toEqual(process.env.CISCOSPARK_REDIRECT_URI);
-    });
 
     it('calls Spark authorize', () => {
       SparkService.authorize();
       expect(mockSpark.authorize).toHaveBeenCalled();
     });
+
   });
 
   describe('waitForAuthorization', () => {
