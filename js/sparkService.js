@@ -3,13 +3,6 @@ const $ = require('jquery');
 const spark = require('ciscospark');
 
 exports.authorize = () => {
-  Object.assign(spark.config.credentials.oauth, {
-    client_id: process.env.CISCOSPARK_CLIENT_ID,
-    client_secret: process.env.CISCOSPARK_CLIENT_SECRET,
-    scope: process.env.CISCOSPARK_SCOPE,
-    redirect_uri: process.env.CISCOSPARK_REDIRECT_URI
-  });
-
   return spark.authorize();
 };
 
