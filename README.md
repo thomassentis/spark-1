@@ -8,4 +8,4 @@ In creating this demo application, we decided not to use any frameworks in attem
 
 ## How to Host the App
 
-To launch the example app, you'll need Spark Integration credentials. These can be obtained by following [this guide](https://developer.ciscospark.com/authentication.html). Four fields should be included in a JSON file named '.env.json': CISCOSPARK_CLIENT_ID, CISCOSPARK_CLIENT_SECRET, CISCOSPARK_SCOPE, and CISCOSPARK_REDIRECT_URI, all taken from your integration. The redirect URI should be `http://localhost:8000/index.html`.
+To launch the example app, you'll need Spark Integration credentials. These can be obtained by following [this guide](https://developer.ciscospark.com/authentication.html). Within the example app, four fields should be included in a JSON file named '.env.json' in the root directory: CISCOSPARK_CLIENT_ID, CISCOSPARK_CLIENT_SECRET, CISCOSPARK_SCOPE, and CISCOSPARK_REDIRECT_URI, all taken from your integration. The redirect URI should be `http://localhost:8000/index.html`.
