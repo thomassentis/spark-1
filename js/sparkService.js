@@ -29,21 +29,10 @@ exports.callUser = (userEmail) => {
   };
 
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    let call = spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
-
-    call.on('connected', () => {
-      $('#incoming_call').attr('src', call.remoteMediaStreamUrl);
-    });
-    call.on('localMediaStream:change', () => {
-      $('#outgoing_call').attr('src', call.localMediaStreamUrl);
-    });
-
-    return call;
+    return spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
   });
 };
 
 exports.hangupCall = (call) => {
-  call.hangup();
-  $('#incoming_call').attr('src', '');
-  $('#outgoing_call').attr('src', '');
+  return call.hangup();
 };

@@ -5,7 +5,6 @@ describe('SparkService', () => {
 
   beforeEach(() => {
     mockCall = {
-      on: jasmine.createSpy('call.on'),
       hangup: jasmine.createSpy('hangup')
     };
 
@@ -114,14 +113,6 @@ describe('SparkService', () => {
     it('resolves with a call', (done) => {
       SparkService.callUser(email).then((call) => {
         expect(call).toEqual(mockCall);
-        done();
-      });
-    });
-
-    it('registers listener for call connected and localMediaStream:change events', (done) => {
-      SparkService.callUser(email).then((call) => {
-        expect(call.on).toHaveBeenCalledWith('connected', jasmine.any(Function));
-        expect(call.on).toHaveBeenCalledWith('localMediaStream:change', jasmine.any(Function));
         done();
       });
     });
