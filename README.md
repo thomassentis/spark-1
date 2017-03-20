@@ -16,7 +16,7 @@ Each html page within the app has an associated javascript file to handle busine
 * Clone the repo: `$ git clone https://github.com/ciscospark/spark-js-sdk-example.git`
 * `$ cd spark-js-sdk-example`
 * `$ npm install`
-* To launch the example app, you'll need Spark Integration credentials. These can be obtained by logging into Spark and following [this guide](https://developer.ciscospark.com/authentication.html).
+* To launch the example app, you'll need Spark Integration credentials. These can be obtained by [creating a Spark account](https://web.ciscospark.com/signin) and following [this guide](https://developer.ciscospark.com/authentication.html).
     - Under Scope, enable spark:people_read, spark:rooms_read, spark:rooms_write, spark:memberships_read, spark:memberships_write, spark:messages_read, spark:messages_write, spark:teams_read, and spark:teams_write
     - Under Redirect_URI, enter "http://localhost:8000/index.html"
     - Place the following in a new file named ".env.json" in the root directory of the project:
@@ -33,6 +33,14 @@ Each html page within the app has an associated javascript file to handle busine
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
 
+## How to Use the App
+
+* You must have a [Spark account](https://web.ciscospark.com/signin) to use the app
+* On the login screen, click the login button. This forwards you to Spark's login page if you aren't already authenticated. If you've logged in already, skip the next two steps.
+* Enter your Spark email address and click 'Next'
+* Enter your password for Spark and click 'Sign In'. You will then be redirected to the app.
+* Type an existing Spark user's email address (not your own!) and click one of the call buttons.
+
 ## How to Run the Tests
 
 * `$ npm install -g jasmine`
@@ -46,7 +54,10 @@ Each html page within the app has an associated javascript file to handle busine
 <!---
 ## TODO
 
+* How to use the app
 * Link to live app
 * Put more comments in the code
 * Details on how to use the SDK
+* Do we support Edge?
+* Consider tooltips within the app
 ---!>
