@@ -1,10 +1,6 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/login.html'));
-app.use('/index.html', express.static('index.html'));
-app.use('/login.html', express.static('login.html'));
-app.use('/js/indexBundle.js', express.static('js/indexBundle.js'));
-app.use('/js/loginBundle.js', express.static('js/loginBundle.js'));
-app.use('/css/main.css', express.static('css/main.css'));
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/login.html'));
+app.use(express.static('public'));
 app.listen(8000, () => {});

@@ -25,12 +25,13 @@
   "scripts": {
     "start": "npm run build && node server.js",
     "start-dev": "npm run build && npm run watch & node server.js",
-    "build": "npm run build-js && npm run build-css",
+    "build": "npm run build-js && npm run build-css && npm run build-html",
     "watch": "npm run watch-js & npm run watch-css",
-    "build-js": "browserify js/index.js -o js/indexBundle.js & browserify js/login -o js/loginBundle.js",
-    "watch-js": "watchify js/index.js -o js/indexBundle.js & watchify js/login -o js/loginBundle.js",
-    "build-css": "node-sass --include-path scss scss/main.scss css/main.css",
-    "watch-css": "node-sass -w --include-path scss scss/main.scss css/main.css",
+    "build-js": "browserify js/index.js -o public/js/indexBundle.js & browserify js/login -o public/js/loginBundle.js",
+    "watch-js": "watchify js/index.js -o public/js/indexBundle.js & watchify js/login -o public/js/loginBundle.js",
+    "build-css": "node-sass --include-path scss scss/main.scss public/css/main.css",
+    "watch-css": "node-sass -w --include-path scss scss/main.scss public/css/main.css",
+    "build-html": "cp *.html public",
     "test": "jasmine"
   }
 }
