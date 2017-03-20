@@ -16,9 +16,18 @@ Each html page within the app has an associated javascript file to handle busine
 * Clone the repo: `$ git clone https://github.com/ciscospark/spark-js-sdk-example.git`
 * `$ cd spark-js-sdk-example`
 * `$ npm install`
-* To launch the example app, you'll need Spark Integration credentials. These can be obtained by logging into Spark and following [this guide](https://developer.ciscospark.com/authentication.html). Within the example app, four fields should be included in a JSON file named '.env.json' in the root directory: CISCOSPARK_CLIENT_ID, CISCOSPARK_CLIENT_SECRET, CISCOSPARK_SCOPE, and CISCOSPARK_REDIRECT_URI, all taken from your integration.
-    - The scope should include `spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write`
-    - The redirect URI should be `http://localhost:8000/index.html`.
+* To launch the example app, you'll need Spark Integration credentials. These can be obtained by logging into Spark and following [this guide](https://developer.ciscospark.com/authentication.html).
+    - Under Scope, enable spark:people_read, spark:rooms_read, spark:rooms_write, spark:memberships_read, spark:memberships_write, spark:messages_read, spark:messages_write, spark:teams_read, and spark:teams_write
+    - Under Redirect_URI, enter "http://localhost:8000/index.html"
+    - Place the following in a new file named ".env.json" in the root directory of the project:
+
+``` .env.json
+{
+  "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
+  "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
+  "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write"
+  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
+```
 * `$ npm install -g browserify node-sass`
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
