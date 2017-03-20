@@ -1,25 +1,38 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Spark JavaScript SDK Example</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Spark JavaScript SDK Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="branding">Kitchen Sink</span>
+      </header>
 
-      <h1>Spark User Email</h1>
-      <form>
-        <input type="text" id="user_email" />
-        <input type="submit" id="submit_user_email" value="Call" disabled />
-      </form>
+      <section>
+        <h1>Initiate call with user</h1>
+        <form class="container">
+          <input type="text" id="user_email" placeholder="Email" />
+          <input class="primary-button" type="submit" id="submit_user_email" value="Call" disabled />
+        </form>
 
+        <section id="overlay"></section>
+      </section>
+
+      <footer></footer>
+    </main>
+
+    <template id="call-template">
       <div id="spark_message"></div>
       <video id="outgoing_call" muted autoplay></video>
       <video id="incoming_call" autoplay></video>
       <button id="hangup_call">Hangup</button>
+    </template>
 
-      <script src="js/indexBundle.js"></script>
-    </body>
+    <script src="js/indexBundle.js"></script>
+  </body>
 </html>

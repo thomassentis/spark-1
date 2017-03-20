@@ -1,3 +1,119 @@
+@font-face {
+    font-family: 'Cisco Sans Extra Light';
+    src: url('../fonts/CiscoSansExtraLight.otf');
+}
+
+$light-gray: #aaaaaa;
+$medium-gray: #666666;
+$dark-gray: #555555;
+$primary-blue: #139ED4;
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Cisco Sans Extra Light', sans-serif;
+}
+
 body {
-  margin: 0;
+  display: flex;
+  background-image: url(../images/spaceballs-bg.jpg);
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+h1 {
+  font-weight: normal;
+  color: $dark-gray;
+  font-size: 2.5rem;
+  margin: 2rem;
+}
+
+form.container {
+  border: 2px solid $light-gray;
+  border-radius: 5px;
+
+  input[type=text] {
+    border: none;
+    width: 40rem;
+    font-size: 1.5rem;
+    padding: 10px;
+    margin: 10px;
+  }
+
+  input[type=submit] {
+    margin: 10px;
+  }
+}
+
+.primary-button {
+  background: $primary-blue;
+  border-radius: 50px;
+  padding: 10px 20px;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+
+  &.large {
+    font-size: 2.5rem;
+    padding: 20px 90px;
+  }
+
+  &:disabled {
+    background: none;
+    color: $medium-gray;
+  }
+}
+
+.branding {
+  background-image: url(../images/spark-logo.png);
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: 85px;
+  padding: 25px 0 25px 110px;
+  font-size: 2rem;
+  color: $dark-gray;
+
+  &.large {
+    background-position: top;
+    background-size: 150px;
+    font-size: 4rem;
+    padding: 175px 0;
+  }
+}
+
+main {
+  width: 60rem;
+  height: 48rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 15px;
+  box-shadow: 0 1px 5px 0 #C2C2C2;
+  background: white;
+  padding: 50px;
+
+  &.login-page {
+    justify-content: center;
+    padding: 100px;
+  }
+
+  header {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
