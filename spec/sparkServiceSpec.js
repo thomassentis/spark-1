@@ -22,7 +22,7 @@ describe('SparkService', () => {
         list: () => {}
       },
       phone: {
-        register: jasmine.createSpy('register'),
+        register: jasmine.createSpy('register').and.returnValue(Promise.resolve()),
         createLocalMediaStream: jasmine.createSpy('createLocalMediaStream')
           .and.returnValue(Promise.resolve(mockLocalMediaStream)),
         dial: jasmine.createSpy('dial').and.returnValue(mockCall)
@@ -56,35 +56,41 @@ describe('SparkService', () => {
 
   });
 
-  describe('waitForAuthorization', () => {
-    it('registers listener for Spark authentication changes', (done) => {
-      SparkService.waitForAuthentication();
+  describe('register', () => {
+    it('listens for Spark authentication changes', (done) => {
+      SparkService.register();
       expect(mockSpark.on).toHaveBeenCalledWith('change:isAuthenticated', jasmine.any(Function));
       done();
     });
 
-    it('removes the listener for Spark authentication changes and completes', (done) => {
-      SparkService.waitForAuthentication().then(() => {
+    it('stops listening for Spark authentication changes', (done) => {
+      SparkService.register().then(() => {
         expect(mockSpark.off).toHaveBeenCalledWith('change:isAuthenticated', fakeListener);
         done();
       });
       authenticationCallback();
     });
 
-    it('does not complete', (done) => {
-      SparkService.waitForAuthentication().then(() => {
-        fail('Promise unexpectedly resolved');
+    it('registers the device', (done) => {
+      SparkService.register().then(() => {
+        expect(mockSpark.phone.register).toHaveBeenCalled();
+        done();
       });
-      mockSpark.isAuthenticated = false;
       authenticationCallback();
-      done();
     });
-  });
 
-  describe('register', () => {
-    it('calls spark register', () => {
-      SparkService.register();
-      expect(mockSpark.phone.register).toHaveBeenCalled();
+    describe('when not authenticated', () => {
+      beforeEach(() => {
+        mockSpark.isAuthenticated = false;
+      });
+
+      it('does not complete', (done) => {
+        SparkService.register().then(() => {
+          fail('Promise unexpectedly resolved');
+        });
+        authenticationCallback();
+        done();
+      });
     });
   });
 
