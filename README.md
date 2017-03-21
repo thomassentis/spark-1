@@ -26,7 +26,7 @@ Each html page within the app has an associated javascript file to handle busine
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
   "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write",
-  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
+  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/"
 }
 ```
 * `$ npm install -g browserify node-sass`
@@ -41,6 +41,7 @@ Each html page within the app has an associated javascript file to handle busine
 * Enter your password for Spark and click 'Sign In'. You will then be redirected to the app.
 * Type an existing Spark user's email address (not your own!) and click one of the call buttons.
 * You can then hangup with the hangup button.
+* At any time, click the "sign out" button to log out of the app.
 
 ## How to Run the Tests
 
@@ -55,7 +56,6 @@ Each html page within the app has an associated javascript file to handle busine
 <!---
 ## TODO
 
-* How to use the app
 * Link to live app
 * Put more comments in the code
 * Details on how to use the SDK
