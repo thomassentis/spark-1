@@ -44,7 +44,8 @@ describe('SparkService', () => {
         return {
           attr: () => {}
         };
-    }});
+      }
+    });
   });
 
   describe('authorize', () => {

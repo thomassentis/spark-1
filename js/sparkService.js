@@ -1,5 +1,4 @@
 require('./env.js');
-const $ = require('jquery');
 const spark = require('ciscospark');
 
 exports.authorize = () => {
@@ -13,7 +12,7 @@ If you attempt to make any calls to Spark before it finishes, Spark will throw
 an error.
 */
 exports.register = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let authenticatedListener = spark.on('change:isAuthenticated', () => {
       if (spark.isAuthenticated) {
         spark.off('change:isAuthenticated', authenticatedListener);

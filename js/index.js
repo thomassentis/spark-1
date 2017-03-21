@@ -10,7 +10,7 @@ SparkService.register().then(() => {
     });
   });
 
-  $('#user-email').on('input propertychange paste', (event) => {
+  $('#user-email').on('input propertychange paste', () => {
     let disabled = true;
     if ($('#user-email').val().length > 0) {
       disabled = false;
@@ -35,7 +35,7 @@ function displayCall(call) {
     $('#spark-message').html('Error: Spark failure: ' + error.message);
   });
 
-  $('#hangup-call').on('click', (event) => {
+  $('#hangup-call').on('click', () => {
     if (call) {
       SparkService.hangupCall(call);
       clearCall($callView);
