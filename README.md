@@ -40,6 +40,7 @@ Each html page within the app has an associated javascript file to handle busine
 * Enter your Spark email address and click 'Next'
 * Enter your password for Spark and click 'Sign In'. You will then be redirected to the app.
 * Type an existing Spark user's email address (not your own!) and click one of the call buttons.
+* You can then hangup with the hangup button.
 
 ## How to Run the Tests
 
