@@ -199,17 +199,17 @@ main {
   }
 }
 
-#incoming_call, #outgoing_call {
+#incoming-call, #outgoing-call {
   background: black;
   border: 2px solid $blue;
   z-index: 2;
 }
 
-#incoming_call, .incoming-controls {
+#incoming-call, .incoming-controls {
   width: 32rem;
 }
 
-#outgoing_call, .outgoing-controls {
+#outgoing-call, .outgoing-controls {
   width: 14rem;
   border-left: none;
 }

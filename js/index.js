@@ -2,21 +2,21 @@ const $ = require('jquery');
 const SparkService = require('./sparkService');
 
 SparkService.register().then(() => {
-  $('#submit_user_email').on('click', (event) => {
+  $('#submit-user-email').on('click', (event) => {
     event.preventDefault();
 
-    SparkService.callUser($('#user_email').val()).then((sparkCall) => {
+    SparkService.callUser($('#user-email').val()).then((sparkCall) => {
       displayCall(sparkCall);
     });
   });
 
-  $('#user_email').on('input propertychange paste', (event) => {
+  $('#user-email').on('input propertychange paste', (event) => {
     let disabled = true;
-    if ($('#user_email').val().length > 0) {
+    if ($('#user-email').val().length > 0) {
       disabled = false;
     }
 
-    $('#submit_user_email').attr('disabled', disabled);
+    $('#submit-user-email').attr('disabled', disabled);
   });
 });
 
@@ -26,16 +26,16 @@ function displayCall(call) {
   $('#overlay').addClass('visible');
 
   call.on('connected', () => {
-    $('#incoming_call').attr('src', call.remoteMediaStreamUrl);
+    $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
   });
   call.on('localMediaStream:change', () => {
-    $('#outgoing_call').attr('src', call.localMediaStreamUrl);
+    $('#outgoing-call').attr('src', call.localMediaStreamUrl);
   });
   call.on('error', (error) => {
-    $('#spark_message').html('Error: Spark failure: ' + error.message);
+    $('#spark-message').html('Error: Spark failure: ' + error.message);
   });
 
-  $('#hangup_call').on('click', (event) => {
+  $('#hangup-call').on('click', (event) => {
     if (call) {
       SparkService.hangupCall(call);
       clearCall($callView);
