@@ -33,7 +33,15 @@ describe('SparkService', () => {
           oauth: {}
         }
       },
-      isAuthenticated: true
+      isAuthenticated: true,
+      logout: jasmine.createSpy('logout')
+    };
+
+    window = {
+      location: {
+        protocol: '3P0',
+        host: 'C'
+      }
     };
 
     spyOn(mockSpark, 'on').and.callThrough();
@@ -129,6 +137,13 @@ describe('SparkService', () => {
     it('calls Spark hangup', () => {
       SparkService.hangupCall(mockCall);
       expect(mockCall.hangup).toHaveBeenCalled();
+    });
+  });
+
+  describe('logout', () => {
+    it('calls Spark logout', () => {
+      SparkService.logout();
+      expect(mockSpark.logout).toHaveBeenCalledWith({ goto: window.location.protocol + '//' + window.location.host + '/' });
     });
   });
 });

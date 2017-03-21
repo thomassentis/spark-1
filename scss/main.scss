@@ -89,6 +89,11 @@ button {
 
 i.fa {
   font-size: 1.4rem;
+
+  &.fa-large {
+    font-size: 2rem;
+    margin-right: 7px;
+  }
 }
 
 .primary-button {
@@ -121,6 +126,20 @@ i.fa {
   }
 }
 
+.logout {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: $dark-gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:disabled {
+    color: $light-gray;
+  }
+}
+
 main {
   width: 56rem;
   height: 36rem;
@@ -146,6 +165,7 @@ main {
     align-self: flex-start;
     flex-direction: row;
     justify-content: space-between;
+    width: 100%;
   }
 
   section {

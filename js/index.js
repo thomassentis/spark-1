@@ -18,6 +18,9 @@ SparkService.register().then(() => {
 
     $('#submit-user-email').attr('disabled', disabled);
   });
+
+  $('#logout-button').on('click', () => SparkService.logout());
+  $('#logout-button').attr('disabled', false);
 });
 
 function displayCall(call) {
@@ -41,6 +44,8 @@ function displayCall(call) {
       clearCall($callView);
     }
   });
+
+  $('#logout-button').on('click', () => SparkService.hangupCall(call));
 }
 
 function clearCall($view) {

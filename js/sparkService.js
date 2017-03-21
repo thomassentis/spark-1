@@ -39,3 +39,7 @@ exports.callUser = (userEmail) => {
 exports.hangupCall = (call) => {
   return call.hangup();
 };
+
+exports.logout = () => {
+  return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
+};
