@@ -26,14 +26,25 @@
         <section id="overlay"></section>
       </section>
 
-      <footer></footer>
+      <footer>
+        <span class="debug"></span>
+      </footer>
     </main>
 
     <template id="call-template">
       <div id="spark_message"></div>
-      <video id="outgoing_call" muted autoplay></video>
-      <video id="incoming_call" autoplay></video>
-      <button id="hangup_call">Hangup</button>
+      <div class="video-container">
+        <video id="incoming_call" autoplay></video>
+        <video id="outgoing_call" muted autoplay></video>
+      </div>
+      <div class="controls-container">
+        <div class="incoming-controls">
+          <button id="hangup_call" class="cancel-button">
+            <i class="fa fa-phone" aria-hidden="true"></i> Hangup
+          </button>
+        </div>
+        <div class="outgoing-controls"></div>
+      </div>
     </template>
 
     <script src="js/indexBundle.js"></script>

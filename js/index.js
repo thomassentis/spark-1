@@ -23,6 +23,7 @@ SparkService.register().then(() => {
 function displayCall(call) {
   let callViewHtml = $('#call-template').html().trim();
   let $callView = $(callViewHtml).appendTo('#overlay');
+  $('#overlay').addClass('visible');
 
   call.on('connected', () => {
     $('#incoming_call').attr('src', call.remoteMediaStreamUrl);
@@ -44,4 +45,5 @@ function displayCall(call) {
 
 function clearCall($view) {
   $view.remove();
+  $('#overlay').removeClass('visible');
 }

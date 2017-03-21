@@ -6,7 +6,13 @@
 $light-gray: #aaaaaa;
 $medium-gray: #666666;
 $dark-gray: #555555;
-$primary-blue: #139ED4;
+$blue: #009EDB;
+$dark-blue: #0C83B5;
+$light-blue: #64b8d8;
+$red: #DF3C3C;
+$dark-red: #A40B0B;
+
+$transition-speed: 200ms;
 
 button, input, textarea {
   font-family: inherit;
@@ -24,13 +30,14 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+  margin: 0;
 }
 
 h1 {
   font-weight: normal;
   color: $dark-gray;
-  font-size: 2.5rem;
-  margin: 2rem;
+  font-size: 1.5rem;
+  margin: 1rem;
 }
 
 form.container {
@@ -40,24 +47,29 @@ form.container {
   input[type=text] {
     border: none;
     width: 40rem;
-    font-size: 1.5rem;
-    padding: 10px;
-    margin: 10px;
+    font-size: 1.2rem;
+    padding: .5rem;
+    margin: .5rem;
+    outline: none;
   }
 
   button {
-    margin: 10px;
+    margin: .4rem;
   }
 }
 
-.primary-button {
-  background: $primary-blue;
-  border-radius: 50px;
-  padding: 10px 20px;
+button {
+  transition: background $transition-speed ease-in;
+}
+
+.primary-button, .cancel-button {
+  border-radius: 1.5rem;
+  padding: .5rem 1.2rem;
   color: white;
   font-size: 1.5rem;
   border: none;
   cursor: pointer;
+  outline: none;
 
   &.large {
     font-size: 2.5rem;
@@ -66,31 +78,45 @@ form.container {
 
   &:disabled {
     background: none;
+    border: 2px solid transparent;
     color: $medium-gray;
     cursor: auto;
   }
+}
+
+.primary-button {
+  background: $blue;
+  border: 2px solid $dark-blue;
+
+  &:hover {
+    background: $light-blue;
+  }
+}
+
+.cancel-button {
+  background: $red;
 }
 
 .branding {
   background-image: url(../images/spark-logo.png);
   background-repeat: no-repeat;
   background-position: left;
-  background-size: 85px;
-  padding: 25px 0 25px 110px;
-  font-size: 2rem;
+  background-size: 3rem;
+  padding: 1rem 1rem 1rem 3.5rem;
+  font-size: 1.2rem;
   color: $dark-gray;
 
   &.large {
     background-position: top;
     background-size: 150px;
     font-size: 4rem;
-    padding: 175px 0;
+    padding: 11rem 0;
   }
 }
 
 main {
-  width: 60rem;
-  height: 48rem;
+  width: 56rem;
+  height: 36rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,11 +124,15 @@ main {
   border-radius: 15px;
   box-shadow: 0 1px 5px 0 #C2C2C2;
   background: white;
-  padding: 50px;
+  padding: 2rem;
 
   &.login-page {
     justify-content: center;
     padding: 100px;
+  }
+
+  header, footer {
+    z-index: 10;
   }
 
   header {
@@ -117,5 +147,74 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+
+    #overlay {
+      display: none;
+
+      &.visible {
+        display: flex;
+        position: absolute;
+        width: 56rem;
+        height: 36rem;
+        background: white;
+        z-index: 9;
+      }
+    }
   }
+}
+
+.video-container, .controls-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.video-container {
+  position: relative;
+  width:50rem;
+
+  &:before,  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: .1rem;
+    z-index: 1;
+    border-radius: 50%;
+  }
+
+  &:before {
+    filter: blur(1px);
+    background: #d6d6d6;
+  }
+
+  &:after {
+    height: .5rem;
+    filter: blur(5px);
+    bottom: -.15rem;
+    background: #4c4c4c;
+  }
+}
+
+#incoming_call, #outgoing_call {
+  background: black;
+  border: 2px solid $blue;
+  z-index: 2;
+}
+
+#incoming_call, .incoming-controls {
+  width: 32rem;
+}
+
+#outgoing_call, .outgoing-controls {
+  width: 14rem;
+  border-left: none;
+}
+
+.incoming-controls, .outgoing-controls {
+  display: flex;
+  justify-content: center;
 }
