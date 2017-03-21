@@ -11,12 +11,7 @@ SparkService.register().then(() => {
   });
 
   $('#user-email').on('input propertychange paste', () => {
-    let disabled = true;
-    if ($('#user-email').val().length > 0) {
-      disabled = false;
-    }
-
-    $('#submit-user-email').attr('disabled', disabled);
+    $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
   });
 
   $('#logout-button').on('click', () => SparkService.logout());
