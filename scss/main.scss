@@ -100,7 +100,7 @@ i.fa {
   background: $blue;
   border: 2px solid $dark-blue;
 
-  &:hover {
+  &:hover:enabled {
     background: $light-blue;
   }
 }
