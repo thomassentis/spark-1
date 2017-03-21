@@ -8,12 +8,14 @@ $medium-gray: #666666;
 $dark-gray: #555555;
 $blue: #009EDB;
 $dark-blue: #0C83B5;
+$navy-blue: #46639a;
 $light-blue: #64b8d8;
 $red: #DF3C3C;
 $dark-red: #A40B0B;
 $light-red: #FF7676;
 
 $transition-speed: 200ms;
+$video-border-width: 2px;
 
 button, input, textarea {
   font-family: inherit;
@@ -239,7 +241,7 @@ main {
 
 #incoming-call, #outgoing-call {
   background: black;
-  border: 2px solid $blue;
+  border: $video-border-width solid $navy-blue;
   z-index: 2;
 }
 
@@ -250,6 +252,7 @@ main {
 #outgoing-call, .outgoing-controls {
   width: 14rem;
   border-left: none;
+  margin-left: -$video-border-width;
 }
 
 .incoming-controls, .outgoing-controls {
