@@ -20,6 +20,7 @@ $video-border-width: 2px;
 button, input, textarea {
   font-family: inherit;
   letter-spacing: .03rem;
+  outline: none;
 }
 
 body, html {
@@ -68,13 +69,36 @@ button:enabled {
   cursor: pointer;
 }
 
-.primary-button, .cancel-button {
+.primary-button {
   border-radius: 1.5rem;
   padding: 0 1rem;
   color: white;
   font-size: 1.5rem;
-  border: none;
   outline: none;
+  background: $blue;
+  border: 2px solid $dark-blue;
+
+  &:hover:enabled {
+    background: $light-blue;
+  }
+
+  &.red {
+    background: $red;
+    border: 1px solid $dark-red;
+
+    &:hover:enabled {
+      background: $light-red;
+    }
+  }
+
+  &.small {
+    font-size: 1rem;
+    padding: .2rem 1rem;
+
+    i.fa {
+      font-size: 1rem;
+    }
+  }
 
   &.large {
     font-size: 1.5rem;
@@ -99,36 +123,13 @@ i.fa {
   }
 }
 
-.primary-button {
-  background: $blue;
-  border: 2px solid $dark-blue;
-
-  &:hover:enabled {
-    background: $light-blue;
-  }
-
-  &.red {
-    background: $red;
-    border: 1px solid $dark-red;
-    font-size: 1rem;
-    padding: .2rem 1rem;
-
-    i.fa {
-      font-size: 1rem;
-    }
-
-    &:hover {
-      background: $light-red;
-    }
-  }
-}
-
 .branding {
   background-image: url(../images/spark-logo.png);
   background-repeat: no-repeat;
   background-position: left;
   background-size: 3rem;
   padding: 1rem 1rem 1rem 3.5rem;
+  margin: 2rem 0 0 2rem;
   font-size: 1.2rem;
   color: $dark-gray;
 
@@ -137,6 +138,7 @@ i.fa {
     background-size: 7rem;
     font-size: 2.5rem;
     padding: 8rem 0 4rem;
+    margin: 0;
   }
 }
 
@@ -148,6 +150,7 @@ i.fa {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 2rem 2rem 0 0;
 
   &:disabled {
     color: $light-gray;
@@ -164,7 +167,6 @@ main {
   border-radius: 15px;
   box-shadow: 0 1px 5px 0 #C2C2C2;
   background: white;
-  padding: 2rem;
 
   &.login-page {
     justify-content: center;
@@ -207,7 +209,7 @@ main {
   width: 10rem;
 }
 
-.callee-name {
+.callee-name, .caller-name {
   font-size: 1.2rem;
   margin: 2rem;
   color: $dark-gray;
@@ -245,6 +247,40 @@ main {
     filter: blur(5px);
     bottom: -.15rem;
     background: #4c4c4c;
+  }
+}
+
+#incoming-call-overlay {
+  justify-content: space-around;
+  background: transparentize(lighten($light-blue, 10%), 0.2);
+  height: 24rem;
+  border: 1px solid $blue;
+
+  h1 {
+    font-size: 2rem;
+    color: darken($dark-blue, 10%);
+    margin-top: 2rem;
+  }
+
+  .caller-name {
+    margin: 0.5rem 0 1.5rem 0;
+  }
+
+  .avatar-image {
+    background: white;
+  }
+
+  .incoming-call-controls {
+    flex-direction: row;
+    margin-bottom: 2rem;
+
+    button {
+      margin-right: 1.5rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 

@@ -22,7 +22,8 @@ describe('SparkService', () => {
     mockCall = {
       hangup: jasmine.createSpy('hangup'),
       acknowledge: jasmine.createSpy('acknowledge'),
-      answer: jasmine.createSpy('answer')
+      answer: jasmine.createSpy('answer'),
+      reject: jasmine.createSpy('reject')
     };
 
     mockLocalMediaStream = 'BATMAN';
@@ -153,13 +154,6 @@ describe('SparkService', () => {
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).not.toHaveBeenCalled();
       });
-
-      it('does not call Spark Phone createLocalMediaStream', (done) => {
-        SparkService.listen();
-        incomingCallback(mockCall);
-        expect(mockSpark.phone.createLocalMediaStream).not.toHaveBeenCalled();
-        done();
-      });
     });
 
     describe('when the call direction is in', () => {
@@ -178,21 +172,33 @@ describe('SparkService', () => {
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).toHaveBeenCalled();
       });
+    });
+  });
 
-      it('calls Spark Phone createLocalMediaStream', (done) => {
-        SparkService.listen(mockCallback);
-        incomingCallback(mockCall);
-        expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
+  describe('answerCall', () => {
+    it('callback does get executed', () => {
+      SparkService.answerCall(mockCall, mockCallback);
+      expect(mockCallback).toHaveBeenCalledWith(mockCall);
+    });
+
+    it('calls Spark Phone createLocalMediaStream', (done) => {
+      SparkService.answerCall(mockCall, mockCallback);
+      expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
+      done();
+    });
+
+    it('calls Spark Call answer', (done) => {
+      SparkService.answerCall(mockCall, mockCallback).then(() => {
+        expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, constraints, { localMediaStream: mockLocalMediaStream }));
         done();
       });
+    });
+  });
 
-      it('calls Spark Call answer', (done) => {
-        SparkService.listen(mockCallback);
-        incomingCallback(mockCall).then(() => {
-          expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, constraints, { localMediaStream: mockLocalMediaStream }));
-          done();
-        });
-      });
+  describe('rejectCall', () => {
+    it('calls Spark Call reject', () => {
+      SparkService.rejectCall(mockCall);
+      expect(mockCall.reject).toHaveBeenCalled();
     });
   });
 

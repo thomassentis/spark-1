@@ -42,11 +42,19 @@ exports.listen = (callback) => {
     callback(call);
 
     call.acknowledge();
-
-    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-      return call.answer(Object.assign({}, constraints, { localMediaStream: localMediaStream }));
-    });
   });
+};
+
+exports.answerCall = (call, callback) => {
+  callback(call);
+
+  return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+    return call.answer(Object.assign({}, constraints, { localMediaStream: localMediaStream }));
+  });
+};
+
+exports.rejectCall = (call) => {
+  call.reject();
 };
 
 exports.callUser = (userEmail) => {

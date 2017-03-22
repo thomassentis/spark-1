@@ -4,15 +4,13 @@ const SparkService = require('./sparkService');
 let currentCall = null;
 
 SparkService.register().then(() => {
-  $('#submit-user-email').on('click', (event) => {
-    callByEmail(event);
-  });
+  $('#submit-user-email').on('click', callByEmail);
 
   $('#user-email').on('input propertychange paste', () => {
     $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
   });
 
-  SparkService.listen(handleCall);
+  SparkService.listen(displayIncomingCall);
 
   $('#logout-button').on('click', () => SparkService.logout());
   $('#logout-button').attr('disabled', false);
@@ -24,8 +22,6 @@ function callByEmail(event) {
 
   SparkService.callUser(email).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
-
-    $('#overlay').addClass('visible');
     $('#callee-name').html(email);
 
     SparkService.getAvatarUrl(email).then((url) => {
@@ -41,6 +37,22 @@ function callByEmail(event) {
       sparkCall.hangup();
       $('#calling-overlay').remove();
     });
+  });
+}
+
+function displayIncomingCall(call) {
+  $('#main-content').append($('#incoming-call-template').html().trim());
+
+  $('#caller-name').html(call.from.person.email);
+
+  $('#answer-video').on('click', () => {
+    SparkService.answerCall(call, handleCall);
+    clearIncomingCall();
+  });
+
+  $('#reject').on('click', () => {
+    SparkService.rejectCall(call);
+    clearIncomingCall();
   });
 }
 
@@ -78,6 +90,14 @@ function handleCall(call) {
 
 function hangupCall() {
   SparkService.hangupCall(currentCall);
+  clearActiveCall();
+}
+
+function clearActiveCall() {
   $('#active-call-overlay').remove();
   currentCall = null;
+}
+
+function clearIncomingCall(){
+  $('#incoming-call-overlay').remove();
 }

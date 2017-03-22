@@ -42,7 +42,7 @@
         </div>
         <div class="controls-container">
           <div class="incoming-controls">
-            <button id="hangup-call" class="primary-button red">
+            <button id="hangup-call" class="primary-button small red">
               <i class="fa fa-phone" aria-hidden="true"></i> Hangup
             </button>
           </div>
@@ -58,6 +58,22 @@
         <button id="hangup-calling" class="primary-button red">
           <i class="fa fa-phone" aria-hidden="true"></i> Hangup
         </button>
+      </section>
+    </template>
+
+    <template id="incoming-call-template">
+      <section id="incoming-call-overlay" class="overlay">
+        <h1>Incoming Call</h1>
+        <img class="avatar-image" id="caller-image" src="images/Recipient.svg" />
+        <span class="caller-name" id="caller-name"></span>
+        <section class="incoming-call-controls">
+          <button class="primary-button small" id="answer-video">
+            <i class="fa fa-video-camera" aria-hidden="true"></i> Answer
+          </button>
+          <button class="primary-button small red" id="reject">
+            <i class="fa fa-phone" aria-hidden="true"></i> Reject
+          </button>
+        </section>
       </section>
     </template>
 
