@@ -21,7 +21,7 @@ exports.register = () => {
     let authenticatedListener = spark.on('change:isAuthenticated', () => {
       if (spark.isAuthenticated) {
         spark.off('change:isAuthenticated', authenticatedListener);
-        spark.phone.register().then(() =>{
+        spark.phone.register().then(() => {
           resolve();
         });
       }

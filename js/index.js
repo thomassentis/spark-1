@@ -27,11 +27,7 @@ function handleCall(call) {
 
   currentCall = call;
 
-  $('<section></section>', {
-    id: 'active-call-overlay',
-    'class': 'overlay',
-    html: $('#call-template').html().trim()
-  }).appendTo($('#main-content'));
+  $('#main-content').append($('#call-template').html().trim());
 
   call.on('remoteMediaStream:change', () => {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
