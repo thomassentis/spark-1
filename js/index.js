@@ -75,10 +75,6 @@ function handleCall(call) {
 
 function hangupCall() {
   SparkService.hangupCall(currentCall);
-  clearCall();
-  currentCall = null;
-}
-
-function clearCall() {
   $('#active-call-overlay').remove();
+  currentCall = null;
 }
