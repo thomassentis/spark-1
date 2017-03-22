@@ -189,17 +189,13 @@ main {
     justify-content: center;
     position: relative;
 
-    #overlay {
-      display: none;
-
-      &.visible {
-        display: flex;
-        position: absolute;
-        width: 56rem;
-        height: 36rem;
-        background: white;
-        z-index: 9;
-      }
+    .overlay {
+      display: flex;
+      position: absolute;
+      width: 56rem;
+      height: 36rem;
+      background: white;
+      z-index: 9;
     }
   }
 }

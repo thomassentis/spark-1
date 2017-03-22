@@ -27,8 +27,11 @@ function handleCall(call) {
 
   currentCall = call;
 
-  $('#overlay').append($('#call-template').html().trim());
-  $('#overlay').addClass('visible');
+  $('<section></section>', {
+    id: 'active-call-overlay',
+    'class': 'overlay',
+    html: $('#call-template').html().trim()
+  }).appendTo($('#main-content'));
 
   call.on('remoteMediaStream:change', () => {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
@@ -54,6 +57,5 @@ function hangupCall() {
 }
 
 function clearCall() {
-  $('#call-container').remove();
-  $('#overlay').removeClass('visible');
+  $('#active-call-overlay').remove();
 }
