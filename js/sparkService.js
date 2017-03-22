@@ -1,5 +1,10 @@
 require('./env.js');
 const spark = require('ciscospark');
+const constraints = {
+  audio: true,
+  video: true,
+  fake: false
+};
 
 exports.authorize = () => {
   return spark.authorize();
@@ -24,13 +29,27 @@ exports.register = () => {
   });
 };
 
-exports.callUser = (userEmail) => {
-  const constraints = {
-    audio: true,
-    video: true,
-    fake: false
-  };
+exports.listen = (callback) => {
+  spark.phone.on('call:incoming', (call) => {
+    /*
+    The call:incoming event is triggered for both incoming and outgoing calls.
+    Outgoing calls are handled by SparkService.callUser(...).
+    */
+    if (call.direction === 'out') {
+      return;
+    }
 
+    callback(call);
+
+    call.acknowledge();
+
+    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+      return call.answer(Object.assign({}, constraints, { localMediaStream: localMediaStream }));
+    });
+  });
+};
+
+exports.callUser = (userEmail) => {
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
     return spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
   });

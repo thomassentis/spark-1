@@ -36,18 +36,20 @@
     </main>
 
     <template id="call-template">
-      <div id="spark-message"></div>
-      <div class="video-container">
-        <video id="incoming-call" autoplay></video>
-        <video id="outgoing-call" muted autoplay></video>
-      </div>
-      <div class="controls-container">
-        <div class="incoming-controls">
-          <button id="hangup-call" class="primary-button red">
-            <i class="fa fa-phone" aria-hidden="true"></i> Hangup
-          </button>
+      <div id="call-container">
+        <div id="spark-message"></div>
+        <div class="video-container">
+          <video id="incoming-call" autoplay></video>
+          <video id="outgoing-call" muted autoplay></video>
         </div>
-        <div class="outgoing-controls"></div>
+        <div class="controls-container">
+          <div class="incoming-controls">
+            <button id="hangup-call" class="primary-button red">
+              <i class="fa fa-phone" aria-hidden="true"></i> Hangup
+            </button>
+          </div>
+          <div class="outgoing-controls"></div>
+        </div>
       </div>
     </template>
 

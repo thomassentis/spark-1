@@ -1,11 +1,27 @@
 const proxyquire = require('proxyquire');
+const constraints = {
+  audio: true,
+  video: true,
+  fake: false
+};
 
 describe('SparkService', () => {
-  let mockSpark, mockCall, mockLocalMediaStream, SparkService, authenticationCallback, fakeListener = null;
+  let mockSpark,
+    mockCallback,
+    mockCall,
+    mockLocalMediaStream,
+    SparkService,
+    authenticationCallback,
+    incomingCallback,
+    fakeListener = null;
 
   beforeEach(() => {
+    mockCallback = jasmine.createSpy('mockCallback');
+
     mockCall = {
-      hangup: jasmine.createSpy('hangup')
+      hangup: jasmine.createSpy('hangup'),
+      acknowledge: jasmine.createSpy('acknowledge'),
+      answer: jasmine.createSpy('answer')
     };
 
     mockLocalMediaStream = 'BATMAN';
@@ -25,7 +41,11 @@ describe('SparkService', () => {
         register: jasmine.createSpy('register').and.returnValue(Promise.resolve()),
         createLocalMediaStream: jasmine.createSpy('createLocalMediaStream')
           .and.returnValue(Promise.resolve(mockLocalMediaStream)),
-        dial: jasmine.createSpy('dial').and.returnValue(mockCall)
+        dial: jasmine.createSpy('dial').and.returnValue(mockCall),
+        on: (event, callback) => {
+          incomingCallback = callback;
+          return fakeListener;
+        }
       },
       authorize: jasmine.createSpy('authorize'),
       config: {
@@ -45,6 +65,7 @@ describe('SparkService', () => {
     };
 
     spyOn(mockSpark, 'on').and.callThrough();
+    spyOn(mockSpark.phone, 'on').and.callThrough();
 
     SparkService = proxyquire('../js/sparkService', {
       'ciscospark': mockSpark,
@@ -103,13 +124,73 @@ describe('SparkService', () => {
     });
   });
 
+  describe('listen', () => {
+    it('registers a listener for call:incoming on the Spark Phone', () => {
+      SparkService.listen();
+      expect(mockSpark.phone.on).toHaveBeenCalledWith('call:incoming', jasmine.any(Function));
+    });
+
+    describe('when the call direction is out', () => {
+      beforeEach(() => {
+        mockCall.direction = 'out';
+      });
+
+      it('callback does not get executed', () => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall);
+        expect(mockCallback).not.toHaveBeenCalled();
+      });
+
+      it('does not call Spark Call acknowledge', () => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall);
+        expect(mockCall.acknowledge).not.toHaveBeenCalled();
+      });
+
+      it('does not call Spark Phone createLocalMediaStream', (done) => {
+        SparkService.listen();
+        incomingCallback(mockCall);
+        expect(mockSpark.phone.createLocalMediaStream).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    describe('when the call direction is in', () => {
+      beforeEach(() => {
+        mockCall.direction = 'in';
+      });
+
+      it('callback does get executed', () => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall);
+        expect(mockCallback).toHaveBeenCalledWith(mockCall);
+      });
+
+      it('calls Spark Call acknowledge', () => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall);
+        expect(mockCall.acknowledge).toHaveBeenCalled();
+      });
+
+      it('calls Spark Phone createLocalMediaStream', (done) => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall);
+        expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
+        done();
+      });
+
+      it('calls Spark Call answer', (done) => {
+        SparkService.listen(mockCallback);
+        incomingCallback(mockCall).then(() => {
+          expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, constraints, { localMediaStream: mockLocalMediaStream }));
+          done();
+        });
+      });
+    });
+  });
+
   describe('callUser', () => {
     const email = 'user@spark.com';
-    const constraints = {
-      audio: true,
-      video: true,
-      fake: false
-    };
 
     it('calls createLocalMediaStream', (done) => {
       SparkService.callUser(email).then(() => {

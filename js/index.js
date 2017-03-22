@@ -1,29 +1,36 @@
 const $ = require('jquery');
 const SparkService = require('./sparkService');
 
+let currentCall = null;
+
 SparkService.register().then(() => {
   $('#submit-user-email').on('click', (event) => {
     event.preventDefault();
 
-    SparkService.callUser($('#user-email').val()).then((sparkCall) => {
-      displayCall(sparkCall);
-    });
+    SparkService.callUser($('#user-email').val()).then(handleCall);
   });
 
   $('#user-email').on('input propertychange paste', () => {
     $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
   });
 
+  SparkService.listen(handleCall);
+
   $('#logout-button').on('click', () => SparkService.logout());
   $('#logout-button').attr('disabled', false);
 });
 
-function displayCall(call) {
-  let callViewHtml = $('#call-template').html().trim();
-  let $callView = $(callViewHtml).appendTo('#overlay');
+function handleCall(call) {
+  if (currentCall) {
+    hangupCall();
+  }
+
+  currentCall = call;
+
+  $('#overlay').append($('#call-template').html().trim());
   $('#overlay').addClass('visible');
 
-  call.on('connected', () => {
+  call.on('remoteMediaStream:change', () => {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
   });
   call.on('localMediaStream:change', () => {
@@ -34,16 +41,19 @@ function displayCall(call) {
   });
 
   $('#hangup-call').on('click', () => {
-    if (call) {
-      SparkService.hangupCall(call);
-      clearCall($callView);
-    }
+    hangupCall();
   });
 
   $('#logout-button').on('click', () => SparkService.hangupCall(call));
 }
 
-function clearCall($view) {
-  $view.remove();
+function hangupCall() {
+  SparkService.hangupCall(currentCall);
+  clearCall();
+  currentCall = null;
+}
+
+function clearCall() {
+  $('#call-container').remove();
   $('#overlay').removeClass('visible');
 }
