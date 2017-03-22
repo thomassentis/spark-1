@@ -62,3 +62,13 @@ exports.hangupCall = (call) => {
 exports.logout = () => {
   return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
 };
+
+exports.getAvatarUrl = (email) => {
+  return spark.people.list({ email: email }).then((people) => {
+    if(people.count === 0 || !people.items[0].avatar) {
+      return Promise.reject('No avatar found');
+    } else {
+      return Promise.resolve(people.items[0].avatar);
+    }
+  });
+};

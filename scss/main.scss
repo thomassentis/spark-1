@@ -200,6 +200,19 @@ main {
   }
 }
 
+.avatar-image {
+  border-radius: 50%;
+  border: 2px solid $light-gray;
+  height: 10rem;
+  width: 10rem;
+}
+
+.callee-name {
+  font-size: 1.2rem;
+  margin: 2rem;
+  color: $dark-gray;
+}
+
 .video-container, .controls-container {
   display: flex;
   flex-direction: row;

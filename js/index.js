@@ -5,9 +5,7 @@ let currentCall = null;
 
 SparkService.register().then(() => {
   $('#submit-user-email').on('click', (event) => {
-    event.preventDefault();
-
-    SparkService.callUser($('#user-email').val()).then(handleCall);
+    callByEmail(event);
   });
 
   $('#user-email').on('input propertychange paste', () => {
@@ -20,6 +18,32 @@ SparkService.register().then(() => {
   $('#logout-button').attr('disabled', false);
 });
 
+function callByEmail(event) {
+  event.preventDefault();
+  const email = $('#user-email').val();
+
+  SparkService.callUser(email).then((sparkCall) => {
+    $('#main-content').append($('#calling-template').html().trim());
+
+    $('#overlay').addClass('visible');
+    $('#callee-name').html(email);
+
+    SparkService.getAvatarUrl(email).then((url) => {
+      $('#callee-image').attr('src', url);
+    }).catch(() => {});
+
+    sparkCall.on('connected', () => {
+      $('#calling-overlay').remove();
+      handleCall(sparkCall);
+    });
+
+    $('#hangup-calling').on('click', () => {
+      sparkCall.hangup();
+      $('#calling-overlay').remove();
+    });
+  });
+}
+
 function handleCall(call) {
   if (currentCall) {
     hangupCall();
@@ -29,6 +53,9 @@ function handleCall(call) {
 
   $('#main-content').append($('#call-template').html().trim());
 
+  if(call.remoteMediaStreamUrl) {
+    $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
+  }
   call.on('remoteMediaStream:change', () => {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
   });

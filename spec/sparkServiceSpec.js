@@ -13,7 +13,8 @@ describe('SparkService', () => {
     SparkService,
     authenticationCallback,
     incomingCallback,
-    fakeListener = null;
+    fakeListener,
+    fakePeople;
 
   beforeEach(() => {
     mockCallback = jasmine.createSpy('mockCallback');
@@ -28,6 +29,12 @@ describe('SparkService', () => {
 
     fakeListener = 'BEES!?';
 
+    fakePeople = {
+      items: [
+        { avatar: 'PANDORA' }
+      ]
+    };
+
     mockSpark = {
       on: (event, callback) => {
         authenticationCallback = callback;
@@ -35,7 +42,7 @@ describe('SparkService', () => {
       },
       off: jasmine.createSpy('off'),
       people: {
-        list: () => {}
+        list: jasmine.createSpy('listPeople').and.returnValue(Promise.resolve(fakePeople))
       },
       phone: {
         register: jasmine.createSpy('register').and.returnValue(Promise.resolve()),
@@ -225,6 +232,52 @@ describe('SparkService', () => {
     it('calls Spark logout', () => {
       SparkService.logout();
       expect(mockSpark.logout).toHaveBeenCalledWith({ goto: window.location.protocol + '//' + window.location.host + '/' });
+    });
+  });
+
+  describe('getAvatarUrl', () => {
+
+    it('calls Spark list people', (done) => {
+      const fakeEmail = 'I am your father';
+      SparkService.getAvatarUrl(fakeEmail).then(() => {
+        expect(mockSpark.people.list).toHaveBeenCalledWith({ email: fakeEmail });
+        done();
+      });
+    });
+
+    it('resolves with the avatar of the other person', (done) => {
+      SparkService.getAvatarUrl('hey').then((avatar) => {
+        expect(avatar).toEqual(fakePeople.items[0].avatar);
+        done();
+      });
+    });
+
+    describe('when there are no people in the call', () => {
+      beforeEach(() => {
+        fakePeople.items = [];
+      });
+
+      it('rejects', (done) => {
+        SparkService.getAvatarUrl('hi').then(() => {
+          fail('Promise unexpectedly resolved');
+        }).catch(() => {
+          done();
+        });
+      });
+    });
+
+    describe('when the first person doesn\'t have an avatar', () => {
+      beforeEach(() => {
+        fakePeople.items[0].avatar = null;
+      });
+
+      it('rejects', (done) => {
+        SparkService.getAvatarUrl('hi').then(() => {
+          fail('Promise unexpectedly resolved');
+        }).catch(() => {
+          done();
+        });
+      });
     });
   });
 });
