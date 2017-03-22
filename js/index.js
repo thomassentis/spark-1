@@ -56,6 +56,9 @@ function handleCall(call) {
   if(call.remoteMediaStreamUrl) {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
   }
+  if(call.localMediaStreamUrl) {
+    $('#outgoing-call').attr('src', call.localMediaStreamUrl);
+  }
   call.on('remoteMediaStream:change', () => {
     $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
   });
