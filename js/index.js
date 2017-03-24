@@ -26,6 +26,7 @@ function callByEmail(event) {
 
     SparkService.getAvatarUrl(email).then((url) => {
       $('#callee-image').attr('src', url);
+      // Catch is a temp fix to allow us to continue pass the 401 looping errors
     }).catch(() => {});
 
     sparkCall.on('connected', () => {
