@@ -18,16 +18,19 @@ an error.
 */
 exports.register = () => {
   return new Promise((resolve) => {
-    let authenticatedListener = SPARK.on('change:isAuthenticated', () => {
+    let authenticationUpdate = () => {
       if (SPARK.isAuthenticated) {
-        SPARK.off('change:isAuthenticated', authenticatedListener);
+        SPARK.off('change:isAuthenticated', authenticationUpdate);
         SPARK.phone.register().then(() => {
           resolve();
         });
       }
-    });
+    };
+
+    SPARK.on('change:isAuthenticated', authenticationUpdate);
   });
 };
+
 
 exports.listen = (callback) => {
   SPARK.phone.on('call:incoming', (call) => {

@@ -103,7 +103,7 @@ describe('SparkService', () => {
 
     it('stops listening for Spark authentication changes', (done) => {
       SparkService.register().then(() => {
-        expect(mockSpark.off).toHaveBeenCalledWith('change:isAuthenticated', fakeListener);
+        expect(mockSpark.off).toHaveBeenCalledWith('change:isAuthenticated', authenticationCallback);
         done();
       });
       authenticationCallback();
