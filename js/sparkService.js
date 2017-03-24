@@ -1,13 +1,13 @@
 require('./env.js');
-const spark = require('ciscospark');
-const constraints = {
+const SPARK = require('ciscoSPARK');
+const CONSTRAINTS = {
   audio: true,
   video: true,
   fake: false
 };
 
 exports.authorize = () => {
-  return spark.authorize();
+  return SPARK.authorize();
 };
 
 /*
@@ -18,10 +18,10 @@ an error.
 */
 exports.register = () => {
   return new Promise((resolve) => {
-    let authenticatedListener = spark.on('change:isAuthenticated', () => {
-      if (spark.isAuthenticated) {
-        spark.off('change:isAuthenticated', authenticatedListener);
-        spark.phone.register().then(() => {
+    let authenticatedListener = SPARK.on('change:isAuthenticated', () => {
+      if (SPARK.isAuthenticated) {
+        SPARK.off('change:isAuthenticated', authenticatedListener);
+        SPARK.phone.register().then(() => {
           resolve();
         });
       }
@@ -30,7 +30,7 @@ exports.register = () => {
 };
 
 exports.listen = (callback) => {
-  spark.phone.on('call:incoming', (call) => {
+  SPARK.phone.on('call:incoming', (call) => {
     /*
     The call:incoming event is triggered for both incoming and outgoing calls.
     Outgoing calls are handled by SparkService.callUser(...).
@@ -46,8 +46,8 @@ exports.listen = (callback) => {
 };
 
 exports.answerCall = (call) => {
-  return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    return call.answer(Object.assign({}, constraints, { localMediaStream: localMediaStream }));
+  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
+    return call.answer(Object.assign({}, CONSTRAINTS, { localMediaStream: localMediaStream }));
   });
 };
 
@@ -56,8 +56,8 @@ exports.rejectCall = (call) => {
 };
 
 exports.callUser = (userEmail) => {
-  return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    return spark.phone.dial(userEmail, Object.assign({}, constraints, localMediaStream));
+  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
+    return SPARK.phone.dial(userEmail, Object.assign({}, CONSTRAINTS, localMediaStream));
   });
 };
 
@@ -66,11 +66,11 @@ exports.hangupCall = (call) => {
 };
 
 exports.logout = () => {
-  return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
+  return SPARK.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
 };
 
 exports.getAvatarUrl = (email) => {
-  return spark.people.list({ email: email }).then((people) => {
+  return SPARK.people.list({ email: email }).then((people) => {
     if(people.count === 0 || !people.items[0].avatar) {
       return Promise.reject('No avatar found');
     } else {

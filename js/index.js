@@ -1,30 +1,30 @@
 const $ = require('jquery');
-const SparkService = require('./sparkService');
+const SPARK_SERVICE = require('./sparkService');
 
 let currentCall = null;
 
-SparkService.register().then(() => {
+SPARK_SERVICE.register().then(() => {
   $('#submit-user-email').on('click', callByEmail);
 
   $('#user-email').on('input propertychange paste', () => {
     $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
   });
 
-  SparkService.listen(displayIncomingCall);
+  SPARK_SERVICE.listen(displayIncomingCall);
 
-  $('#logout-button').on('click', () => SparkService.logout());
+  $('#logout-button').on('click', () => SPARK_SERVICE.logout());
   $('#logout-button').attr('disabled', false);
 });
 
 function callByEmail(event) {
   event.preventDefault();
-  const email = $('#user-email').val();
+  const EMAIL = $('#user-email').val();
 
-  SparkService.callUser(email).then((sparkCall) => {
+  SPARK_SERVICE.callUser(EMAIL).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
-    $('#callee-name').html(email);
+    $('#callee-name').html(EMAIL);
 
-    SparkService.getAvatarUrl(email).then((url) => {
+    SPARK_SERVICE.getAvatarUrl(EMAIL).then((url) => {
       $('#callee-image').attr('src', url);
       // Catch is a temp fix to allow us to continue pass the 401 looping errors
     }).catch(() => {});
@@ -47,12 +47,12 @@ function displayIncomingCall(call) {
   $('#caller-name').html(call.from.person.email);
 
   $('#answer-video').on('click', () => {
-    SparkService.answerCall(call).then(() => handleCall(call));
+    SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
     clearIncomingCall();
   });
 
   $('#reject').on('click', () => {
-    SparkService.rejectCall(call);
+    SPARK_SERVICE.rejectCall(call);
     clearIncomingCall();
   });
 }
@@ -87,11 +87,11 @@ function handleCall(call) {
     hangupCall();
   });
 
-  $('#logout-button').on('click', () => SparkService.hangupCall(call));
+  $('#logout-button').on('click', () => SPARK_SERVICE.hangupCall(call));
 }
 
 function hangupCall() {
-  SparkService.hangupCall(currentCall);
+  SPARK_SERVICE.hangupCall(currentCall);
   clearActiveCall();
 }
 
