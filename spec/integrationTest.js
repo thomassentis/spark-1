@@ -18,7 +18,7 @@ describe('Search for an user', () => {
   it('should return an error if the user is not found', () => {
 
     callUserByEmail(env.fakeUser);
-    expectTextToEventuallyBePresentInElementByID('calling-status', 'Call Failed');
+    waitForTextToBePresentInElementByID('calling-status', 'Fail');
     hangup();
 
   });
@@ -95,11 +95,7 @@ function waitForElementByIDToBeVisible(id) {
   browser.wait(EC.visibilityOf(element(By.id(id))), waitTimeout);
 }
 
-function expectTextToEventuallyBePresentInElementByID(id, text) {
+function waitForTextToBePresentInElementByID(id, text) {
   waitForElementByIDToBeVisible(id);
-  expect(EC.textToBePresentInElement(element(By.id(id))));
-}
-
-function waitForElementById(id, waiter) {
-  browser.wait(waiter(element(By.id(id))), waitTimeout);
+  browser.wait(EC.textToBePresentInElement(element(By.id(id)), text), waitTimeout);
 }
