@@ -1,5 +1,5 @@
-const proxyquire = require('proxyquire');
-const constraints = {
+const PROXYQUIRE = require('proxyquire');
+const CONSTRAINTS = {
   audio: true,
   video: true,
   fake: false
@@ -75,7 +75,7 @@ describe('SparkService', () => {
     spyOn(mockSpark, 'on').and.callThrough();
     spyOn(mockSpark.phone, 'on').and.callThrough();
 
-    SparkService = proxyquire('../js/sparkService', {
+    SparkService = PROXYQUIRE('../js/sparkService', {
       'ciscospark': mockSpark,
       'jquery': () => {
         return {
@@ -178,13 +178,13 @@ describe('SparkService', () => {
   describe('answerCall', () => {
     it('calls Spark Phone createLocalMediaStream', (done) => {
       SparkService.answerCall(mockCall);
-      expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
+      expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(CONSTRAINTS);
       done();
     });
 
     it('calls Spark Call answer', (done) => {
       SparkService.answerCall(mockCall).then(() => {
-        expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, constraints, { localMediaStream: mockLocalMediaStream }));
+        expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, CONSTRAINTS, { localMediaStream: mockLocalMediaStream }));
         done();
       });
     });
@@ -202,14 +202,14 @@ describe('SparkService', () => {
 
     it('calls createLocalMediaStream', (done) => {
       SparkService.callUser(email).then(() => {
-        expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
+        expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(CONSTRAINTS);
         done();
       });
     });
 
     it('calls dial', (done) => {
       SparkService.callUser(email).then(() => {
-        expect(mockSpark.phone.dial).toHaveBeenCalledWith(email, Object.assign({}, constraints, mockLocalMediaStream));
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(email, Object.assign({}, CONSTRAINTS, mockLocalMediaStream));
         done();
       });
     });

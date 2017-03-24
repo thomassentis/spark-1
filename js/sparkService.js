@@ -1,5 +1,5 @@
 require('./env.js');
-const SPARK = require('ciscoSPARK');
+const SPARK = require('ciscospark');
 const CONSTRAINTS = {
   audio: true,
   video: true,
