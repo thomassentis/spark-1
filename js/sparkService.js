@@ -45,9 +45,7 @@ exports.listen = (callback) => {
   });
 };
 
-exports.answerCall = (call, callback) => {
-  callback(call);
-
+exports.answerCall = (call) => {
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
     return call.answer(Object.assign({}, constraints, { localMediaStream: localMediaStream }));
   });

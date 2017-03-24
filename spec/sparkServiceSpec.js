@@ -176,11 +176,6 @@ describe('SparkService', () => {
   });
 
   describe('answerCall', () => {
-    it('callback does get executed', () => {
-      SparkService.answerCall(mockCall, mockCallback);
-      expect(mockCallback).toHaveBeenCalledWith(mockCall);
-    });
-
     it('calls Spark Phone createLocalMediaStream', (done) => {
       SparkService.answerCall(mockCall, mockCallback);
       expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);

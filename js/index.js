@@ -46,7 +46,7 @@ function displayIncomingCall(call) {
   $('#caller-name').html(call.from.person.email);
 
   $('#answer-video').on('click', () => {
-    SparkService.answerCall(call, handleCall);
+    SparkService.answerCall(call).then(() => handleCall(call));
     clearIncomingCall();
   });
 
