@@ -100,6 +100,7 @@ function outgoingCallFailure(error) {
   let message = error ? 'Call Failed' : 'Call Rejected';
   $('#calling-status').html(message).css('display', 'inline');
   $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
+  $('.avatar-image').addClass('failed');
 }
 
 function incomingCallFailure(error) {
@@ -107,6 +108,7 @@ function incomingCallFailure(error) {
   $('#incoming-call-status').html(message).css('display', 'inline');
   $('#answer-video').css('display', 'none');
   $('#reject').removeClass('red').addClass('wide').text('Home');
+  $('.avatar-image').addClass('failed');
 }
 
 function hangupCall() {

@@ -52,7 +52,9 @@
 
     <template id="calling-template">
       <section id="calling-overlay" class="overlay">
-        <image class="avatar-image" id="callee-image" src="images/Recipient.svg"/>
+        <div class="avatar-image">
+          <img id="callee-image" src="images/Recipient.svg" />
+        </div>
         <span class="call-email" id="callee-email"></span>
         <span class="call-status" id="calling-status"></span>
         <button id="hangup-calling" class="primary-button red">
@@ -64,7 +66,9 @@
     <template id="incoming-call-template">
       <section id="incoming-call-overlay" class="overlay">
         <h1>Incoming Call</h1>
-        <img class="avatar-image" id="caller-image" src="images/Recipient.svg" />
+        <div class="avatar-image">
+          <img id="caller-image" src="images/Recipient.svg" />
+        </div>
         <span class="call-email" id="caller-email"></span>
         <span class="call-status" id="incoming-call-status"></span>
         <section class="incoming-call-controls">
