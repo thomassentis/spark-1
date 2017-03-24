@@ -296,6 +296,14 @@ main {
   margin-left: -$video-border-width;
 }
 
+#incoming-call {
+  height: 18rem;
+}
+
+#outgoing-call {
+  height: 10.5rem;
+}
+
 .incoming-controls, .outgoing-controls {
   display: flex;
   justify-content: center;
