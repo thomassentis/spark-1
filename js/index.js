@@ -22,7 +22,7 @@ function callByEmail(event) {
 
   SPARK_SERVICE.callUser(EMAIL).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
-    $('#callee-name').html(EMAIL);
+    $('#callee-email').html(EMAIL);
 
     SPARK_SERVICE.getAvatarUrl(EMAIL).then((url) => {
       $('#callee-image').attr('src', url);
@@ -44,7 +44,7 @@ function callByEmail(event) {
 function displayIncomingCall(call) {
   $('#main-content').append($('#incoming-call-template').html().trim());
 
-  $('#caller-name').html(call.from.person.email);
+  $('#caller-email').html(call.from.person.email);
 
   $('#answer-video').on('click', () => {
     SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
