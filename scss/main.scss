@@ -262,7 +262,6 @@ main {
 #incoming-call-overlay {
   justify-content: space-around;
   background: transparentize(lighten($light-blue, 10%), 0.2);
-  height: 24rem;
   border: 1px solid $blue;
 
   h1 {

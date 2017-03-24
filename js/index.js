@@ -49,13 +49,18 @@ function displayIncomingCall(call) {
 
   $('#caller-email').html(call.from.person.email);
 
+  call.on('disconnected error', incomingCallFailure);
+
   $('#answer-video').on('click', () => {
     SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
+    call.off('disconnected error', incomingCallFailure);
     clearIncomingCall();
   });
 
   $('#reject').on('click', () => {
-    SPARK_SERVICE.rejectCall(call);
+    if (call.status !== 'disconnected') {
+      SPARK_SERVICE.rejectCall(call);
+    }
     clearIncomingCall();
   });
 }
@@ -92,12 +97,16 @@ function handleCall(call) {
 }
 
 function outgoingCallFailure(error) {
-  let message = 'Call Rejected';
-  if (error) {
-    message = 'Call Failed';
-  }
+  let message = error ? 'Call Failed' : 'Call Rejected';
   $('#calling-status').html(message).css('display', 'inline');
   $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
+}
+
+function incomingCallFailure(error) {
+  let message = error ? 'Call Failed' : 'Call Canceled';
+  $('#incoming-call-status').html(message).css('display', 'inline');
+  $('#answer-video').css('display', 'none');
+  $('#reject').removeClass('red').addClass('wide').text('Home');
 }
 
 function hangupCall() {
