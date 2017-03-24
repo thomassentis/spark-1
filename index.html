@@ -35,7 +35,6 @@
 
     <template id="call-template">
       <section id="active-call-overlay" class="overlay">
-        <div id="spark-message"></div>
         <div class="video-container">
           <video id="incoming-call" autoplay></video>
           <video id="outgoing-call" muted autoplay></video>
@@ -55,6 +54,7 @@
       <section id="calling-overlay" class="overlay">
         <image class="avatar-image" id="callee-image" src="images/Recipient.svg"/>
         <span class="call-email" id="callee-email"></span>
+        <span class="call-status" id="calling-status"></span>
         <button id="hangup-calling" class="primary-button red">
           <i class="fa fa-phone" aria-hidden="true"></i> Hangup
         </button>

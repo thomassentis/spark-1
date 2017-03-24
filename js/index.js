@@ -34,6 +34,15 @@ function callByEmail(event) {
       handleCall(sparkCall);
     });
 
+    sparkCall.on('disconnected error', (error) => {
+      let message = 'Call Rejected';
+      if (error) {
+        message = 'Call Failed';
+      }
+      $('#calling-status').html(message).css('display', 'inline');
+      $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
+    });
+
     $('#hangup-calling').on('click', () => {
       sparkCall.hangup();
       $('#calling-overlay').remove();
@@ -78,9 +87,6 @@ function handleCall(call) {
   });
   currentCall.on('localMediaStream:change', () => {
     displayLocalStream();
-  });
-  currentCall.on('error', (error) => {
-    $('#spark-message').html('Error: Spark failure: ' + error.message);
   });
 
   $('#hangup-call').on('click', () => {
