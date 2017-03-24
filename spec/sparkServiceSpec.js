@@ -177,13 +177,13 @@ describe('SparkService', () => {
 
   describe('answerCall', () => {
     it('calls Spark Phone createLocalMediaStream', (done) => {
-      SparkService.answerCall(mockCall, mockCallback);
+      SparkService.answerCall(mockCall);
       expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
       done();
     });
 
     it('calls Spark Call answer', (done) => {
-      SparkService.answerCall(mockCall, mockCallback).then(() => {
+      SparkService.answerCall(mockCall).then(() => {
         expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, constraints, { localMediaStream: mockLocalMediaStream }));
         done();
       });
