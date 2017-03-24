@@ -29,18 +29,12 @@ function callByEmail(event) {
       // Catch is a temp fix to allow us to continue past the 401 looping errors
     }).catch(() => {});
 
+    sparkCall.on('disconnected error', outgoingCallFailure);
+
     sparkCall.on('connected', () => {
       $('#calling-overlay').remove();
+      sparkCall.off('disconnected error', outgoingCallFailure);
       handleCall(sparkCall);
-    });
-
-    sparkCall.on('disconnected error', (error) => {
-      let message = 'Call Rejected';
-      if (error) {
-        message = 'Call Failed';
-      }
-      $('#calling-status').html(message).css('display', 'inline');
-      $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
     });
 
     $('#hangup-calling').on('click', () => {
@@ -88,12 +82,22 @@ function handleCall(call) {
   currentCall.on('localMediaStream:change', () => {
     displayLocalStream();
   });
+  currentCall.on('disconnected error', hangupCall);
 
   $('#hangup-call').on('click', () => {
     hangupCall();
   });
 
   $('#logout-button').on('click', () => SPARK_SERVICE.hangupCall(call));
+}
+
+function outgoingCallFailure(error) {
+  let message = 'Call Rejected';
+  if (error) {
+    message = 'Call Failed';
+  }
+  $('#calling-status').html(message).css('display', 'inline');
+  $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
 }
 
 function hangupCall() {
