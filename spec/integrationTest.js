@@ -4,7 +4,7 @@ const EC = protractor.ExpectedConditions;
 const waitTimeout = 5000;
 const sparkUrl = 'localhost:8000';
 
-describe('Search for an user', () => {
+describe('Search for a user', () => {
 
   beforeAll(() => {
     browser.get(sparkUrl);
@@ -36,19 +36,15 @@ function login() {
 
   clickButtonByIdOnceClickable('login-button');
   sendKeysToElementByIdWhenReady('IDToken1', env.sparkUsername);
-
   clickButtonByIdOnceClickable('IDButton2');
   sendKeysToElementByIdWhenReady('IDToken2', env.sparkPassword);
-
   clickButtonByIdOnceClickable('Button1');
   clickButtonByNameOnceClickable('accept');
 
 }
 
 function clickButtonByIdOnceClickable(buttonID) {
-  let button = element(By.id(buttonID));
-  waitForElementToBeClickable(button);
-  button.click();
+  clickButtonOnceClickable(element(By.id(buttonID)));
 }
 
 function sendKeysToElementByIdWhenReady(id, keys) {
@@ -56,8 +52,11 @@ function sendKeysToElementByIdWhenReady(id, keys) {
   element(By.id(id)).clear().sendKeys(keys);
 }
 
-function clickButtonByNameOnceClickable(buttonName) {
-  let button = element(By.name(buttonName));
+function clickButtonByNameOnceClickable(name) {
+  clickButtonOnceClickable(element(By.name(name)));
+}
+
+function clickButtonOnceClickable(button) {
   waitForElementToBeClickable(button);
   button.click();
 }
@@ -84,7 +83,7 @@ function expectStalenessOfElementByID(id) {
 }
 
 function waitForElementByIDToBeClickable(id) {
-  browser.wait(EC.elementToBeClickable(element(By.id(id))), waitTimeout);
+  waitForElementToBeClickable(element(By.id(id)));
 }
 
 function waitForElementToBeClickable(htmlElement) {
