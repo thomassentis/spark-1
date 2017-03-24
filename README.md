@@ -53,7 +53,7 @@ Each html page within the app has an associated javascript file to handle busine
 ## Supported Browsers
 
 * The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer is not supported by the Spark SDK.
-
+* **Chrome**: When developing without a webcam, start Chrome with the ```--use-fake-device-for-media-stream``` and ```--use-fake-ui-for-media-stream``` flags.
 <!---
 ## TODO
 
