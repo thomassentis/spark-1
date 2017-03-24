@@ -237,7 +237,6 @@ describe('SparkService', () => {
   });
 
   describe('getAvatarUrl', () => {
-
     it('calls Spark list people', (done) => {
       const fakeEmail = 'I am your father';
       SparkService.getAvatarUrl(fakeEmail).then(() => {
@@ -267,7 +266,7 @@ describe('SparkService', () => {
       });
     });
 
-    describe('when the first person doesn\'t have an avatar', () => {
+    describe('when the first person does not have an avatar', () => {
       beforeEach(() => {
         fakePeople.items[0].avatar = null;
       });

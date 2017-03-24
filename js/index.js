@@ -65,19 +65,20 @@ function handleCall(call) {
 
   $('#main-content').append($('#call-template').html().trim());
 
-  if(call.remoteMediaStreamUrl) {
-    $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
+  if (currentCall.remoteMediaStreamUrl) {
+    displayRemoteStream();
   }
-  if(call.localMediaStreamUrl) {
-    $('#outgoing-call').attr('src', call.localMediaStreamUrl);
+  if (currentCall.localMediaStreamUrl) {
+    displayLocalStream();
   }
-  call.on('remoteMediaStream:change', () => {
-    $('#incoming-call').attr('src', call.remoteMediaStreamUrl);
+
+  currentCall.on('remoteMediaStream:change', () => {
+    displayRemoteStream();
   });
-  call.on('localMediaStream:change', () => {
-    $('#outgoing-call').attr('src', call.localMediaStreamUrl);
+  currentCall.on('localMediaStream:change', () => {
+    displayLocalStream();
   });
-  call.on('error', (error) => {
+  currentCall.on('error', (error) => {
     $('#spark-message').html('Error: Spark failure: ' + error.message);
   });
 
@@ -98,6 +99,14 @@ function clearActiveCall() {
   currentCall = null;
 }
 
-function clearIncomingCall(){
+function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
+}
+
+function displayRemoteStream() {
+  $('#incoming-call').attr('src', currentCall.remoteMediaStreamUrl);
+}
+
+function displayLocalStream() {
+  $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
 }

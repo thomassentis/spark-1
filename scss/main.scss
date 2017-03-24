@@ -195,7 +195,7 @@ main {
       display: flex;
       position: absolute;
       width: 56rem;
-      height: 36rem;
+      height: 28rem;
       background: white;
       z-index: 9;
     }
@@ -211,7 +211,7 @@ main {
 
 .callee-name, .caller-name {
   font-size: 1.2rem;
-  margin: 2rem;
+  margin: 1.5rem 0;
   color: $dark-gray;
 }
 
@@ -260,10 +260,6 @@ main {
     font-size: 2rem;
     color: darken($dark-blue, 10%);
     margin-top: 2rem;
-  }
-
-  .caller-name {
-    margin: 0.5rem 0 1.5rem 0;
   }
 
   .avatar-image {
