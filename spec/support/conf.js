@@ -1,6 +1,6 @@
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs: ['../integrationSpec.js'],
+  specs: ['../integrationTest.js'],
   capabilities: {
     browserName: 'chrome',
     'chromeOptions': { 'args': [
