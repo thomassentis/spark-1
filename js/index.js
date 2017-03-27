@@ -90,6 +90,7 @@ function handleCall(call) {
   currentCall.on('disconnected error', hangupCall);
 
   $('#hangup-call').on('click', () => {
+    currentCall.off('disconnected error', hangupCall);
     hangupCall();
   });
 
