@@ -24,10 +24,7 @@ function callByEmail(event) {
     $('#main-content').append($('#calling-template').html().trim());
     $('#callee-email').html(EMAIL);
 
-    SPARK_SERVICE.getAvatarUrl(EMAIL).then((url) => {
-      $('#callee-image').attr('src', url);
-      // Catch is a temp fix to allow us to continue past the 401 looping errors
-    }).catch(() => {});
+    displayAvatarImage(EMAIL, '#callee-image');
 
     sparkCall.on('disconnected error', outgoingCallFailure);
 
@@ -45,9 +42,12 @@ function callByEmail(event) {
 }
 
 function displayIncomingCall(call) {
+  const EMAIL = call.from.person.email;
+
   $('#main-content').append($('#incoming-call-template').html().trim());
 
-  $('#caller-email').html(call.from.person.email);
+  $('#caller-email').html(EMAIL);
+  displayAvatarImage(EMAIL, '#caller-image');
 
   call.on('disconnected error', incomingCallFailure);
 
@@ -131,4 +131,11 @@ function displayRemoteStream() {
 
 function displayLocalStream() {
   $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
+}
+
+function displayAvatarImage(email, imageId) {
+  SPARK_SERVICE.getAvatarUrl(email).then((url) => {
+    $(imageId).attr('src', url);
+    // Allow continued loading if there is a problem or no avatar image found
+  }).catch(() => {});
 }
