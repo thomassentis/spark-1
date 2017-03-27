@@ -92,11 +92,12 @@ button:enabled {
   }
 
   &.small {
-    font-size: 1rem;
-    padding: .2rem 1rem;
+    font-size: 1.2rem;
+    padding: .3rem 1.4rem;
 
     i.fa {
-      font-size: 1rem;
+      font-size: 1.2rem;
+      margin-top: .05rem;
     }
   }
 
@@ -106,7 +107,7 @@ button:enabled {
   }
 
   &.wide {
-    padding: 0 3rem;
+    padding: .4rem 3rem;
   }
 
   &:disabled {
@@ -231,13 +232,13 @@ main {
 
 .call-email {
   font-size: 1.2rem;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   color: $dark-gray;
 }
 
 .call-status {
   display: none;
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 1.5rem;
 }
 
@@ -277,14 +278,13 @@ main {
 }
 
 #incoming-call-overlay {
-  justify-content: space-around;
+  justify-content: center;
   background: transparentize(lighten($light-blue, 10%), 0.2);
   border: 1px solid $blue;
 
   h1 {
     font-size: 2rem;
     color: darken($dark-blue, 10%);
-    margin-top: 2rem;
   }
 
   .avatar-image img {
@@ -293,7 +293,6 @@ main {
 
   .incoming-call-controls {
     flex-direction: row;
-    margin-bottom: 2rem;
 
     button {
       margin-right: 1.5rem;

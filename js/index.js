@@ -105,11 +105,12 @@ function outgoingCallFailure(error) {
 }
 
 function incomingCallFailure(error) {
-  let message = error ? 'Call Failed' : 'Call Canceled';
+  let message = error ? 'Call Failed' : 'Call Cancelled';
   $('#incoming-call-status').html(message).css('display', 'inline');
   $('#answer-video').css('display', 'none');
   $('#reject').removeClass('red').addClass('wide').text('Home');
   $('.avatar-image').addClass('failed');
+  $('#incoming-call-overlay h1').css('display', 'none');
 }
 
 function hangupCall() {
