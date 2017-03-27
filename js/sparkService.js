@@ -58,9 +58,10 @@ exports.rejectCall = (call) => {
   call.reject();
 };
 
-exports.callUser = (userEmail) => {
-  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
-    return SPARK.phone.dial(userEmail, Object.assign({}, CONSTRAINTS, localMediaStream));
+exports.callUser = (user, options) => {
+  const constraints = Object.assign({}, CONSTRAINTS, options);
+  return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+    return SPARK.phone.dial(user, Object.assign({}, { constraints: constraints }, localMediaStream));
   });
 };
 

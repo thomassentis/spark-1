@@ -26,7 +26,7 @@ describe('SparkService', () => {
       reject: jasmine.createSpy('reject')
     };
 
-    mockLocalMediaStream = 'BATMAN';
+    mockLocalMediaStream = { who: 'BATMAN' };
 
     fakeListener = 'BEES!?';
 
@@ -198,25 +198,33 @@ describe('SparkService', () => {
   });
 
   describe('callUser', () => {
-    const email = 'user@spark.com';
+    const user = 'Your Father';
 
     it('calls createLocalMediaStream', (done) => {
-      SparkService.callUser(email).then(() => {
+      SparkService.callUser(user).then(() => {
         expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(CONSTRAINTS);
         done();
       });
     });
 
     it('calls dial', (done) => {
-      SparkService.callUser(email).then(() => {
-        expect(mockSpark.phone.dial).toHaveBeenCalledWith(email, Object.assign({}, CONSTRAINTS, mockLocalMediaStream));
+      SparkService.callUser(user).then(() => {
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, Object.assign({ constraints: CONSTRAINTS }, mockLocalMediaStream));
         done();
       });
     });
 
     it('resolves with a call', (done) => {
-      SparkService.callUser(email).then((call) => {
+      SparkService.callUser(user).then((call) => {
         expect(call).toEqual(mockCall);
+        done();
+      });
+    });
+
+    it('passes audio/video options along', (done) => {
+      const options = { howMany: 'even more' };
+      SparkService.callUser(user, options).then(() => {
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, Object.assign({ constraints: Object.assign({}, CONSTRAINTS, options) }, mockLocalMediaStream));
         done();
       });
     });

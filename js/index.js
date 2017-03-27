@@ -4,10 +4,12 @@ const SPARK_SERVICE = require('./sparkService');
 let currentCall = null;
 
 SPARK_SERVICE.register().then(() => {
-  $('#submit-user-email').on('click', callByEmail);
+  $('#call-video-audio').on('click', callByEmail);
+  $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
 
   $('#user-email').on('input propertychange paste', () => {
-    $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
+    $('#call-video-audio').attr('disabled', $('#user-email').val().length === 0);
+    $('#call-audio-only').attr('disabled', $('#user-email').val().length === 0);
   });
 
   SPARK_SERVICE.listen(displayIncomingCall);
@@ -16,11 +18,11 @@ SPARK_SERVICE.register().then(() => {
   $('#logout-button').attr('disabled', false);
 });
 
-function callByEmail(event) {
+function callByEmail(event, options) {
   event.preventDefault();
   const EMAIL = $('#user-email').val();
 
-  SPARK_SERVICE.callUser(EMAIL).then((sparkCall) => {
+  SPARK_SERVICE.callUser(EMAIL, options).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
     $('#callee-email').html(EMAIL);
 
