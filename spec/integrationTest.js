@@ -30,6 +30,33 @@ describe('Search for a user', () => {
     hangup();
 
   });
+
+  it('should answer an incoming call', () => {
+
+    let incomingBrowser = browser.forkNewDriverInstance();
+    incomingBrowser.ignoreSynchronization = true;
+    incomingBrowser.get(sparkUrl);
+
+    incomingBrowser.element(By.id('login-button')).click();
+    incomingBrowser.element(By.id('IDToken1')).sendKeys(env.calleeUsername);
+    incomingBrowser.element(By.id('IDButton2')).click();
+
+    dv.sleep(1000);
+    incomingBrowser.element(By.id('IDToken2')).sendKeys(env.calleePassword);
+    incomingBrowser.element(By.id('Button1')).click();
+
+    dv.sleep(3000);
+    incomingBrowser.element(By.id('user-email')).sendKeys(env.sparkUsername);
+    dv.sleep(500);
+    incomingBrowser.element(By.id('submit-user-email')).click();
+
+    dv.sleep(70000);
+    clickButtonByIdOnceClickable('answer-video');
+    waitForElementByIDToBeVisible('hangup-call');
+    hangup();
+
+  });
+
 });
 
 function login() {
