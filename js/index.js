@@ -8,8 +8,7 @@ SPARK_SERVICE.register().then(() => {
   $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
 
   $('#user-email').on('input propertychange paste', () => {
-    $('#call-video-audio').attr('disabled', $('#user-email').val().length === 0);
-    $('#call-audio-only').attr('disabled', $('#user-email').val().length === 0);
+    validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
   });
 
   SPARK_SERVICE.listen(displayIncomingCall);
@@ -17,6 +16,45 @@ SPARK_SERVICE.register().then(() => {
   $('#logout-button').on('click', () => SPARK_SERVICE.logout());
   $('#logout-button').attr('disabled', false);
 });
+
+function validateAudioAvailable() {
+  return navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(() => {
+    enableCallButton('call-audio-only');
+    $('#call-video-audio > .invalid-call-message').remove();
+    return Promise.resolve();
+  }, (error) => {
+    if ($('#call-audio-only > .invalid-call-message').length === 0) {
+      let errorMessage = error.name === 'NotFoundError' ? 'No microphone found' : 'Call requires audio permission';
+      disableCallButton('call-audio-only', errorMessage);
+      disableCallButton('call-video-audio', errorMessage);
+    }
+    return Promise.reject(error);
+  });
+}
+
+function validateVideoAvailable() {
+  return navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(() => {
+    enableCallButton('call-video-audio');
+    return Promise.resolve();
+  }, (error) => {
+    if ($('#call-video-audio > .invalid-call-message').length === 0) {
+      let errorMessage = error.name === 'NotFoundError' ? 'No camera found' : 'Call requires video permission';
+      disableCallButton('call-video-audio', errorMessage);
+    }
+    return Promise.reject(error);
+  });
+}
+
+function enableCallButton(id){
+  $('#' + id).attr('disabled', $('#user-email').val().length === 0);
+  $('#' + id).removeClass('disabled');
+  $('#' + id + '> .invalid-call-message').remove();
+}
+
+function disableCallButton(id, message) {
+  $('#' + id).attr('disabled', true).addClass('disabled');
+  $('#' + id).append('<span class="invalid-call-message">' + message + '</span>');
+}
 
 function callByEmail(event, constraints) {
   event.preventDefault();

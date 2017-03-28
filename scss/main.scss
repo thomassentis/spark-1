@@ -3,6 +3,24 @@
     src: url('../fonts/CiscoSansExtraLight.otf');
 }
 
+@font-face {
+    font-family: 'Kitchen Sink';
+    src: url('../fonts/kitchen-sink.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 $light-gray: #aaaaaa;
 $medium-gray: #666666;
 $dark-gray: #555555;
@@ -13,6 +31,8 @@ $light-blue: #64b8d8;
 $red: #DF3C3C;
 $dark-red: #A40B0B;
 $light-red: #FF7676;
+$yellow: #EEEE44;
+$dark-yellow: darken($yellow, 20%);
 
 $transition-speed: 200ms;
 $video-border-width: 2px;
@@ -49,6 +69,7 @@ h1 {
 form.container {
   border: 2px solid $light-gray;
   border-radius: 5px;
+  display: flex;
 
   input[type=text] {
     border: none;
@@ -60,7 +81,10 @@ form.container {
   }
 
   button {
-    margin: .7rem;
+    align-self: center;
+    margin: 0 .7rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
   }
 }
 
@@ -113,8 +137,79 @@ button:enabled {
   &:disabled {
     background: none;
     border: 2px solid transparent;
-    color: $medium-gray;
+    color: $light-gray;
     cursor: auto;
+    position: relative;
+
+    span {
+      display: none;
+    }
+
+    &:hover span {
+      font-family: 'Cisco Sans Extra Light';
+      position: absolute;
+      color: #919191;
+      top: -2.5rem;
+      font-size: 0.75rem;
+      right: -0.75rem;
+      border: 1px #bcbcbc solid;
+      border-radius: 1rem;
+      padding: 0.4rem 1rem;
+      background: #ebebeb;
+      display: inline;
+      white-space: nowrap;
+
+      &:after, &:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        right: 0.1rem;
+      }
+
+      &:after {
+        border-color: rgba(235, 235, 235, 0);
+        border-top-color: #ebebeb;
+        border-width: 6px;
+        margin-right: 36px;
+      }
+
+      &:before {
+        border-color: rgba(188, 188, 188, 0);
+        border-top-color: #bcbcbc;
+        border-width: 7px;
+        margin-right: 35px;
+      }
+    }
+  }
+}
+
+.audio-button, .audio-button:disabled {
+  font-family: 'Kitchen Sink';
+  width: 4rem;
+
+  &:after {
+    content: '\e905';
+  }
+
+  &.disabled:after {
+    content: '\e904';
+  }
+}
+
+.video-button, .video-button:disabled {
+  font-family: 'Kitchen Sink';
+  width: 4rem;
+
+  &:after {
+    content: '\e900';
+  }
+
+  &.disabled:after {
+    content: '\e901';
   }
 }
 
