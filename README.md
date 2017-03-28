@@ -1,16 +1,29 @@
 # Spark JavaScript SDK Example
+* [Purpose](#purpose)
+* [Design Decisions](#design)
+  * [Lack of Frameworks/Libraries](#frameworks)
+  * [Architechture](#architecture)
+* [Installation and Usage](#installation-and-usage)
+  * [How to Host the App](#hosting)
+  * [How to Use the App](#usage)
+  * [How to Run Tests](#tests)
+  * [Supported Browsers](#browsers)
 
+## Purpose <a name="purpose"></a>
 This demo app is designed to provide a clear understanding of the process of integrating Cisco's Spark JavaScript Source Developer Kit into your app for calling and receiving calls.
 
-## Lack of Frameworks/Libraries
+## Design Decisions<a name="design"></a>
+### Lack of Frameworks/Libraries <a name="frameworks"></a>
 
 We decided not to use any major JS frameworks/libraries such as React or Angular so that the example is clear to all JavaScript developers.
 
-## Architecture
+### Architecture <a name="architecture"></a>
 
 Each html page within the app has an associated javascript file to handle business logic. Shared code for interacting directly with the Spark SDK is located within the sparkService.js file. We also maintain a collection of tests corresponding to our service logic and UI functionality found in the test folder.
 
-## How to Host the App
+## Installation and Usage <a name="installation-and-usage"></a>
+
+### How to Host the App <a name="hosting"></a>
 
 * [Install NodeJS](https://nodejs.org/en/download/)
 * Clone the repo: `$ git clone https://github.com/ciscospark/spark-js-sdk-example.git`
@@ -33,7 +46,7 @@ Each html page within the app has an associated javascript file to handle busine
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
 
-## How to Use the App
+### How to Use the App <a name="usage"></a>
 
 * You must have a [Spark account](https://web.ciscospark.com/signin) to use the app
 * On the login screen, click the login button. This forwards you to Spark's login page if you aren't already authenticated. If you've logged in already, skip the next two steps.
@@ -43,14 +56,14 @@ Each html page within the app has an associated javascript file to handle busine
 * You can then hangup with the hangup button.
 * If you receive an incoming call at any time (even when in an existing call), the app will automatically accept it and connect (hanging up on previous call)
 * At any time, click the "sign out" button to log out of the app.
-
-## How to Run the Tests
+  
+### How to Run the Tests <a name="tests"></a>
 
 * `$ npm install -g jasmine`
 * From within the app's root directory:
 * `$ npm test`
 
-## Supported Browsers
+### Supported Browsers <a name="browsers"></a>
 
 * The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer is not supported by the Spark SDK.
 * **Chrome**: When developing without a webcam, start Chrome with the ```--use-fake-device-for-media-stream``` and ```--use-fake-ui-for-media-stream``` flags.
