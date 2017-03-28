@@ -46,7 +46,7 @@ Each html page within the app has an associated javascript file to handle busine
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
   "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write",
-  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/"
+  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
 }
 ```
 * `$ npm install -g browserify node-sass`
@@ -65,7 +65,7 @@ Each html page within the app has an associated javascript file to handle busine
 * If you receive an incoming call at any time (even when in an existing call), an overlay will be presented
     - Click one of the blue buttons to accept it with video or video and audio, or the red reject button to reject it.
 * At any time, click the "sign out" button to log out of the app.
-  
+
 <a name="tests"></a>
 ### How to Run the Tests
 
