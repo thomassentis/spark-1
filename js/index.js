@@ -18,11 +18,11 @@ SPARK_SERVICE.register().then(() => {
   $('#logout-button').attr('disabled', false);
 });
 
-function callByEmail(event, options) {
+function callByEmail(event, constraints) {
   event.preventDefault();
   const EMAIL = $('#user-email').val();
 
-  SPARK_SERVICE.callUser(EMAIL, options).then((sparkCall) => {
+  SPARK_SERVICE.callUser(EMAIL, constraints).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
     $('#callee-email').html(EMAIL);
 
@@ -83,18 +83,14 @@ function handleCall(call) {
   $('#main-content').append($('#call-template').html().trim());
 
   if (currentCall.remoteMediaStreamUrl) {
-    displayRemoteStream();
+    updateRemoteStream();
   }
   if (currentCall.localMediaStreamUrl) {
-    displayLocalStream();
+    updateLocalStream();
   }
 
-  currentCall.on('remoteMediaStream:change', () => {
-    displayRemoteStream();
-  });
-  currentCall.on('localMediaStream:change', () => {
-    displayLocalStream();
-  });
+  currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
+  currentCall.on('localMediaStream:change', () => updateLocalStream());
   currentCall.on('disconnected error', hangupCall);
 
   $('#hangup-call').on('click', () => {
@@ -136,11 +132,11 @@ function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
 }
 
-function displayRemoteStream() {
+function updateRemoteStream() {
   $('#incoming-call').attr('src', currentCall.remoteMediaStreamUrl);
 }
 
-function displayLocalStream() {
+function updateLocalStream() {
   $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
 }
 

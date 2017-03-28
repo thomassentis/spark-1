@@ -304,7 +304,7 @@ main {
   }
 }
 
-#incoming-call, #outgoing-call {
+.video {
   background: black;
   border: $video-border-width solid $navy-blue;
   z-index: 2;
