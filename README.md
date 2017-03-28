@@ -62,7 +62,8 @@ Each html page within the app has an associated javascript file to handle busine
 * Enter your password for Spark and click 'Sign In'. You will then be redirected to the app.
 * Type an existing Spark user's email address (not your own!) and click one of the call buttons.
 * You can then hangup with the hangup button.
-* If you receive an incoming call at any time (even when in an existing call), the app will automatically accept it and connect (hanging up on previous call)
+* If you receive an incoming call at any time (even when in an existing call), an overlay will be presented
+    - Click one of the blue buttons to accept it with video or video and audio, or the red reject button to reject it.
 * At any time, click the "sign out" button to log out of the app.
   
 <a name="tests"></a>
