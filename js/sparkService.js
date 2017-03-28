@@ -48,9 +48,10 @@ exports.listen = (callback) => {
   });
 };
 
-exports.answerCall = (call) => {
-  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
-    return call.answer(Object.assign({}, CONSTRAINTS, { localMediaStream: localMediaStream }));
+exports.answerCall = (call, options) => {
+  const constraints = Object.assign({}, CONSTRAINTS, options);
+  return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+    return call.answer(Object.assign({}, { constraints: constraints }, { localMediaStream: localMediaStream }));
   });
 };
 

@@ -53,8 +53,14 @@ function displayIncomingCall(call) {
 
   call.on('disconnected error', incomingCallFailure);
 
-  $('#answer-video').on('click', () => {
+  $('#answer-video-audio').on('click', () => {
     SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
+    call.off('disconnected error', incomingCallFailure);
+    clearIncomingCall();
+  });
+
+  $('#answer-audio-only').on('click', () => {
+    SPARK_SERVICE.answerCall(call, { video: false }).then(() => handleCall(call));
     call.off('disconnected error', incomingCallFailure);
     clearIncomingCall();
   });
@@ -109,7 +115,8 @@ function outgoingCallFailure(error) {
 function incomingCallFailure(error) {
   let message = error ? 'Call Failed' : 'Call Cancelled';
   $('#incoming-call-status').html(message).css('display', 'inline');
-  $('#answer-video').css('display', 'none');
+  $('#answer-video-audio').css('display', 'none');
+  $('#answer-audio-only').css('display', 'none');
   $('#reject').removeClass('red').addClass('wide').text('Home');
   $('.avatar-image').addClass('failed');
   $('#incoming-call-overlay h1').css('display', 'none');
