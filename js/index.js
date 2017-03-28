@@ -8,7 +8,9 @@ SPARK_SERVICE.register().then(() => {
   $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
 
   $('#user-email').on('input propertychange paste', () => {
-    validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
+    if($('#user-email').val().length !== 0) {
+      validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
+    }
   });
 
   SPARK_SERVICE.listen(displayIncomingCall);
@@ -20,14 +22,16 @@ SPARK_SERVICE.register().then(() => {
 function validateAudioAvailable() {
   return navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(() => {
     enableCallButton('call-audio-only');
+    enableCallButton('answer-audio-only');
     $('#call-video-audio > .invalid-call-message').remove();
+    $('#answer-video-audio > .invalid-call-message').remove();
     return Promise.resolve();
   }, (error) => {
-    if ($('#call-audio-only > .invalid-call-message').length === 0) {
-      let errorMessage = error.name === 'NotFoundError' ? 'No microphone found' : 'Call requires audio permission';
-      disableCallButton('call-audio-only', errorMessage);
-      disableCallButton('call-video-audio', errorMessage);
-    }
+    let errorMessage = error.name === 'NotFoundError' ? 'No microphone found' : 'Call requires audio permission';
+    disableCallButton('call-audio-only', errorMessage);
+    disableCallButton('call-video-audio', errorMessage);
+    disableCallButton('answer-audio-only', errorMessage);
+    disableCallButton('answer-video-audio', errorMessage);
     return Promise.reject(error);
   });
 }
@@ -35,25 +39,28 @@ function validateAudioAvailable() {
 function validateVideoAvailable() {
   return navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(() => {
     enableCallButton('call-video-audio');
+    enableCallButton('answer-video-audio');
     return Promise.resolve();
   }, (error) => {
-    if ($('#call-video-audio > .invalid-call-message').length === 0) {
-      let errorMessage = error.name === 'NotFoundError' ? 'No camera found' : 'Call requires video permission';
-      disableCallButton('call-video-audio', errorMessage);
-    }
+    let errorMessage = error.name === 'NotFoundError' ? 'No camera found' : 'Call requires video permission';
+    disableCallButton('call-video-audio', errorMessage);
+    disableCallButton('answer-video-audio', errorMessage);
     return Promise.reject(error);
   });
 }
 
-function enableCallButton(id){
-  $('#' + id).attr('disabled', $('#user-email').val().length === 0);
-  $('#' + id).removeClass('disabled');
+function enableCallButton(id) {
+  $('#' + id).attr('disabled', false).removeClass('disabled');
   $('#' + id + '> .invalid-call-message').remove();
 }
 
 function disableCallButton(id, message) {
   $('#' + id).attr('disabled', true).addClass('disabled');
-  $('#' + id).append('<span class="invalid-call-message">' + message + '</span>');
+  if ($('#' + id + ' > .invalid-call-message').length === 0) {
+    $('#' + id).append('<span class="invalid-call-message">' + message + '</span>');
+  } else {
+    $('#' + id + ' > .invalid-call-message').html(message);
+  }
 }
 
 function callByEmail(event, constraints) {
@@ -88,6 +95,7 @@ function displayIncomingCall(call) {
 
   $('#caller-email').html(EMAIL);
   displayAvatarImage(EMAIL, '#caller-image');
+  validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
 
   call.on('disconnected error', incomingCallFailure);
 
