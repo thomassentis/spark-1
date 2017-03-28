@@ -54,15 +54,11 @@ function displayIncomingCall(call) {
   call.on('disconnected error', incomingCallFailure);
 
   $('#answer-video-audio').on('click', () => {
-    SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
-    call.off('disconnected error', incomingCallFailure);
-    clearIncomingCall();
+    answerCall(call);
   });
 
   $('#answer-audio-only').on('click', () => {
-    SPARK_SERVICE.answerCall(call, { video: false }).then(() => handleCall(call));
-    call.off('disconnected error', incomingCallFailure);
-    clearIncomingCall();
+    answerCall(call, { video: false });
   });
 
   $('#reject').on('click', () => {
@@ -99,6 +95,12 @@ function handleCall(call) {
   });
 
   $('#logout-button').on('click', () => SPARK_SERVICE.hangupCall(call));
+}
+
+function answerCall(call, constraints) {
+  SPARK_SERVICE.answerCall(call, constraints).then(() => handleCall(call));
+  call.off('disconnected error', incomingCallFailure);
+  clearIncomingCall();
 }
 
 function outgoingCallFailure(error) {

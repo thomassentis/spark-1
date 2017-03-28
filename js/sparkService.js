@@ -5,6 +5,10 @@ const CONSTRAINTS = {
   video: true,
   fake: false
 };
+const OFFER_OPTIONS = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+};
 
 exports.authorize = () => {
   return SPARK.authorize();
@@ -51,7 +55,11 @@ exports.listen = (callback) => {
 exports.answerCall = (call, options) => {
   const constraints = Object.assign({}, CONSTRAINTS, options);
   return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    return call.answer(Object.assign({}, { constraints: constraints }, { localMediaStream: localMediaStream }));
+    return call.answer({
+      offerOptions: OFFER_OPTIONS,
+      constraints: constraints,
+      localMediaStream: localMediaStream
+    });
   });
 };
 
@@ -62,7 +70,11 @@ exports.rejectCall = (call) => {
 exports.callUser = (user, options) => {
   const constraints = Object.assign({}, CONSTRAINTS, options);
   return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    return SPARK.phone.dial(user, Object.assign({}, { constraints: constraints }, localMediaStream));
+    return SPARK.phone.dial(user, {
+      offerOptions: OFFER_OPTIONS,
+      constraints: constraints,
+      localMediaStream: localMediaStream
+    });
   });
 };
 

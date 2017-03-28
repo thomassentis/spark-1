@@ -4,6 +4,10 @@ const CONSTRAINTS = {
   video: true,
   fake: false
 };
+const OFFER_OPTIONS = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+};
 
 describe('SparkService', () => {
   let mockSpark,
@@ -184,7 +188,11 @@ describe('SparkService', () => {
 
     it('calls Spark Call answer', (done) => {
       SparkService.answerCall(mockCall).then(() => {
-        expect(mockCall.answer).toHaveBeenCalledWith(Object.assign({}, CONSTRAINTS, { localMediaStream: mockLocalMediaStream }));
+        expect(mockCall.answer).toHaveBeenCalledWith({
+          offerOptions: OFFER_OPTIONS,
+          constraints: CONSTRAINTS,
+          localMediaStream: mockLocalMediaStream
+        });
         done();
       });
     });
@@ -209,7 +217,11 @@ describe('SparkService', () => {
 
     it('calls dial', (done) => {
       SparkService.callUser(user).then(() => {
-        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, Object.assign({ constraints: CONSTRAINTS }, mockLocalMediaStream));
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
+          offerOptions: OFFER_OPTIONS,
+          constraints: CONSTRAINTS,
+          localMediaStream: mockLocalMediaStream
+        });
         done();
       });
     });
@@ -224,7 +236,11 @@ describe('SparkService', () => {
     it('passes audio/video options along', (done) => {
       const options = { howMany: 'even more' };
       SparkService.callUser(user, options).then(() => {
-        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, Object.assign({ constraints: Object.assign({}, CONSTRAINTS, options) }, mockLocalMediaStream));
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
+          offerOptions: OFFER_OPTIONS,
+          constraints: Object.assign({}, CONSTRAINTS, options),
+          localMediaStream: mockLocalMediaStream
+        });
         done();
       });
     });
