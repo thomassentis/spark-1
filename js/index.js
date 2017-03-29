@@ -2,6 +2,7 @@ const $ = require('jquery');
 const sparkService = require('./sparkService');
 const mediaValidator = require('./mediaValidator');
 const activeCall = require('./activeCall');
+const avatar = require('./avatar');
 
 $('#logout-button').on('click', () => sparkService.logout());
 
@@ -29,7 +30,7 @@ function callByEmail(event, constraints) {
     $('#main-content').append($('#calling-template').html().trim());
     $('#callee-email').html(email);
 
-    displayAvatarImage(email, '#callee-image');
+    avatar.display(email, '#callee-image');
 
     sparkCall.on('disconnected error', outgoingCallFailure);
 
@@ -52,7 +53,7 @@ function displayIncomingCall(call) {
   $('#main-content').append($('#incoming-call-template').html().trim());
 
   $('#caller-email').html(email);
-  displayAvatarImage(email, '#caller-image');
+  avatar.display(email, '#caller-image');
   mediaValidator.validateAudio().then(mediaValidator.validateVideo);
 
   call.on('disconnected error', incomingCallFailure);
@@ -98,11 +99,4 @@ function incomingCallFailure(error) {
 
 function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
-}
-
-function displayAvatarImage(email, imageId) {
-  sparkService.getAvatarUrl(email).then((url) => {
-    $(imageId).attr('src', url);
-    // Allow continued loading if there is a problem or no avatar image found
-  }).catch(() => {});
 }
