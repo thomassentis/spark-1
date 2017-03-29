@@ -4,7 +4,6 @@ const sparkService = require('./sparkService');
 let currentCall = null;
 
 const activeCall = {
-
   handleCall: (call) => {
     if (currentCall) {
       hangupCall();
@@ -32,7 +31,6 @@ const activeCall = {
 
     $('#logout-button').on('click', () => sparkService.hangupCall(call));
   }
-
 };
 
 function hangupCall() {

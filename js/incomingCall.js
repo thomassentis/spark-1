@@ -4,8 +4,19 @@ const mediaValidator = require('./mediaValidator');
 const avatar = require('./avatar');
 const activeCall = require('./activeCall');
 
+let currentCall = null;
+
 const incomingCall = {
   display: (call) => {
+    if(currentCall && currentCall.status !== 'disconnected') {
+      sparkService.rejectCall(call);
+      return;
+    } else if(currentCall) {
+      clearIncomingCall();
+    }
+
+    currentCall = call;
+
     const email = call.from.person.email;
 
     $('#main-content').append($('#incoming-call-template').html().trim());
@@ -41,6 +52,7 @@ function answerCall(call, constraints) {
 
 function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
+  currentCall = null;
 }
 
 function incomingCallFailure(error) {
