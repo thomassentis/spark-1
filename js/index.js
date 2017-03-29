@@ -10,6 +10,9 @@ sparkService.register().then(() => {
   $('#user-email').on('input propertychange paste', () => {
     if($('#user-email').val().length !== 0) {
       validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
+    } else {
+      $('#call-audio-only').attr('disabled', true);
+      $('#call-audio-video').attr('disabled', true);
     }
   });
 
