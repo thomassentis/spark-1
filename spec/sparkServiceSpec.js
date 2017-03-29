@@ -136,9 +136,9 @@ describe('SparkService', () => {
     });
   });
 
-  describe('listen', () => {
+  describe('listenForCall', () => {
     it('registers a listener for call:incoming on the Spark Phone', () => {
-      SparkService.listen();
+      SparkService.listenForCall();
       expect(mockSpark.phone.on).toHaveBeenCalledWith('call:incoming', jasmine.any(Function));
     });
 
@@ -148,13 +148,13 @@ describe('SparkService', () => {
       });
 
       it('callback does not get executed', () => {
-        SparkService.listen(mockCallback);
+        SparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCallback).not.toHaveBeenCalled();
       });
 
       it('does not call Spark Call acknowledge', () => {
-        SparkService.listen(mockCallback);
+        SparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).not.toHaveBeenCalled();
       });
@@ -166,13 +166,13 @@ describe('SparkService', () => {
       });
 
       it('callback does get executed', () => {
-        SparkService.listen(mockCallback);
+        SparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCallback).toHaveBeenCalledWith(mockCall);
       });
 
       it('calls Spark Call acknowledge', () => {
-        SparkService.listen(mockCallback);
+        SparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).toHaveBeenCalled();
       });

@@ -19,7 +19,7 @@ sparkService.register().then(() => {
     }
   });
 
-  sparkService.listen(displayIncomingCall);
+  sparkService.listenForCall(displayIncomingCall);
 });
 
 function callByEmail(event, constraints) {

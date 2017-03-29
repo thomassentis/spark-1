@@ -36,7 +36,7 @@ exports.register = () => {
 };
 
 
-exports.listen = (callback) => {
+exports.listenForCall = (callback) => {
   spark.phone.on('call:incoming', (call) => {
     /*
     The call:incoming event is triggered for both incoming and outgoing calls.
