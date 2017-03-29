@@ -9,12 +9,12 @@ const OFFER_OPTIONS = {
   offerToReceiveVideo: true
 };
 
-describe('SparkService', () => {
+describe('sparkService', () => {
   let mockSpark,
     mockCallback,
     mockCall,
     mockLocalMediaStream,
-    SparkService,
+    sparkService,
     authenticationCallback,
     incomingCallback,
     fakeListener,
@@ -79,7 +79,7 @@ describe('SparkService', () => {
     spyOn(mockSpark, 'on').and.callThrough();
     spyOn(mockSpark.phone, 'on').and.callThrough();
 
-    SparkService = PROXYQUIRE('../js/sparkService', {
+    sparkService = PROXYQUIRE('../js/sparkService', {
       'ciscospark': mockSpark,
       'jquery': () => {
         return {
@@ -92,7 +92,7 @@ describe('SparkService', () => {
   describe('authorize', () => {
 
     it('calls Spark authorize', () => {
-      SparkService.authorize();
+      sparkService.authorize();
       expect(mockSpark.authorize).toHaveBeenCalled();
     });
 
@@ -100,13 +100,13 @@ describe('SparkService', () => {
 
   describe('register', () => {
     it('listens for Spark authentication changes', (done) => {
-      SparkService.register();
+      sparkService.register();
       expect(mockSpark.on).toHaveBeenCalledWith('change:isAuthenticated', jasmine.any(Function));
       done();
     });
 
     it('stops listening for Spark authentication changes', (done) => {
-      SparkService.register().then(() => {
+      sparkService.register().then(() => {
         expect(mockSpark.off).toHaveBeenCalledWith('change:isAuthenticated', authenticationCallback);
         done();
       });
@@ -114,7 +114,7 @@ describe('SparkService', () => {
     });
 
     it('registers the device', (done) => {
-      SparkService.register().then(() => {
+      sparkService.register().then(() => {
         expect(mockSpark.phone.register).toHaveBeenCalled();
         done();
       });
@@ -127,7 +127,7 @@ describe('SparkService', () => {
       });
 
       it('does not complete', (done) => {
-        SparkService.register().then(() => {
+        sparkService.register().then(() => {
           fail('Promise unexpectedly resolved');
         });
         authenticationCallback();
@@ -138,7 +138,7 @@ describe('SparkService', () => {
 
   describe('listenForCall', () => {
     it('registers a listener for call:incoming on the Spark Phone', () => {
-      SparkService.listenForCall();
+      sparkService.listenForCall();
       expect(mockSpark.phone.on).toHaveBeenCalledWith('call:incoming', jasmine.any(Function));
     });
 
@@ -148,13 +148,13 @@ describe('SparkService', () => {
       });
 
       it('callback does not get executed', () => {
-        SparkService.listenForCall(mockCallback);
+        sparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCallback).not.toHaveBeenCalled();
       });
 
       it('does not call Spark Call acknowledge', () => {
-        SparkService.listenForCall(mockCallback);
+        sparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).not.toHaveBeenCalled();
       });
@@ -166,13 +166,13 @@ describe('SparkService', () => {
       });
 
       it('callback does get executed', () => {
-        SparkService.listenForCall(mockCallback);
+        sparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCallback).toHaveBeenCalledWith(mockCall);
       });
 
       it('calls Spark Call acknowledge', () => {
-        SparkService.listenForCall(mockCallback);
+        sparkService.listenForCall(mockCallback);
         incomingCallback(mockCall);
         expect(mockCall.acknowledge).toHaveBeenCalled();
       });
@@ -181,13 +181,13 @@ describe('SparkService', () => {
 
   describe('answerCall', () => {
     it('calls Spark Phone createLocalMediaStream', (done) => {
-      SparkService.answerCall(mockCall);
+      sparkService.answerCall(mockCall);
       expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(CONSTRAINTS);
       done();
     });
 
     it('calls Spark Call answer', (done) => {
-      SparkService.answerCall(mockCall).then(() => {
+      sparkService.answerCall(mockCall).then(() => {
         expect(mockCall.answer).toHaveBeenCalledWith({
           offerOptions: OFFER_OPTIONS,
           constraints: CONSTRAINTS,
@@ -200,7 +200,7 @@ describe('SparkService', () => {
 
   describe('rejectCall', () => {
     it('calls Spark Call reject', () => {
-      SparkService.rejectCall(mockCall);
+      sparkService.rejectCall(mockCall);
       expect(mockCall.reject).toHaveBeenCalled();
     });
   });
@@ -209,14 +209,14 @@ describe('SparkService', () => {
     const user = 'Your Father';
 
     it('calls createLocalMediaStream', (done) => {
-      SparkService.callUser(user).then(() => {
+      sparkService.callUser(user).then(() => {
         expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(CONSTRAINTS);
         done();
       });
     });
 
     it('calls dial', (done) => {
-      SparkService.callUser(user).then(() => {
+      sparkService.callUser(user).then(() => {
         expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
           offerOptions: OFFER_OPTIONS,
           constraints: CONSTRAINTS,
@@ -227,7 +227,7 @@ describe('SparkService', () => {
     });
 
     it('resolves with a call', (done) => {
-      SparkService.callUser(user).then((call) => {
+      sparkService.callUser(user).then((call) => {
         expect(call).toEqual(mockCall);
         done();
       });
@@ -235,7 +235,7 @@ describe('SparkService', () => {
 
     it('passes audio/video options along', (done) => {
       const options = { howMany: 'even more' };
-      SparkService.callUser(user, options).then(() => {
+      sparkService.callUser(user, options).then(() => {
         expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
           offerOptions: OFFER_OPTIONS,
           constraints: Object.assign({}, CONSTRAINTS, options),
@@ -248,20 +248,20 @@ describe('SparkService', () => {
 
   describe('hangupCall', () => {
     it('calls Spark hangup', () => {
-      SparkService.hangupCall(mockCall);
+      sparkService.hangupCall(mockCall);
       expect(mockCall.hangup).toHaveBeenCalled();
     });
   });
 
   describe('logout', () => {
     it('calls Spark logout when authenticated', () => {
-      SparkService.logout();
+      sparkService.logout();
       expect(mockSpark.logout).toHaveBeenCalledWith({ goto: window.location.protocol + '//' + window.location.host + '/' });
     });
 
     it('does not call Spark logout when not authenticated', () => {
       mockSpark.isAuthenticated = false;
-      SparkService.logout();
+      sparkService.logout();
       expect(mockSpark.logout).not.toHaveBeenCalled();
     });
   });
@@ -269,14 +269,14 @@ describe('SparkService', () => {
   describe('getAvatarUrl', () => {
     it('calls Spark list people', (done) => {
       const fakeEmail = 'I am your father';
-      SparkService.getAvatarUrl(fakeEmail).then(() => {
+      sparkService.getAvatarUrl(fakeEmail).then(() => {
         expect(mockSpark.people.list).toHaveBeenCalledWith({ email: fakeEmail });
         done();
       });
     });
 
     it('resolves with the avatar of the other person', (done) => {
-      SparkService.getAvatarUrl('hey').then((avatar) => {
+      sparkService.getAvatarUrl('hey').then((avatar) => {
         expect(avatar).toEqual(fakePeople.items[0].avatar);
         done();
       });
@@ -288,7 +288,7 @@ describe('SparkService', () => {
       });
 
       it('rejects', (done) => {
-        SparkService.getAvatarUrl('hi').then(() => {
+        sparkService.getAvatarUrl('hi').then(() => {
           fail('Promise unexpectedly resolved');
         }).catch(() => {
           done();
@@ -302,7 +302,7 @@ describe('SparkService', () => {
       });
 
       it('rejects', (done) => {
-        SparkService.getAvatarUrl('hi').then(() => {
+        sparkService.getAvatarUrl('hi').then(() => {
           fail('Promise unexpectedly resolved');
         }).catch(() => {
           done();
