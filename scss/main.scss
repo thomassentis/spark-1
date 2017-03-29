@@ -222,7 +222,7 @@ button:enabled {
   }
 }
 
-.video-button, .video-button:disabled, .answer-video-audio, .answer-video-audio:disabled {
+.video-button, .video-button:disabled, .answer-audio-video, .answer-audio-video:disabled, .reject-call {
   &:before {
     content: '\e900';
     font-family: 'Kitchen Sink';
