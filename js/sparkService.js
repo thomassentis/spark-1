@@ -5,7 +5,7 @@ const defaultConstraints = {
   video: true,
   fake: false
 };
-const OFFER_OPTIONS = {
+const offerOptions = {
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
 };
@@ -56,7 +56,7 @@ exports.answerCall = (call, options) => {
   const constraints = Object.assign({}, defaultConstraints, options);
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
     return call.answer({
-      offerOptions: OFFER_OPTIONS,
+      offerOptions: offerOptions,
       constraints: constraints,
       localMediaStream: localMediaStream
     });
@@ -71,7 +71,7 @@ exports.callUser = (user, options) => {
   const constraints = Object.assign({}, defaultConstraints, options);
   return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
     return spark.phone.dial(user, {
-      offerOptions: OFFER_OPTIONS,
+      offerOptions: offerOptions,
       constraints: constraints,
       localMediaStream: localMediaStream
     });
