@@ -4,6 +4,8 @@ const mediaValidator = require('./mediaValidator');
 
 let currentCall = null;
 
+$('#logout-button').on('click', () => sparkService.logout());
+
 sparkService.register().then(() => {
   $('#call-audio-video').on('click', callByEmail);
   $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
@@ -18,9 +20,6 @@ sparkService.register().then(() => {
   });
 
   sparkService.listen(displayIncomingCall);
-
-  $('#logout-button').on('click', () => sparkService.logout());
-  $('#logout-button').attr('disabled', false);
 });
 
 function callByEmail(event, constraints) {

@@ -83,7 +83,11 @@ exports.hangupCall = (call) => {
 };
 
 exports.logout = () => {
-  return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
+  if(spark.isAuthenticated){
+    return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
+  } else {
+    window.location = window.location.protocol + '//' + window.location.host + '/';
+  }
 };
 
 exports.getAvatarUrl = (email) => {

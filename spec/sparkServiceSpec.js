@@ -254,9 +254,15 @@ describe('SparkService', () => {
   });
 
   describe('logout', () => {
-    it('calls Spark logout', () => {
+    it('calls Spark logout when authenticated', () => {
       SparkService.logout();
       expect(mockSpark.logout).toHaveBeenCalledWith({ goto: window.location.protocol + '//' + window.location.host + '/' });
+    });
+
+    it('does not call Spark logout when not authenticated', () => {
+      mockSpark.isAuthenticated = false;
+      SparkService.logout();
+      expect(mockSpark.logout).not.toHaveBeenCalled();
     });
   });
 
