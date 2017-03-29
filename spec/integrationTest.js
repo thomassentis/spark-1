@@ -74,7 +74,7 @@ function callUserByEmail(email) {
   expectStalenessOfElementByID('spark-message');
   waitForElementByIDToBeClickable('logout-button');
   sendKeysToElementByIdWhenReady('user-email', email);
-  clickButtonByIdOnceClickable('call-video-audio');
+  clickButtonByIdOnceClickable('call-audio-video');
 
 }
 

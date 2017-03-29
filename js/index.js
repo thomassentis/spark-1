@@ -4,7 +4,7 @@ const SPARK_SERVICE = require('./sparkService');
 let currentCall = null;
 
 SPARK_SERVICE.register().then(() => {
-  $('#call-video-audio').on('click', callByEmail);
+  $('#call-audio-video').on('click', callByEmail);
   $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
 
   $('#user-email').on('input propertychange paste', () => {
@@ -23,28 +23,28 @@ function validateAudioAvailable() {
   return navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(() => {
     enableCallButton('call-audio-only');
     enableCallButton('answer-audio-only');
-    $('#call-video-audio > .invalid-call-message').remove();
-    $('#answer-video-audio > .invalid-call-message').remove();
+    $('#call-audio-video > .invalid-call-message').remove();
+    $('#answer-audio-video > .invalid-call-message').remove();
     return Promise.resolve();
   }, (error) => {
     let errorMessage = error.name === 'NotFoundError' ? 'No microphone found' : 'Call requires audio permission';
     disableCallButton('call-audio-only', errorMessage);
-    disableCallButton('call-video-audio', errorMessage);
+    disableCallButton('call-audio-video', errorMessage);
     disableCallButton('answer-audio-only', errorMessage);
-    disableCallButton('answer-video-audio', errorMessage);
+    disableCallButton('answer-audio-video', errorMessage);
     return Promise.reject(error);
   });
 }
 
 function validateVideoAvailable() {
   return navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(() => {
-    enableCallButton('call-video-audio');
-    enableCallButton('answer-video-audio');
+    enableCallButton('call-audio-video');
+    enableCallButton('answer-audio-video');
     return Promise.resolve();
   }, (error) => {
     let errorMessage = error.name === 'NotFoundError' ? 'No camera found' : 'Call requires video permission';
-    disableCallButton('call-video-audio', errorMessage);
-    disableCallButton('answer-video-audio', errorMessage);
+    disableCallButton('call-audio-video', errorMessage);
+    disableCallButton('answer-audio-video', errorMessage);
     return Promise.reject(error);
   });
 }
@@ -99,7 +99,7 @@ function displayIncomingCall(call) {
 
   call.on('disconnected error', incomingCallFailure);
 
-  $('#answer-video-audio').on('click', () => {
+  $('#answer-audio-video').on('click', () => {
     answerCall(call);
   });
 
@@ -159,7 +159,7 @@ function outgoingCallFailure(error) {
 function incomingCallFailure(error) {
   let message = error ? 'Call Failed' : 'Call Cancelled';
   $('#incoming-call-status').html(message).css('display', 'inline');
-  $('#answer-video-audio').css('display', 'none');
+  $('#answer-audio-video').css('display', 'none');
   $('#answer-audio-only').css('display', 'none');
   $('#reject').removeClass('red').addClass('wide').text('Home');
   $('.avatar-image').addClass('failed');
