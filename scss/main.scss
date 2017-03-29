@@ -33,6 +33,7 @@ $dark-red: #A40B0B;
 $light-red: #FF7676;
 $yellow: #EEEE44;
 $dark-yellow: darken($yellow, 20%);
+$light-border: #e0e0e0;
 
 $transition-speed: 200ms;
 $video-border-width: 2px;
@@ -153,9 +154,9 @@ button:enabled {
   }
 
   &:disabled {
-    background: $light-gray;
-    color: $dark-gray;
-    border: 2px solid $medium-gray;
+    background: $light-border;
+    color: $light-gray;
+    border: 1px solid $light-gray;
   }
 }
 
@@ -211,7 +212,13 @@ button:enabled {
   }
 }
 
-.audio-button, .audio-button:disabled, .answer-audio-only, .answer-audio-only:disabled {
+.button-divider {
+    border-left: 1px solid $light-border;
+    height: 2.5rem;
+    align-self: center;
+}
+
+.audio-button, .audio-button:disabled {
   &:before {
     content: '\e905';
     font-family: 'Kitchen Sink';
@@ -222,7 +229,18 @@ button:enabled {
   }
 }
 
-.video-button, .video-button:disabled, .answer-audio-video, .answer-audio-video:disabled, .reject-call {
+.video-button, .video-button:disabled {
+  &:before {
+    content: '\e903';
+    font-family: 'Kitchen Sink';
+  }
+
+  &.disabled:before {
+    content: '\e902';
+  }
+}
+
+.phone-button, .phone-button:disabled {
   &:before {
     content: '\e900';
     font-family: 'Kitchen Sink';

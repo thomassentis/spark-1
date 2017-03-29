@@ -22,7 +22,8 @@
         <h1>Initiate call with user</h1>
         <form class="container">
           <input type="text" id="user-email" placeholder="Email" />
-          <button class="primary-button call-button video-button icon" id="call-audio-video" disabled></button>
+          <button class="primary-button call-button phone-button icon" id="call-audio-video" disabled></button>
+          <span class="button-divider"></span>
           <button class="primary-button call-button audio-button icon" id="call-audio-only" disabled></button>
         </form>
       </section>
@@ -40,11 +41,11 @@
         </div>
         <div class="controls-container">
           <div class="incoming-controls">
-            <button id="hangup-call" class="primary-button small red">
-              <i class="fa fa-phone" aria-hidden="true"></i> Hangup
-            </button>
+            <button class="primary-button phone-button icon small red" id="hangup-call">Hangup</button>
           </div>
-          <div class="outgoing-controls"></div>
+          <div class="outgoing-controls">
+            <button class="primary-button video-button icon" id="toggle-incoming-video"></button>
+          </div>
         </div>
       </section>
     </template>
@@ -71,9 +72,9 @@
         <span class="call-email" id="caller-email"></span>
         <span class="call-status" id="incoming-call-status"></span>
         <section class="incoming-call-controls">
-          <button class="primary-button answer-button small answer-audio-video icon" id="answer-audio-video">Answer</button>
-          <button class="primary-button answer-button small answer-audio-only icon" id="answer-audio-only">Audio Only</button>
-          <button class="primary-button answer-button small reject-call icon red" id="reject">Reject</button>
+          <button class="primary-button answer-button small phone-button icon" id="answer-audio-video">Answer</button>
+          <button class="primary-button answer-button small audio-button icon" id="answer-audio-only">Audio Only</button>
+          <button class="primary-button answer-button small phone-button icon red" id="reject">Reject</button>
         </section>
       </section>
     </template>
