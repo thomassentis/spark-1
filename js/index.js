@@ -1,9 +1,9 @@
 const $ = require('jquery');
-const SPARK_SERVICE = require('./sparkService');
+const sparkService = require('./sparkService');
 
 let currentCall = null;
 
-SPARK_SERVICE.register().then(() => {
+sparkService.register().then(() => {
   $('#call-audio-video').on('click', callByEmail);
   $('#call-audio-only').on('click', (event) => callByEmail(event, { video: false }));
 
@@ -13,9 +13,9 @@ SPARK_SERVICE.register().then(() => {
     }
   });
 
-  SPARK_SERVICE.listen(displayIncomingCall);
+  sparkService.listen(displayIncomingCall);
 
-  $('#logout-button').on('click', () => SPARK_SERVICE.logout());
+  $('#logout-button').on('click', () => sparkService.logout());
   $('#logout-button').attr('disabled', false);
 });
 
@@ -65,13 +65,13 @@ function disableCallButton(id, message) {
 
 function callByEmail(event, constraints) {
   event.preventDefault();
-  const EMAIL = $('#user-email').val();
+  const email = $('#user-email').val();
 
-  SPARK_SERVICE.callUser(EMAIL, constraints).then((sparkCall) => {
+  sparkService.callUser(email, constraints).then((sparkCall) => {
     $('#main-content').append($('#calling-template').html().trim());
-    $('#callee-email').html(EMAIL);
+    $('#callee-email').html(email);
 
-    displayAvatarImage(EMAIL, '#callee-image');
+    displayAvatarImage(email, '#callee-image');
 
     sparkCall.on('disconnected error', outgoingCallFailure);
 
@@ -89,12 +89,12 @@ function callByEmail(event, constraints) {
 }
 
 function displayIncomingCall(call) {
-  const EMAIL = call.from.person.email;
+  const email = call.from.person.email;
 
   $('#main-content').append($('#incoming-call-template').html().trim());
 
-  $('#caller-email').html(EMAIL);
-  displayAvatarImage(EMAIL, '#caller-image');
+  $('#caller-email').html(email);
+  displayAvatarImage(email, '#caller-image');
   validateAudioAvailable().then(validateVideoAvailable).catch(() => {});
 
   call.on('disconnected error', incomingCallFailure);
@@ -109,7 +109,7 @@ function displayIncomingCall(call) {
 
   $('#reject').on('click', () => {
     if (call.status !== 'disconnected') {
-      SPARK_SERVICE.rejectCall(call);
+      sparkService.rejectCall(call);
     }
     clearIncomingCall();
   });
@@ -140,11 +140,11 @@ function handleCall(call) {
     hangupCall();
   });
 
-  $('#logout-button').on('click', () => SPARK_SERVICE.hangupCall(call));
+  $('#logout-button').on('click', () => sparkService.hangupCall(call));
 }
 
 function answerCall(call, constraints) {
-  SPARK_SERVICE.answerCall(call, constraints).then(() => handleCall(call));
+  sparkService.answerCall(call, constraints).then(() => handleCall(call));
   call.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
@@ -167,7 +167,7 @@ function incomingCallFailure(error) {
 }
 
 function hangupCall() {
-  SPARK_SERVICE.hangupCall(currentCall);
+  sparkService.hangupCall(currentCall);
   clearActiveCall();
 }
 
@@ -189,7 +189,7 @@ function updateLocalStream() {
 }
 
 function displayAvatarImage(email, imageId) {
-  SPARK_SERVICE.getAvatarUrl(email).then((url) => {
+  sparkService.getAvatarUrl(email).then((url) => {
     $(imageId).attr('src', url);
     // Allow continued loading if there is a problem or no avatar image found
   }).catch(() => {});

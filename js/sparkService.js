@@ -1,6 +1,6 @@
 require('./env.js');
-const SPARK = require('ciscospark');
-const CONSTRAINTS = {
+const spark = require('ciscospark');
+const defaultConstraints = {
   audio: true,
   video: true,
   fake: false
@@ -11,7 +11,7 @@ const OFFER_OPTIONS = {
 };
 
 exports.authorize = () => {
-  return SPARK.authorize();
+  return spark.authorize();
 };
 
 /*
@@ -23,21 +23,21 @@ an error.
 exports.register = () => {
   return new Promise((resolve) => {
     let authenticationUpdate = () => {
-      if (SPARK.isAuthenticated) {
-        SPARK.off('change:isAuthenticated', authenticationUpdate);
-        SPARK.phone.register().then(() => {
+      if (spark.isAuthenticated) {
+        spark.off('change:isAuthenticated', authenticationUpdate);
+        spark.phone.register().then(() => {
           resolve();
         });
       }
     };
 
-    SPARK.on('change:isAuthenticated', authenticationUpdate);
+    spark.on('change:isAuthenticated', authenticationUpdate);
   });
 };
 
 
 exports.listen = (callback) => {
-  SPARK.phone.on('call:incoming', (call) => {
+  spark.phone.on('call:incoming', (call) => {
     /*
     The call:incoming event is triggered for both incoming and outgoing calls.
     Outgoing calls are handled by SparkService.callUser(...).
@@ -53,8 +53,8 @@ exports.listen = (callback) => {
 };
 
 exports.answerCall = (call, options) => {
-  const constraints = Object.assign({}, CONSTRAINTS, options);
-  return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+  const constraints = Object.assign({}, defaultConstraints, options);
+  return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
     return call.answer({
       offerOptions: OFFER_OPTIONS,
       constraints: constraints,
@@ -68,9 +68,9 @@ exports.rejectCall = (call) => {
 };
 
 exports.callUser = (user, options) => {
-  const constraints = Object.assign({}, CONSTRAINTS, options);
-  return SPARK.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-    return SPARK.phone.dial(user, {
+  const constraints = Object.assign({}, defaultConstraints, options);
+  return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+    return spark.phone.dial(user, {
       offerOptions: OFFER_OPTIONS,
       constraints: constraints,
       localMediaStream: localMediaStream
@@ -83,11 +83,11 @@ exports.hangupCall = (call) => {
 };
 
 exports.logout = () => {
-  return SPARK.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
+  return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
 };
 
 exports.getAvatarUrl = (email) => {
-  return SPARK.people.list({ email: email }).then((people) => {
+  return spark.people.list({ email: email }).then((people) => {
     if(people.count === 0 || !people.items[0].avatar) {
       return Promise.reject('No avatar found');
     } else {
