@@ -1,8 +1,7 @@
 const $ = require('jquery');
 const sparkService = require('./sparkService');
 const mediaValidator = require('./mediaValidator');
-
-let currentCall = null;
+const activeCall = require('./activeCall');
 
 $('#logout-button').on('click', () => sparkService.logout());
 
@@ -37,7 +36,7 @@ function callByEmail(event, constraints) {
     sparkCall.on('connected', () => {
       $('#calling-overlay').remove();
       sparkCall.off('disconnected error', outgoingCallFailure);
-      handleCall(sparkCall);
+      activeCall.handleCall(sparkCall);
     });
 
     $('#hangup-calling').on('click', () => {
@@ -74,36 +73,8 @@ function displayIncomingCall(call) {
   });
 }
 
-function handleCall(call) {
-  if (currentCall) {
-    hangupCall();
-  }
-
-  currentCall = call;
-
-  $('#main-content').append($('#call-template').html().trim());
-
-  if (currentCall.remoteMediaStreamUrl) {
-    updateRemoteStream();
-  }
-  if (currentCall.localMediaStreamUrl) {
-    updateLocalStream();
-  }
-
-  currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
-  currentCall.on('localMediaStream:change', () => updateLocalStream());
-  currentCall.on('disconnected error', hangupCall);
-
-  $('#hangup-call').on('click', () => {
-    currentCall.off('disconnected error', hangupCall);
-    hangupCall();
-  });
-
-  $('#logout-button').on('click', () => sparkService.hangupCall(call));
-}
-
 function answerCall(call, constraints) {
-  sparkService.answerCall(call, constraints).then(() => handleCall(call));
+  sparkService.answerCall(call, constraints).then(() => activeCall.handleCall(call));
   call.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
@@ -125,26 +96,8 @@ function incomingCallFailure(error) {
   $('#incoming-call-overlay h1').css('display', 'none');
 }
 
-function hangupCall() {
-  sparkService.hangupCall(currentCall);
-  clearActiveCall();
-}
-
-function clearActiveCall() {
-  $('#active-call-overlay').remove();
-  currentCall = null;
-}
-
 function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
-}
-
-function updateRemoteStream() {
-  $('#incoming-call').attr('src', currentCall.remoteMediaStreamUrl);
-}
-
-function updateLocalStream() {
-  $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
 }
 
 function displayAvatarImage(email, imageId) {
