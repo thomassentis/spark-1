@@ -5,6 +5,10 @@ const defaultConstraints = {
   video: true,
   fake: false
 };
+const defaultOfferOptions = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+};
 
 const sparkService = {
 
@@ -53,10 +57,7 @@ const sparkService = {
     const constraints = Object.assign({}, defaultConstraints, options);
     return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
       return spark.phone.dial(user, {
-        offerOptions: {
-          offerToReceiveAudio: true,
-          offerToReceiveVideo: constraints.video
-        },
+        offerOptions: Object.assign({}, defaultOfferOptions, { offerToReceiveVideo: constraints.video }),
         constraints: constraints,
         localMediaStream: localMediaStream
       });
@@ -85,10 +86,7 @@ const sparkService = {
     const constraints = Object.assign({}, defaultConstraints, options);
     return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
       return call.answer({
-        offerOptions: {
-          offerToReceiveAudio: true,
-          offerToReceiveVideo: true
-        },
+        offerOptions: defaultOfferOptions,
         constraints: constraints,
         localMediaStream: localMediaStream
       });
