@@ -22,7 +22,6 @@
 }
 
 $light-gray: #aaaaaa;
-$titanium-white: #eeeeee;
 $sky-blue: #e1f1f7;
 $medium-gray: #666666;
 $dark-gray: #555555;
@@ -330,25 +329,25 @@ main {
     width:100%;
 
     .feedback-button {
-      display:flex;
+      background: none;
+      border: none;
+      margin: 1.5rem 1rem;
+      font-size: 1rem;
+      color: $dark-gray;
       align-self: flex-end;
 
-      button {
-        background: none;
-        border: none;
-        margin: 1.5rem 1rem;
-        font-size: 1rem;
-        color: $dark-gray;
+      &.hidden {
+        visibility: hidden;
+      }
 
-        &:before {
-          content: '\e907';
-          font-family: 'Kitchen Sink';
-          margin-right: 0.25rem;
-          font-size:1.25rem;
-          display: inline;
-          position: relative;
-          top: 4px;
-        }
+      &:before {
+        content: '\e907';
+        font-family: 'Kitchen Sink';
+        margin-right: 0.25rem;
+        font-size: 1.25rem;
+        display: inline;
+        position: relative;
+        top: 4px;
       }
     }
   }
@@ -474,7 +473,7 @@ main {
     align-self: center;
   }
 
-  div.comments {
+  .comments {
     display: flex;
     width: 70%;
     flex-direction: column;
@@ -490,7 +489,7 @@ main {
     }
   }
 
-  div.buttons {
+  .buttons {
     margin-top: 4rem;
 
     button {

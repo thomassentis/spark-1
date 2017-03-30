@@ -11,6 +11,8 @@ const activeCallTemplate = {
 
     currentCall = call;
 
+    feedback.displayFeedbackButton(currentCall);
+
     $('#main-content').append($('#call-template').html().trim());
 
     if (currentCall.remoteMediaStreamUrl) {
@@ -35,7 +37,6 @@ const activeCallTemplate = {
 
 function hangupCall() {
   currentCall.hangup();
-  feedback.displayFeedbackOverlay(currentCall);
   clearTemplate();
 }
 
