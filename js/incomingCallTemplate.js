@@ -26,7 +26,7 @@ const incomingCallTemplate = {
 
     $('#caller-email').html(email);
     avatar.display(email, '#caller-image');
-    mediaValidator.validateAudio().then(mediaValidator.validateVideo);
+    mediaValidator.validateMedia();
 
     currentCall.on('disconnected error', incomingCallFailure);
 

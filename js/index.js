@@ -6,13 +6,16 @@ const incomingCallTemplate = require('./incomingCallTemplate');
 
 $('#logout-button').on('click', () => sparkService.logout());
 
+process.env.CISCOSPARK_LOG_LEVEL = 'info';
+
 sparkService.register().then(() => {
   $('#call-audio-video').on('click', outgoingCallTemplate.callByEmail);
   $('#call-audio-only').on('click', (event) => outgoingCallTemplate.callByEmail(event, { video: false }));
+  mediaValidator.validateMedia();
 
   $('#user-email').on('input propertychange paste', () => {
     if($('#user-email').val().length !== 0) {
-      mediaValidator.validateAudio().then(mediaValidator.validateVideo).catch(() => {});
+      mediaValidator.validateMedia();
     } else {
       $('#call-audio-only').attr('disabled', true);
       $('#call-audio-video').attr('disabled', true);

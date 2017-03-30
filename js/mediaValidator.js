@@ -1,51 +1,82 @@
 const $ = require('jquery');
 
-const mediaValidator = {
-  validateAudio: () => {
-    return validateMedia({ audio: true, video: false }, [
-      'call-audio-only',
-      'answer-audio-only'
-    ], [
-      'call-audio-video',
-      'answer-audio-video'
-    ]);
+const dict = {
+  audioOutgoing: {
+    mediaType: { audio: true, video: false },
+    enableFunction: enableCallButton,
+    enableId: 'call-audio-only',
+    disableIds: ['call-audio-only', 'call-audio-video'],
+    errorFunction: getAudioErrorMessage
   },
-  validateVideo: () => {
-    return validateMedia({ audio: false, video: true }, [
-      'call-audio-video',
-      'answer-audio-video'
-    ]);
+  videoOutgoing: {
+    mediaType: { audio: false, video: true },
+    enableFunction: enableCallButton,
+    enableId: 'call-audio-video',
+    disableIds: ['call-audio-video'],
+    errorFunction: getVideoErrorMessage
+  },
+  audioIncoming: {
+    mediaType: { audio: true, video: false },
+    enableFunction: enableButton,
+    enableId: 'answer-audio-only',
+    disableIds: ['answer-audio-only', 'answer-audio-video'],
+    errorFunction: getAudioErrorMessage
+  },
+  videoIncoming: {
+    mediaType: { audio: false, video: true },
+    enableFunction: enableButton,
+    enableId: 'answer-audio-video',
+    disableIds: ['answer-audio-video'],
+    errorFunction: getVideoErrorMessage
   }
 };
 
-function validateMedia(options, ids, disableOnlyIds) {
-  return checkMediaAvailability(options).then(() => {
-    ids.forEach((id) => enableCallButton(id));
+const mediaValidator = {
+  validateMedia: () => {
+    validateAMedia(dict.audioOutgoing).then(() => validateAMedia(dict.videoOutgoing)).catch(() => {});
+    validateAMedia(dict.audioIncoming).then(() => validateAMedia(dict.videoIncoming)).catch(() => {});
+  }
+};
+
+function validateAMedia(options) {
+  return navigator.mediaDevices.getUserMedia(options.mediaType).then(() => {
+    options.enableFunction(options.enableId);
     return Promise.resolve();
   }).catch((error) => {
-    ids.concat(disableOnlyIds).forEach((id) => disableCallButton(id, error));
-    return Promise.reject();
+    return disableButtons(options.disableIds, options.errorFunction(error));
   });
 }
 
-function checkMediaAvailability(options) {
-  return navigator.mediaDevices.getUserMedia(options).catch((error) => {
-    if(options.audio) return Promise.reject(error.name === 'NotFoundError' ? 'No microphone found' : 'Call requires audio permission');
-    return Promise.reject(error.name === 'NotFoundError' ? 'No camera found' : 'Call requires video permission');
-  });
+function disableButtons(ids, error) {
+  ids.forEach((id) => disableButton(id, error));
+  return Promise.reject();
+}
+
+function getAudioErrorMessage(error) {
+  return error.name === 'NotFoundError' ? 'No microphone found' : 'Requires microphone permission';
+}
+
+function getVideoErrorMessage(error) {
+  return error.name === 'NotFoundError' ? 'No camera found' : 'Requires camera permission';
 }
 
 function enableCallButton(id) {
-  $('#' + id).attr('disabled', false).removeClass('disabled');
-  $('#' + id + '> .invalid-call-message').remove();
+  if($('#user-email').val().length === 0) return $(`#${id}`).attr('disabled', true);
+  enableButton(id);
 }
 
-function disableCallButton(id, message) {
+function enableButton(id) {
+  const buttonElement = $(`#${id}`);
+  buttonElement.attr('disabled', false).removeClass('unavailable');
+  $(`#${id} > .invalid-call-message`).remove();
+}
+
+function disableButton(id, message) {
   const buttonElement = $(`#${id}`);
   const messageElement = $(`#${id} > .invalid-call-message`);
-  buttonElement.attr('disabled', true).addClass('disabled');
+  buttonElement.attr('disabled', true).addClass('unavailable');
   if (messageElement.length === 0) {
-    buttonElement.append('<span class="invalid-call-message">' + message + '</span>');
+    buttonElement.append(`<span class="invalid-call-message">${message}</span>`);
   } else {
     messageElement.html(message);
   }

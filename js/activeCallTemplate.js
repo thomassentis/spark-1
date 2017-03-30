@@ -31,9 +31,23 @@ const activeCallTemplate = {
       hangupCall();
     });
 
+    let overlay = $('#outgoing-call-overlay');
+    currentCall.sendingVideo ? overlay.hide() : overlay.show();
+
+    $('#toggle-outgoing-video').on('click', toggleSendingVideo);
+
     $('#logout-button').on('click', hangupCall);
   }
 };
+
+function toggleSendingVideo(){
+  let overlay = $('#outgoing-call-overlay');
+  currentCall.sendingVideo ? overlay.show() : overlay.hide();
+
+  currentCall.toggleSendingVideo().then(() => {
+    updateLocalStream();
+  });
+}
 
 function hangupCall() {
   currentCall.hangup();

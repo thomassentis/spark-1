@@ -38,14 +38,18 @@
       <section id="active-call-overlay" class="overlay">
         <div class="video-container">
           <video class="video" id="incoming-call" autoplay></video>
-          <video class="video" id="outgoing-call" muted autoplay></video>
+
+          <div class="outgoing-video">
+            <div class="video-overlay" id="outgoing-call-overlay" hidden></div>
+            <video class="video" id="outgoing-call" muted autoplay></video>
+          </div>
         </div>
         <div class="controls-container">
           <div class="incoming-controls">
             <button class="primary-button phone-button icon small red" id="hangup-call">Hangup</button>
           </div>
           <div class="outgoing-controls">
-            <button class="primary-button video-button icon" id="toggle-incoming-video"></button>
+            <button class="primary-button video-button icon" id="toggle-outgoing-video"></butwton>
           </div>
         </div>
       </section>

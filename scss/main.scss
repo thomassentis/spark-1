@@ -23,6 +23,8 @@
 
 $light-gray: #aaaaaa;
 $sky-blue: #e1f1f7;
+$dark-white: #e0e0e0;
+$gun-metal-black: #2d2d2d;
 $medium-gray: #666666;
 $dark-gray: #555555;
 $blue: #009EDB;
@@ -225,19 +227,8 @@ button:enabled {
     font-family: 'Kitchen Sink';
   }
 
-  &.disabled:before {
+  &.unavailable:before {
     content: '\e904';
-  }
-}
-
-.video-button, .video-button:disabled {
-  &:before {
-    content: '\e903';
-    font-family: 'Kitchen Sink';
-  }
-
-  &.disabled:before {
-    content: '\e902';
   }
 }
 
@@ -247,8 +238,15 @@ button:enabled {
     font-family: 'Kitchen Sink';
   }
 
-  &.disabled:before {
+  &.unavailable:before {
     content: '\e901';
+  }
+}
+
+.video-button, .video-button:disabled {
+  &:before {
+    content: '\e903';
+    font-family: 'Kitchen Sink';
   }
 }
 
@@ -513,7 +511,6 @@ main {
 .video {
   background: black;
   border: $video-border-width solid $navy-blue;
-  z-index: 2;
 }
 
 #incoming-call, .incoming-controls {
@@ -524,6 +521,34 @@ main {
   width: 14rem;
   border-left: none;
   margin-left: -$video-border-width;
+}
+
+.outgoing-video {
+  display: inline-block;
+  position: relative;
+  height: 10.5rem;
+}
+
+#outgoing-call-overlay {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  top: 2px;
+  left: 0px;
+  width: 14rem;
+  background-color: $gun-metal-black;
+  height: 10.5rem;
+  z-index: 3;
+  margin-left: -$video-border-width;
+
+  &:after {
+    font-family: 'Kitchen Sink';
+    content: '\e902';
+    font-size: 4rem;
+    align-content: center;
+    color: $dark-white;
+  }
 }
 
 #incoming-call {
