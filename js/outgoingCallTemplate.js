@@ -1,9 +1,9 @@
 const $ = require('jquery');
 const sparkService = require('./sparkService');
-const activeCall = require('./activeCall');
+const activeCallTemplate = require('./activeCallTemplate');
 const avatar = require('./avatar');
 
-const outgoingCall = {
+const outgoingCallTemplate = {
   callByEmail: (event, constraints) => {
     event.preventDefault();
     const email = $('#user-email').val();
@@ -19,7 +19,7 @@ const outgoingCall = {
       call.on('connected', () => {
         $('#calling-overlay').remove();
         call.off('disconnected error', outgoingCallFailure);
-        activeCall.display(call);
+        activeCallTemplate.display(call);
       });
 
       $('#hangup-calling').on('click', () => {
@@ -37,4 +37,4 @@ function outgoingCallFailure(error) {
   $('.avatar-image').addClass('failed');
 }
 
-module.exports = outgoingCall;
+module.exports = outgoingCallTemplate;

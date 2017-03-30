@@ -3,7 +3,7 @@ const feedback = require('./feedback');
 
 let currentCall = null;
 
-const activeCall = {
+const activeCallTemplate = {
   display: (call) => {
     if (currentCall) {
       hangupCall();
@@ -36,10 +36,10 @@ const activeCall = {
 function hangupCall() {
   currentCall.hangup();
   feedback.displayFeedbackOverlay(currentCall);
-  clearActiveCall();
+  clearTemplate();
 }
 
-function clearActiveCall() {
+function clearTemplate() {
   currentCall = null;
   $('#active-call-overlay').remove();
 }
@@ -52,4 +52,4 @@ function updateLocalStream() {
   $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
 }
 
-module.exports = activeCall;
+module.exports = activeCallTemplate;

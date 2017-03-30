@@ -2,11 +2,11 @@ const $ = require('jquery');
 const sparkService = require('./sparkService');
 const mediaValidator = require('./mediaValidator');
 const avatar = require('./avatar');
-const activeCall = require('./activeCall');
+const activeCallTemplate = require('./activeCallTemplate');
 
 let currentCall = null;
 
-const incomingCall = {
+const incomingCallTemplate = {
   display: (call) => {
     if(currentCall && currentCall.status !== 'disconnected') {
       call.reject();
@@ -45,7 +45,7 @@ const incomingCall = {
 };
 
 function answerCall(constraints) {
-  sparkService.answerCall(currentCall, constraints).then(() => activeCall.display(currentCall));
+  sparkService.answerCall(currentCall, constraints).then(() => activeCallTemplate.display(currentCall));
   currentCall.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
@@ -65,4 +65,4 @@ function incomingCallFailure(error) {
   $('#incoming-call-overlay h1').css('display', 'none');
 }
 
-module.exports = incomingCall;
+module.exports = incomingCallTemplate;

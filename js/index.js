@@ -1,14 +1,14 @@
 const $ = require('jquery');
 const sparkService = require('./sparkService');
 const mediaValidator = require('./mediaValidator');
-const outgoingCall = require('./outgoingCall');
-const incomingCall = require('./incomingCall');
+const outgoingCallTemplate = require('./outgoingCallTemplate');
+const incomingCallTemplate = require('./incomingCallTemplate');
 
 $('#logout-button').on('click', () => sparkService.logout());
 
 sparkService.register().then(() => {
-  $('#call-audio-video').on('click', outgoingCall.callByEmail);
-  $('#call-audio-only').on('click', (event) => outgoingCall.callByEmail(event, { video: false }));
+  $('#call-audio-video').on('click', outgoingCallTemplate.callByEmail);
+  $('#call-audio-only').on('click', (event) => outgoingCallTemplate.callByEmail(event, { video: false }));
 
   $('#user-email').on('input propertychange paste', () => {
     if($('#user-email').val().length !== 0) {
@@ -19,5 +19,5 @@ sparkService.register().then(() => {
     }
   });
 
-  sparkService.listenForCall(incomingCall.display);
+  sparkService.listenForCall(incomingCallTemplate.display);
 });
