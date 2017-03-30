@@ -198,13 +198,6 @@ describe('sparkService', () => {
     });
   });
 
-  describe('rejectCall', () => {
-    it('calls Spark Call reject', () => {
-      sparkService.rejectCall(mockCall);
-      expect(mockCall.reject).toHaveBeenCalled();
-    });
-  });
-
   describe('callUser', () => {
     const user = 'Your Father';
 
@@ -253,13 +246,6 @@ describe('sparkService', () => {
           done();
         });
       });
-    });
-  });
-
-  describe('hangupCall', () => {
-    it('calls Spark hangup', () => {
-      sparkService.hangupCall(mockCall);
-      expect(mockCall.hangup).toHaveBeenCalled();
     });
   });
 

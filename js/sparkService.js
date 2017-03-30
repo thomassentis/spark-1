@@ -7,6 +7,7 @@ const defaultConstraints = {
 };
 
 const sparkService = {
+
   authorize: () => {
     return spark.authorize();
   },
@@ -31,6 +32,7 @@ const sparkService = {
       spark.on('change:isAuthenticated', authenticationUpdate);
     });
   },
+
   listenForCall: (callback) => {
     spark.phone.on('call:incoming', (call) => {
       /*
@@ -47,24 +49,6 @@ const sparkService = {
     });
   },
 
-  answerCall: (call, options) => {
-    const constraints = Object.assign({}, defaultConstraints, options);
-    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
-      return call.answer({
-        offerOptions: {
-          offerToReceiveAudio: true,
-          offerToReceiveVideo: true
-        },
-        constraints: constraints,
-        localMediaStream: localMediaStream
-      });
-    });
-  },
-
-  rejectCall: (call) => {
-    call.reject();
-  },
-
   callUser: (user, options) => {
     const constraints = Object.assign({}, defaultConstraints, options);
     return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
@@ -79,12 +63,8 @@ const sparkService = {
     });
   },
 
-  hangupCall: (call) => {
-    return call.hangup();
-  },
-
   logout: () => {
-    if(spark.isAuthenticated){
+    if(spark.isAuthenticated) {
       return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
     } else {
       window.location = window.location.protocol + '//' + window.location.host + '/';
@@ -98,6 +78,20 @@ const sparkService = {
       } else {
         return Promise.resolve(people.items[0].avatar);
       }
+    });
+  },
+
+  answerCall: (call, options) => {
+    const constraints = Object.assign({}, defaultConstraints, options);
+    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+      return call.answer({
+        offerOptions: {
+          offerToReceiveAudio: true,
+          offerToReceiveVideo: true
+        },
+        constraints: constraints,
+        localMediaStream: localMediaStream
+      });
     });
   }
 };

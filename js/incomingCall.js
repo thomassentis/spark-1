@@ -9,7 +9,7 @@ let currentCall = null;
 const incomingCall = {
   display: (call) => {
     if(currentCall && currentCall.status !== 'disconnected') {
-      sparkService.rejectCall(call);
+      call.reject();
       return;
     } else if(currentCall) {
       clearIncomingCall();
@@ -17,7 +17,7 @@ const incomingCall = {
 
     currentCall = call;
 
-    const email = call.from.person.email;
+    const email = currentCall.from.person.email;
 
     $('#main-content').append($('#incoming-call-template').html().trim());
 
@@ -25,28 +25,28 @@ const incomingCall = {
     avatar.display(email, '#caller-image');
     mediaValidator.validateAudio().then(mediaValidator.validateVideo);
 
-    call.on('disconnected error', incomingCallFailure);
+    currentCall.on('disconnected error', incomingCallFailure);
 
     $('#answer-audio-video').on('click', () => {
-      answerCall(call);
+      answerCall();
     });
 
     $('#answer-audio-only').on('click', () => {
-      answerCall(call, { video: false });
+      answerCall({ video: false });
     });
 
     $('#reject').on('click', () => {
-      if (call.status !== 'disconnected') {
-        sparkService.rejectCall(call);
+      if (currentCall.status !== 'disconnected') {
+        currentCall.reject();
       }
       clearIncomingCall();
     });
   }
 };
 
-function answerCall(call, constraints) {
-  sparkService.answerCall(call, constraints).then(() => activeCall.handleCall(call));
-  call.off('disconnected error', incomingCallFailure);
+function answerCall(constraints) {
+  sparkService.answerCall(currentCall, constraints).then(() => activeCall.handleCall(currentCall));
+  currentCall.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
 

@@ -29,18 +29,18 @@ const activeCall = {
       hangupCall();
     });
 
-    $('#logout-button').on('click', () => sparkService.hangupCall(call));
+    $('#logout-button').on('click', hangupCall);
   }
 };
 
 function hangupCall() {
-  sparkService.hangupCall(currentCall);
+  currentCall.hangup();
   clearActiveCall();
 }
 
 function clearActiveCall() {
-  $('#active-call-overlay').remove();
   currentCall = null;
+  $('#active-call-overlay').remove();
 }
 
 function updateRemoteStream() {

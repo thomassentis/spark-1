@@ -8,22 +8,22 @@ const outgoingCall = {
     event.preventDefault();
     const email = $('#user-email').val();
 
-    sparkService.callUser(email, constraints).then((sparkCall) => {
+    sparkService.callUser(email, constraints).then((call) => {
       $('#main-content').append($('#calling-template').html().trim());
       $('#callee-email').html(email);
 
       avatar.display(email, '#callee-image');
 
-      sparkCall.on('disconnected error', outgoingCallFailure);
+      call.on('disconnected error', outgoingCallFailure);
 
-      sparkCall.on('connected', () => {
+      call.on('connected', () => {
         $('#calling-overlay').remove();
-        sparkCall.off('disconnected error', outgoingCallFailure);
-        activeCall.handleCall(sparkCall);
+        call.off('disconnected error', outgoingCallFailure);
+        activeCall.handleCall(call);
       });
 
       $('#hangup-calling').on('click', () => {
-        sparkCall.hangup();
+        call.hangup();
         $('#calling-overlay').remove();
       });
     });
