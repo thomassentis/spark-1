@@ -4,7 +4,7 @@ const feedback = require('./feedback');
 let currentCall = null;
 
 const activeCall = {
-  handleCall: (call) => {
+  display: (call) => {
     if (currentCall) {
       hangupCall();
     }

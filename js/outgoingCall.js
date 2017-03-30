@@ -19,7 +19,7 @@ const outgoingCall = {
       call.on('connected', () => {
         $('#calling-overlay').remove();
         call.off('disconnected error', outgoingCallFailure);
-        activeCall.handleCall(call);
+        activeCall.display(call);
       });
 
       $('#hangup-calling').on('click', () => {

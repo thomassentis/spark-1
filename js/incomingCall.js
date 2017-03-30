@@ -45,7 +45,7 @@ const incomingCall = {
 };
 
 function answerCall(constraints) {
-  sparkService.answerCall(currentCall, constraints).then(() => activeCall.handleCall(currentCall));
+  sparkService.answerCall(currentCall, constraints).then(() => activeCall.display(currentCall));
   currentCall.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
