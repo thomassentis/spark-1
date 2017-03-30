@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const sparkService = require('./sparkService');
+const feedback = require('./feedback');
 
 let currentCall = null;
 
@@ -35,6 +35,7 @@ const activeCall = {
 
 function hangupCall() {
   currentCall.hangup();
+  feedback.displayFeedbackOverlay(currentCall);
   clearActiveCall();
 }
 

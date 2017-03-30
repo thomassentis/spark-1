@@ -22,6 +22,8 @@
 }
 
 $light-gray: #aaaaaa;
+$titanium-white: #eeeeee;
+$sky-blue: #e1f1f7;
 $medium-gray: #666666;
 $dark-gray: #555555;
 $blue: #009EDB;
@@ -321,6 +323,36 @@ main {
     width: 100%;
   }
 
+  footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:100%;
+
+    .feedback-button {
+      display:flex;
+      align-self: flex-end;
+
+      button {
+        background: none;
+        border: none;
+        margin: 1.5rem 1rem;
+        font-size: 1rem;
+        color: $dark-gray;
+
+        &:before {
+          content: '\e907';
+          font-family: 'Kitchen Sink';
+          margin-right: 0.25rem;
+          font-size:1.25rem;
+          display: inline;
+          position: relative;
+          top: 4px;
+        }
+      }
+    }
+  }
+
   section {
     display: flex;
     flex-direction: column;
@@ -432,6 +464,48 @@ main {
 
       &:last-child {
         margin-right: 0;
+      }
+    }
+  }
+}
+
+#user-feedback-overlay {
+  h1 {
+    align-self: center;
+  }
+
+  div.comments {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+
+    textarea {
+      text-align: justify;
+      white-space: normal;
+      resize: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      height: 7rem;
+      font-size: 1rem;
+    }
+  }
+
+  div.buttons {
+    margin-top: 4rem;
+
+    button {
+      font-size: 1rem;
+      padding: 0.4rem 0.7rem;
+      margin: 0.5rem;
+      width: 10rem;
+    }
+
+    .cancel {
+      background: none;
+      color: $blue;
+
+      &:hover {
+        background-color: $sky-blue;
       }
     }
   }
