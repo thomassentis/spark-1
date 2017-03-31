@@ -1,16 +1,36 @@
 # Spark JavaScript SDK Example
+* [Purpose](#purpose)
+* [Design Decisions](#design)
+  * [Lack of Frameworks/Libraries](#frameworks)
+  * [Architechture](#architecture)
+* [Installation and Usage](#installation-and-usage)
+  * [How to Host the App](#hosting)
+  * [How to Use the App](#usage)
+  * [How to Run Tests](#tests)
+  * [Supported Browsers](#browsers)
 
+<a name="purpose"></a>
+## Purpose
 This demo app is designed to provide a clear understanding of the process of integrating Cisco's Spark JavaScript Source Developer Kit into your app for calling and receiving calls.
 
-## Lack of Frameworks/Libraries
+<a name="design"></a>
+## Design Decisions
+
+<a name="frameworks"></a>
+### Lack of Frameworks/Libraries
 
 We decided not to use any major JS frameworks/libraries such as React or Angular so that the example is clear to all JavaScript developers.
 
-## Architecture
+<a name="architecture"></a>
+### Architecture
 
 Each html page within the app has an associated javascript file to handle business logic. Shared code for interacting directly with the Spark SDK is located within the sparkService.js file. We also maintain a collection of tests corresponding to our service logic and UI functionality found in the test folder.
 
-## How to Host the App
+<a name="installation-and-usage"></a>
+## Installation and Usage
+
+<a name="hosting"></a>
+### How to Host the App
 
 * [Install NodeJS](https://nodejs.org/en/download/)
 * Clone the repo: `$ git clone https://github.com/ciscospark/spark-js-sdk-example.git`
@@ -26,14 +46,15 @@ Each html page within the app has an associated javascript file to handle busine
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
   "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write",
-  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/"
+  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
 }
 ```
 * `$ npm install -g browserify node-sass`
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
 
-## How to Use the App
+<a name="usage"></a>
+### How to Use the App
 
 * You must have a [Spark account](https://web.ciscospark.com/signin) to use the app
 * On the login screen, click the login button. This forwards you to Spark's login page if you aren't already authenticated. If you've logged in already, skip the next two steps.
@@ -41,16 +62,19 @@ Each html page within the app has an associated javascript file to handle busine
 * Enter your password for Spark and click 'Sign In'. You will then be redirected to the app.
 * Type an existing Spark user's email address (not your own!) and click one of the call buttons.
 * You can then hangup with the hangup button.
-* If you receive an incoming call at any time (even when in an existing call), the app will automatically accept it and connect (hanging up on previous call)
+* If you receive an incoming call at any time (even when in an existing call), an overlay will be presented
+    - Click one of the blue buttons to accept it with video or video and audio, or the red reject button to reject it.
 * At any time, click the "sign out" button to log out of the app.
 
-## How to Run the Tests
+<a name="tests"></a>
+### How to Run the Tests
 
 * `$ npm install -g jasmine`
 * From within the app's root directory:
 * `$ npm test`
 
-## Supported Browsers
+<a name="browsers"></a>
+### Supported Browsers
 
 * The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer is not supported by the Spark SDK.
 * **Chrome**: When developing without a webcam, start Chrome with the ```--use-fake-device-for-media-stream``` and ```--use-fake-ui-for-media-stream``` flags.

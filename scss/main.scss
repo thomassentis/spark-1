@@ -3,7 +3,28 @@
     src: url('../fonts/CiscoSansExtraLight.otf');
 }
 
+@font-face {
+    font-family: 'Kitchen Sink';
+    src: url('../fonts/kitchen-sink.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 $light-gray: #aaaaaa;
+$sky-blue: #e1f1f7;
+$dark-white: #e0e0e0;
+$gun-metal-black: #2d2d2d;
 $medium-gray: #666666;
 $dark-gray: #555555;
 $blue: #009EDB;
@@ -13,6 +34,9 @@ $light-blue: #64b8d8;
 $red: #DF3C3C;
 $dark-red: #A40B0B;
 $light-red: #FF7676;
+$yellow: #EEEE44;
+$dark-yellow: darken($yellow, 20%);
+$light-border: #e0e0e0;
 
 $transition-speed: 200ms;
 $video-border-width: 2px;
@@ -49,6 +73,7 @@ h1 {
 form.container {
   border: 2px solid $light-gray;
   border-radius: 5px;
+  display: flex;
 
   input[type=text] {
     border: none;
@@ -60,7 +85,10 @@ form.container {
   }
 
   button {
-    margin: .7rem;
+    align-self: center;
+    margin: 0 .7rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
   }
 }
 
@@ -109,12 +137,116 @@ button:enabled {
   &.wide {
     padding: .4rem 3rem;
   }
+}
+
+.call-button {
+  width: 4rem;
 
   &:disabled {
     background: none;
     border: 2px solid transparent;
-    color: $medium-gray;
-    cursor: auto;
+    color: $light-gray;
+  }
+}
+
+.answer-button {
+  height: 2.5rem;
+
+  &:before {
+    margin-right: .5rem;
+  }
+
+  &:disabled {
+    background: $light-border;
+    color: $light-gray;
+    border: 1px solid $light-gray;
+  }
+}
+
+.call-button:disabled, .primary-button:disabled {
+  position: relative;
+  cursor: auto;
+
+  span {
+    display: none;
+  }
+
+  &:hover .invalid-call-message {
+    display: inline;
+  }
+
+  .invalid-call-message {
+    font-family: 'Cisco Sans Extra Light';
+    position: absolute;
+    color: $dark-gray;
+    top: -2.15rem;
+    font-size: 0.75rem;
+    right: -0.75rem;
+    border: 1px #bcbcbc solid;
+    border-radius: 1rem;
+    padding: 0.4rem 1rem;
+    background: #ebebeb;
+    white-space: nowrap;
+
+    &:after, &:before {
+      top: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      right: 0.1rem;
+    }
+
+    &:after {
+      border-color: rgba(235, 235, 235, 0);
+      border-top-color: #ebebeb;
+      border-width: 6px;
+      margin-right: 36px;
+    }
+
+    &:before {
+      border-color: rgba(188, 188, 188, 0);
+      border-top-color: #bcbcbc;
+      border-width: 7px;
+      margin-right: 35px;
+    }
+  }
+}
+
+.button-divider {
+    border-left: 1px solid $light-border;
+    height: 2.5rem;
+    align-self: center;
+}
+
+.audio-button, .audio-button:disabled {
+  &:before {
+    content: '\e905';
+    font-family: 'Kitchen Sink';
+  }
+
+  &.unavailable:before {
+    content: '\e904';
+  }
+}
+
+.phone-button, .phone-button:disabled {
+  &:before {
+    content: '\e900';
+    font-family: 'Kitchen Sink';
+  }
+
+  &.unavailable:before {
+    content: '\e901';
+  }
+}
+
+.video-button, .video-button:disabled {
+  &:before {
+    content: '\e903';
+    font-family: 'Kitchen Sink';
   }
 }
 
@@ -186,6 +318,36 @@ main {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+  }
+
+  footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:100%;
+
+    .feedback-button {
+      background: none;
+      border: none;
+      margin: 1.5rem 1rem;
+      font-size: 1rem;
+      color: $dark-gray;
+      align-self: flex-end;
+
+      &.hidden {
+        visibility: hidden;
+      }
+
+      &:before {
+        content: '\e907';
+        font-family: 'Kitchen Sink';
+        margin-right: 0.25rem;
+        font-size: 1.25rem;
+        display: inline;
+        position: relative;
+        top: 4px;
+      }
+    }
   }
 
   section {
@@ -304,10 +466,51 @@ main {
   }
 }
 
-#incoming-call, #outgoing-call {
+#user-feedback-overlay {
+  h1 {
+    align-self: center;
+  }
+
+  .comments {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+
+    textarea {
+      text-align: justify;
+      white-space: normal;
+      resize: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      height: 7rem;
+      font-size: 1rem;
+    }
+  }
+
+  .buttons {
+    margin-top: 4rem;
+
+    button {
+      font-size: 1rem;
+      padding: 0.4rem 0.7rem;
+      margin: 0.5rem;
+      width: 10rem;
+    }
+
+    .cancel {
+      background: none;
+      color: $blue;
+
+      &:hover {
+        background-color: $sky-blue;
+      }
+    }
+  }
+}
+
+.video {
   background: black;
   border: $video-border-width solid $navy-blue;
-  z-index: 2;
 }
 
 #incoming-call, .incoming-controls {
@@ -318,6 +521,34 @@ main {
   width: 14rem;
   border-left: none;
   margin-left: -$video-border-width;
+}
+
+.outgoing-video {
+  display: inline-block;
+  position: relative;
+  height: 10.5rem;
+}
+
+#outgoing-call-overlay {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  top: 2px;
+  left: 0px;
+  width: 14rem;
+  background-color: $gun-metal-black;
+  height: 10.5rem;
+  z-index: 3;
+  margin-left: -$video-border-width;
+
+  &:after {
+    font-family: 'Kitchen Sink';
+    content: '\e902';
+    font-size: 4rem;
+    align-content: center;
+    color: $dark-white;
+  }
 }
 
 #incoming-call {

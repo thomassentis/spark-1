@@ -1,83 +1,97 @@
 require('./env.js');
-const SPARK = require('ciscospark');
-const CONSTRAINTS = {
+const spark = require('ciscospark');
+const defaultConstraints = {
   audio: true,
   video: true,
   fake: false
 };
-
-exports.authorize = () => {
-  return SPARK.authorize();
+const defaultOfferOptions = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
 };
 
-/*
-When you're redirected back from Spark's login page, it grants you a temporary
-code which is then exchanged for an access token. This process is not immediate.
-If you attempt to make any calls to Spark before it finishes, Spark will throw
-an error.
-*/
-exports.register = () => {
-  return new Promise((resolve) => {
-    let authenticationUpdate = () => {
-      if (SPARK.isAuthenticated) {
-        SPARK.off('change:isAuthenticated', authenticationUpdate);
-        SPARK.phone.register().then(() => {
-          resolve();
-        });
+const sparkService = {
+
+  authorize: () => {
+    return spark.authorize();
+  },
+
+  /*
+  When you're redirected back from Spark's login page, it grants you a temporary
+  code which is then exchanged for an access token. This process is not immediate.
+  If you attempt to make any calls to Spark before it finishes, Spark will throw
+  an error.
+  */
+  register: () => {
+    return new Promise((resolve) => {
+      let authenticationUpdate = () => {
+        if (spark.isAuthenticated) {
+          spark.off('change:isAuthenticated', authenticationUpdate);
+          spark.phone.register().then(() => {
+            resolve();
+          });
+        }
+      };
+
+      spark.on('change:isAuthenticated', authenticationUpdate);
+    });
+  },
+
+  listenForCall: (callback) => {
+    spark.phone.on('call:incoming', (call) => {
+      /*
+      The call:incoming event is triggered for both incoming and outgoing calls.
+      Outgoing calls are handled by SparkService.callUser(...).
+      */
+      if (call.direction === 'out') {
+        return;
       }
-    };
 
-    SPARK.on('change:isAuthenticated', authenticationUpdate);
-  });
-};
+      callback(call);
 
+      call.acknowledge();
+    });
+  },
 
-exports.listen = (callback) => {
-  SPARK.phone.on('call:incoming', (call) => {
-    /*
-    The call:incoming event is triggered for both incoming and outgoing calls.
-    Outgoing calls are handled by SparkService.callUser(...).
-    */
-    if (call.direction === 'out') {
-      return;
-    }
+  callUser: (user, options) => {
+    const constraints = Object.assign({}, defaultConstraints, options);
+    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+      return spark.phone.dial(user, {
+        offerOptions: Object.assign({}, defaultOfferOptions, { offerToReceiveVideo: constraints.video }),
+        constraints: constraints,
+        localMediaStream: localMediaStream
+      });
+    });
+  },
 
-    callback(call);
-
-    call.acknowledge();
-  });
-};
-
-exports.answerCall = (call) => {
-  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
-    return call.answer(Object.assign({}, CONSTRAINTS, { localMediaStream: localMediaStream }));
-  });
-};
-
-exports.rejectCall = (call) => {
-  call.reject();
-};
-
-exports.callUser = (userEmail) => {
-  return SPARK.phone.createLocalMediaStream(CONSTRAINTS).then((localMediaStream) => {
-    return SPARK.phone.dial(userEmail, Object.assign({}, CONSTRAINTS, localMediaStream));
-  });
-};
-
-exports.hangupCall = (call) => {
-  return call.hangup();
-};
-
-exports.logout = () => {
-  return SPARK.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
-};
-
-exports.getAvatarUrl = (email) => {
-  return SPARK.people.list({ email: email }).then((people) => {
-    if(people.count === 0 || !people.items[0].avatar) {
-      return Promise.reject('No avatar found');
+  logout: () => {
+    if(spark.isAuthenticated) {
+      return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
     } else {
-      return Promise.resolve(people.items[0].avatar);
+      window.location = window.location.protocol + '//' + window.location.host + '/';
     }
-  });
+  },
+
+  getAvatarUrl: (email) => {
+    return spark.people.list({ email: email }).then((people) => {
+      if(people.count === 0 || !people.items[0].avatar) {
+        return Promise.reject('No avatar found');
+      } else {
+        return Promise.resolve(people.items[0].avatar);
+      }
+    });
+  },
+
+  answerCall: (call, options) => {
+    const constraints = Object.assign({}, defaultConstraints, options);
+    return spark.phone.createLocalMediaStream(constraints).then((localMediaStream) => {
+      return call.answer({
+        offerOptions: defaultOfferOptions,
+        constraints: constraints,
+        localMediaStream: localMediaStream
+      });
+    });
+  }
 };
+
+module.exports = sparkService;

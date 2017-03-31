@@ -1,143 +1,26 @@
 const $ = require('jquery');
-const SPARK_SERVICE = require('./sparkService');
+const sparkService = require('./sparkService');
+const mediaValidator = require('./mediaValidator');
+const outgoingCallTemplate = require('./outgoingCallTemplate');
+const incomingCallTemplate = require('./incomingCallTemplate');
 
-let currentCall = null;
+$('#logout-button').on('click', () => sparkService.logout());
 
-SPARK_SERVICE.register().then(() => {
-  $('#submit-user-email').on('click', callByEmail);
+process.env.CISCOSPARK_LOG_LEVEL = 'info';
+
+sparkService.register().then(() => {
+  $('#call-audio-video').on('click', outgoingCallTemplate.callByEmail);
+  $('#call-audio-only').on('click', (event) => outgoingCallTemplate.callByEmail(event, { video: false }));
+  mediaValidator.validateMedia();
 
   $('#user-email').on('input propertychange paste', () => {
-    $('#submit-user-email').attr('disabled', $('#user-email').val().length === 0);
-  });
-
-  SPARK_SERVICE.listen(displayIncomingCall);
-
-  $('#logout-button').on('click', () => SPARK_SERVICE.logout());
-  $('#logout-button').attr('disabled', false);
-});
-
-function callByEmail(event) {
-  event.preventDefault();
-  const EMAIL = $('#user-email').val();
-
-  SPARK_SERVICE.callUser(EMAIL).then((sparkCall) => {
-    $('#main-content').append($('#calling-template').html().trim());
-    $('#callee-email').html(EMAIL);
-
-    displayAvatarImage(EMAIL, '#callee-image');
-
-    sparkCall.on('disconnected error', outgoingCallFailure);
-
-    sparkCall.on('connected', () => {
-      $('#calling-overlay').remove();
-      sparkCall.off('disconnected error', outgoingCallFailure);
-      handleCall(sparkCall);
-    });
-
-    $('#hangup-calling').on('click', () => {
-      sparkCall.hangup();
-      $('#calling-overlay').remove();
-    });
-  });
-}
-
-function displayIncomingCall(call) {
-  const EMAIL = call.from.person.email;
-
-  $('#main-content').append($('#incoming-call-template').html().trim());
-
-  $('#caller-email').html(EMAIL);
-  displayAvatarImage(EMAIL, '#caller-image');
-
-  call.on('disconnected error', incomingCallFailure);
-
-  $('#answer-video').on('click', () => {
-    SPARK_SERVICE.answerCall(call).then(() => handleCall(call));
-    call.off('disconnected error', incomingCallFailure);
-    clearIncomingCall();
-  });
-
-  $('#reject').on('click', () => {
-    if (call.status !== 'disconnected') {
-      SPARK_SERVICE.rejectCall(call);
+    if($('#user-email').val().length !== 0) {
+      mediaValidator.validateMedia();
+    } else {
+      $('#call-audio-only').attr('disabled', true);
+      $('#call-audio-video').attr('disabled', true);
     }
-    clearIncomingCall();
-  });
-}
-
-function handleCall(call) {
-  if (currentCall) {
-    hangupCall();
-  }
-
-  currentCall = call;
-
-  $('#main-content').append($('#call-template').html().trim());
-
-  if (currentCall.remoteMediaStreamUrl) {
-    displayRemoteStream();
-  }
-  if (currentCall.localMediaStreamUrl) {
-    displayLocalStream();
-  }
-
-  currentCall.on('remoteMediaStream:change', () => {
-    displayRemoteStream();
-  });
-  currentCall.on('localMediaStream:change', () => {
-    displayLocalStream();
-  });
-  currentCall.on('disconnected error', hangupCall);
-
-  $('#hangup-call').on('click', () => {
-    currentCall.off('disconnected error', hangupCall);
-    hangupCall();
   });
 
-  $('#logout-button').on('click', () => SPARK_SERVICE.hangupCall(call));
-}
-
-function outgoingCallFailure(error) {
-  let message = error ? 'Call Failed' : 'Call Rejected';
-  $('#calling-status').html(message).css('display', 'inline');
-  $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
-  $('.avatar-image').addClass('failed');
-}
-
-function incomingCallFailure(error) {
-  let message = error ? 'Call Failed' : 'Call Cancelled';
-  $('#incoming-call-status').html(message).css('display', 'inline');
-  $('#answer-video').css('display', 'none');
-  $('#reject').removeClass('red').addClass('wide').text('Home');
-  $('.avatar-image').addClass('failed');
-  $('#incoming-call-overlay h1').css('display', 'none');
-}
-
-function hangupCall() {
-  SPARK_SERVICE.hangupCall(currentCall);
-  clearActiveCall();
-}
-
-function clearActiveCall() {
-  $('#active-call-overlay').remove();
-  currentCall = null;
-}
-
-function clearIncomingCall() {
-  $('#incoming-call-overlay').remove();
-}
-
-function displayRemoteStream() {
-  $('#incoming-call').attr('src', currentCall.remoteMediaStreamUrl);
-}
-
-function displayLocalStream() {
-  $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
-}
-
-function displayAvatarImage(email, imageId) {
-  SPARK_SERVICE.getAvatarUrl(email).then((url) => {
-    $(imageId).attr('src', url);
-    // Allow continued loading if there is a problem or no avatar image found
-  }).catch(() => {});
-}
+  sparkService.listenForCall(incomingCallTemplate.display);
+});
