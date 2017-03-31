@@ -48,14 +48,17 @@ const incomingCallTemplate = {
 };
 
 function answerCall(constraints) {
-  sparkService.answerCall(currentCall, constraints).then(() => activeCallTemplate.display(currentCall));
+  sparkService.answerCall(currentCall, constraints).then(() => {
+    activeCallTemplate.display(currentCall)
+    currentCall = null;
+  });
+
   currentCall.off('disconnected error', incomingCallFailure);
   clearIncomingCall();
 }
 
 function clearIncomingCall() {
   $('#incoming-call-overlay').remove();
-  currentCall = null;
 }
 
 function incomingCallFailure(error) {
