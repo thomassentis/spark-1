@@ -144,7 +144,7 @@ button:enabled {
   width: 4rem;
 }
 
-.call-button:disabled, .outgoing-toggle:disabled {
+.call-button:disabled, .toggle:disabled {
   background: none;
   border: 2px solid transparent;
   color: $light-gray;
@@ -251,8 +251,7 @@ button:enabled {
   }
 }
 
-.outgoing-toggle {
-  margin: 0 0.5rem;
+.toggle {
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
@@ -545,31 +544,55 @@ main {
   margin-left: -$video-border-width;
 }
 
-.outgoing-video {
+.outgoing-video, .incoming-video {
   display: inline-block;
   position: relative;
+}
+
+.incoming-video {
+  height: 18rem;
+}
+
+.outgoing-video {
   height: 10.5rem;
 }
 
-#outgoing-call-overlay {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  position:absolute;
+.video-overlay {
   top: 2px;
   left: 0px;
-  width: 14rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
   background-color: $gun-metal-black;
+  z-index: 3;
+
+  &:after {
+    font-family: 'Kitchen Sink';
+    content: '\e902';
+    align-content: center;
+    color: $dark-white;
+  }
+}
+
+#incoming-call-video-overlay {
+  width: 32rem;
+  height: 18rem;
+  left: 2px;
+
+  &:after {
+    font-size: 8rem;
+  }
+}
+
+#outgoing-call-video-overlay {
+  width: 14rem;
   height: 10.5rem;
   z-index: 3;
   margin-left: -$video-border-width;
 
   &:after {
-    font-family: 'Kitchen Sink';
-    content: '\e902';
     font-size: 4rem;
-    align-content: center;
-    color: $dark-white;
   }
 }
 
@@ -584,4 +607,8 @@ main {
 .incoming-controls, .outgoing-controls {
   display: flex;
   justify-content: center;
+
+  button {
+    margin: 0 0.5rem;
+  }
 }

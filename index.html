@@ -37,20 +37,24 @@
     <template id="call-template">
       <section id="active-call-overlay" class="overlay">
         <div class="video-container">
-          <video class="video" id="incoming-call" autoplay></video>
+          <div class="incoming-video">
+            <div class="video-overlay" id="incoming-call-video-overlay"></div>
+            <video class="video" id="incoming-call" autoplay></video>
+          </div>
 
           <div class="outgoing-video">
-            <div class="video-overlay" id="outgoing-call-overlay" hidden></div>
+            <div class="video-overlay" id="outgoing-call-video-overlay"></div>
             <video class="video" id="outgoing-call" muted autoplay></video>
           </div>
         </div>
         <div class="controls-container">
           <div class="incoming-controls">
+            <button class="primary-button toggle video-button icon" id="toggle-incoming-video"></button>
             <button class="primary-button phone-button icon small red" id="hangup-call">Hangup</button>
           </div>
           <div class="outgoing-controls">
-            <button class="primary-button outgoing-toggle video-button icon" id="toggle-outgoing-video"></button>
-            <button class="primary-button outgoing-toggle audio-button icon" id="toggle-outgoing-audio"></button>
+            <button class="primary-button toggle video-button icon" id="toggle-outgoing-video"></button>
+            <button class="primary-button toggle audio-button icon" id="toggle-outgoing-audio"></button>
           </div>
         </div>
       </section>
