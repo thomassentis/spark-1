@@ -37,7 +37,7 @@ Each html page within the app has an associated javascript file to handle busine
 * `$ cd spark-js-sdk-example`
 * `$ npm install`
 * To launch the example app, you'll need Spark Integration credentials. These can be obtained by [creating a Spark account](https://web.ciscospark.com/signin) and following [this guide](https://developer.ciscospark.com/authentication.html).
-    - Under Scope, enable spark:people_read, spark:rooms_read, spark:rooms_write, spark:memberships_read, spark:memberships_write, spark:messages_read, spark:messages_write, spark:teams_read, and spark:teams_write
+    - Under Scope, enable spark:people_read
     - Under Redirect_URI, enter "http://localhost:8000/index.html"
     - Place the following in a new file named ".env.json" in the root directory of the project:
 
@@ -45,10 +45,12 @@ Each html page within the app has an associated javascript file to handle busine
 {
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
-  "CISCOSPARK_SCOPE": "spark:people_read spark:rooms_read spark:rooms_write spark:memberships_read spark:memberships_write spark:messages_read spark:messages_write spark:teams_read spark:teams_write",
-  "CISCOSPARK_REDIRECT_URI": "http://localhost:8000/index.html"
 }
 ```
+* You can also override the following environment variables by adding them to the .env.json file:
+    - CISCOSPARK_SCOPE
+    - CISCOSPARK_REDIRECT_URI (needs to be changed if hosting anywhere aside from localhost:8000)
+    - CISCOSPARK_LOG_LEVEL (defaults to 'info'. Alternative log levels are: silent, error, warn, log, info, debug, and trace)
 * `$ npm install -g browserify node-sass`
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
