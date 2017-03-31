@@ -32,21 +32,33 @@ const activeCallTemplate = {
     });
 
     let overlay = $('#outgoing-call-overlay');
-    currentCall.sendingVideo ? overlay.hide() : overlay.show();
+    if (currentCall.sendingVideo) {
+      overlay.hide();
+    } else {
+      $('#toggle-outgoing-video').addClass('off');
+      overlay.show();
+    }
 
     $('#toggle-outgoing-video').on('click', toggleSendingVideo);
+    $('#toggle-outgoing-audio').on('click', toggleSendingAudio);
 
     $('#logout-button').on('click', hangupCall);
   }
 };
 
-function toggleSendingVideo(){
+function toggleSendingVideo() {
   let overlay = $('#outgoing-call-overlay');
   currentCall.sendingVideo ? overlay.show() : overlay.hide();
+  $('#toggle-outgoing-video').toggleClass('off');
 
   currentCall.toggleSendingVideo().then(() => {
     updateLocalStream();
   });
+}
+
+function toggleSendingAudio() {
+  $('#toggle-outgoing-audio').toggleClass('off');
+  currentCall.toggleSendingAudio();
 }
 
 function hangupCall() {
