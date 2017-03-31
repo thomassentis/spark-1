@@ -1,4 +1,4 @@
-const PROXYQUIRE = require('proxyquire');
+const proxyquire = require('proxyquire').noCallThru();
 const constraints = {
   audio: true,
   video: true,
@@ -79,7 +79,7 @@ describe('sparkService', () => {
     spyOn(mockSpark, 'on').and.callThrough();
     spyOn(mockSpark.phone, 'on').and.callThrough();
 
-    sparkService = PROXYQUIRE('../js/sparkService', {
+    sparkService = proxyquire('../js/sparkService', {
       'ciscospark': mockSpark,
       'jquery': () => {
         return {
