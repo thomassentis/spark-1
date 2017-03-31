@@ -39,15 +39,8 @@ const activeCallTemplate = {
       overlay.show();
     }
 
-    $('#toggle-outgoing-video').on('click', () => {
-      $('#toggle-outgoing-video').toggleClass('off');
-      toggleSendingVideo();
-    });
-
-    $('#toggle-outgoing-audio').on('click', () => {
-      $('#toggle-outgoing-audio').toggleClass('off');
-      currentCall.toggleSendingAudio();
-    });
+    $('#toggle-outgoing-video').on('click', toggleSendingVideo);
+    $('#toggle-outgoing-audio').on('click', toggleSendingAudio);
 
     $('#logout-button').on('click', hangupCall);
   }
@@ -56,10 +49,16 @@ const activeCallTemplate = {
 function toggleSendingVideo() {
   let overlay = $('#outgoing-call-overlay');
   currentCall.sendingVideo ? overlay.show() : overlay.hide();
+  $('#toggle-outgoing-video').toggleClass('off');
 
   currentCall.toggleSendingVideo().then(() => {
     updateLocalStream();
   });
+}
+
+function toggleSendingAudio() {
+  $('#toggle-outgoing-audio').toggleClass('off');
+  currentCall.toggleSendingAudio();
 }
 
 function hangupCall() {
