@@ -144,7 +144,7 @@ button:enabled {
   width: 4rem;
 }
 
-.call-button:disabled, .toggle:disabled {
+.call-button:disabled, .toggle:disabled, .toggle:disabled.off {
   background: none;
   border: 2px solid transparent;
   color: $light-gray;
@@ -264,6 +264,8 @@ button:enabled {
     background: $white;
     color: $blue;
     border: 1px solid $blue;
+
+
 
     &:hover:enabled {
       background: lighten($light-border, 10%);
