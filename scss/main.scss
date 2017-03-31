@@ -141,12 +141,12 @@ button:enabled {
 
 .call-button {
   width: 4rem;
+}
 
-  &:disabled {
-    background: none;
-    border: 2px solid transparent;
-    color: $light-gray;
-  }
+.call-button:disabled, .outgoing-toggle:disabled {
+  background: none;
+  border: 2px solid transparent;
+  color: $light-gray;
 }
 
 .answer-button {
@@ -247,6 +247,27 @@ button:enabled {
   &:before {
     content: '\e903';
     font-family: 'Kitchen Sink';
+  }
+}
+
+.outgoing-toggle {
+  margin: 0 0.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+
+  &:before {
+    vertical-align: middle;
+  }
+
+  &.off {
+    background: $light-border;
+    color: $light-gray;
+    border: 1px solid $light-gray;
+
+    &:hover:enabled {
+      background: lighten($light-border, 10%);
+    }
   }
 }
 

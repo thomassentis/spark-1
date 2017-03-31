@@ -49,7 +49,7 @@ const incomingCallTemplate = {
 
 function answerCall(constraints) {
   sparkService.answerCall(currentCall, constraints).then(() => {
-    activeCallTemplate.display(currentCall)
+    activeCallTemplate.display(currentCall);
     currentCall = null;
   });
 
