@@ -37,6 +37,7 @@ $light-red: #FF7676;
 $yellow: #EEEE44;
 $dark-yellow: darken($yellow, 20%);
 $light-border: #e0e0e0;
+$white: #ffffff;
 
 $transition-speed: 200ms;
 $video-border-width: 2px;
@@ -261,9 +262,9 @@ button:enabled {
   }
 
   &.off {
-    background: $light-border;
-    color: $light-gray;
-    border: 1px solid $light-gray;
+    background: $white;
+    color: $blue;
+    border: 1px solid $blue;
 
     &:hover:enabled {
       background: lighten($light-border, 10%);
