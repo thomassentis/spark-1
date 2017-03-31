@@ -3,9 +3,9 @@ let currentCall = null;
 
 const feedback = {
   displayFeedbackButton: (call) => {
-    $('#feedback').removeClass('hidden');
-    $('#feedback').off('click');
-    $('#feedback').on('click', (event) => {
+    $('#feedback-button').removeClass('hidden');
+    $('#feedback-button').off('click');
+    $('#feedback-button').on('click', (event) => {
       event.preventDefault();
       displayFeedbackOverlay(call);
     });
@@ -17,6 +17,7 @@ function displayFeedbackOverlay(call) {
   currentCall = call;
   $('#main-content').append($('#user-feedback-template').html().trim());
   prepareEventListeners();
+  $('#feedback-button').addClass('hidden');
 }
 
 function prepareEventListeners() {
@@ -36,6 +37,7 @@ function submitUserFeedback() {
 function removeOverlay() {
   currentCall = null;
   $('#user-feedback-overlay').remove();
+  $('#feedback-button').removeClass('hidden');
 }
 
 module.exports = feedback;
