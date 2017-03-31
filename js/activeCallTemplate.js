@@ -32,7 +32,12 @@ const activeCallTemplate = {
     });
 
     let overlay = $('#outgoing-call-overlay');
-    currentCall.sendingVideo ? overlay.hide() : overlay.show();
+    if (currentCall.sendingVideo) {
+      overlay.hide();
+    } else {
+      $('#toggle-outgoing-video').addClass('off');
+      overlay.show();
+    }
 
     $('#toggle-outgoing-video').on('click', () => {
       $('#toggle-outgoing-video').toggleClass('off');
