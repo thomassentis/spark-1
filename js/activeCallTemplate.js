@@ -20,11 +20,7 @@ const activeCallTemplate = {
     updateIncomingVideo();
     updateOutgoingVideo();
 
-    currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
-    currentCall.on('localMediaStream:change', () => updateLocalStream());
-    currentCall.on('change:receivingVideo', () => updateIncomingVideo());
-    currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
-    currentCall.on('disconnected error', hangupCall);
+    registerCallEvents();
 
     $('#hangup-call').on('click', () => {
       currentCall.off('disconnected error', hangupCall);
@@ -39,6 +35,16 @@ const activeCallTemplate = {
     $('#logout-button').on('click', hangupCall);
   }
 };
+
+function registerCallEvents() {
+  currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
+  currentCall.on('localMediaStream:change', () => updateLocalStream());
+  currentCall.on('change:receivingVideo', () => updateIncomingVideo());
+  currentCall.on('change:sendingVideo', () => updateOutgoingVideo());
+  currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
+
+  currentCall.on('disconnected error', hangupCall);
+}
 
 function updateOutgoingVideo() {
   let outgoingOverlay = $('#outgoing-call-video-overlay');
@@ -78,10 +84,6 @@ function toggleReceivingVideo() {
 }
 
 function toggleSendingVideo() {
-  let overlay = $('#outgoing-call-video-overlay');
-  currentCall.sendingVideo ? overlay.show() : overlay.hide();
-  $('#toggle-outgoing-video').toggleClass('off');
-
   currentCall.toggleSendingVideo().then(() => {
     updateLocalStream();
   });
