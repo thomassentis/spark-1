@@ -18,7 +18,7 @@ const activeCallTemplate = {
     updateRemoteStream();
     updateLocalStream();
     updateIncomingVideo();
-    updateOutgoingVideo();
+    updateOutgoingVideoOverlayVisibility();
 
     registerCallEvents();
 
@@ -29,9 +29,8 @@ const activeCallTemplate = {
 
     $('#toggle-outgoing-video').on('click', toggleSendingVideo);
     $('#toggle-outgoing-audio').on('click', toggleSendingAudio);
-
     $('#toggle-incoming-video').on('click', toggleReceivingVideo);
-
+    $('#toggle-incoming-audio').on('click', toggleReceivingAudio);
     $('#logout-button').on('click', hangupCall);
   }
 };
@@ -40,13 +39,13 @@ function registerCallEvents() {
   currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
   currentCall.on('localMediaStream:change', () => updateLocalStream());
   currentCall.on('change:receivingVideo', () => updateIncomingVideo());
-  currentCall.on('change:sendingVideo', () => updateOutgoingVideo());
+  currentCall.on('change:receivingAudio', () => updateIncomingAudio());
   currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
-
+  currentCall.on('remoteAudioMuted:change', () => updateIncomingAudio());
   currentCall.on('disconnected error', hangupCall);
 }
 
-function updateOutgoingVideo() {
+function updateOutgoingVideoOverlayVisibility() {
   let outgoingOverlay = $('#outgoing-call-video-overlay');
   if (currentCall.sendingVideo) {
     $('#toggle-outgoing-video').removeClass('off');
@@ -58,19 +57,34 @@ function updateOutgoingVideo() {
 }
 
 function updateIncomingVideo() {
+  updateIncomingVideoOverlayVisibility();
+  updateIncomingVideoButton();
+}
+
+function updateIncomingVideoOverlayVisibility() {
   let incomingOverlay = $('#incoming-call-video-overlay');
   if(currentCall.receivingVideo && !currentCall.remoteVideoMuted) {
     incomingOverlay.hide();
   } else {
     incomingOverlay.show();
   }
+}
 
+function updateIncomingVideoButton() {
   $('#toggle-incoming-video').prop('disabled', currentCall.remoteVideoMuted);
-
   if(currentCall.receivingVideo) {
     $('#toggle-incoming-video').removeClass('off');
   } else {
     $('#toggle-incoming-video').addClass('off');
+  }
+}
+
+function updateIncomingAudio() {
+  $('#toggle-incoming-audio').prop('disabled', currentCall.remoteAudioMuted);
+  if(currentCall.receivingAudio) {
+    $('#toggle-incoming-audio').removeClass('off');
+  } else {
+    $('#toggle-incoming-audio').addClass('off');
   }
 }
 
@@ -81,9 +95,14 @@ function toggleReceivingVideo() {
   });
 }
 
+function toggleReceivingAudio() {
+  currentCall.toggleReceivingAudio();
+}
+
 function toggleSendingVideo() {
   currentCall.toggleSendingVideo().then(() => {
     updateLocalStream();
+    updateOutgoingVideoOverlayVisibility();
   });
 }
 
