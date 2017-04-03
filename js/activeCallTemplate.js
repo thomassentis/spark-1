@@ -15,25 +15,21 @@ const activeCallTemplate = {
 
     $('#main-content').append($('#call-template').html().trim());
 
-    if (currentCall.remoteMediaStreamUrl) {
-      updateRemoteStream();
-    }
-    if (currentCall.localMediaStreamUrl) {
-      updateLocalStream();
-    }
+    updateRemoteStream();
+    updateLocalStream();
+    updateIncomingVideo();
+    updateOutgoingVideo();
 
     currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
     currentCall.on('localMediaStream:change', () => updateLocalStream());
-    currentCall.on('change:receivingVideo', () => receivingVideoChanged());
-
+    currentCall.on('change:receivingVideo', () => updateIncomingVideo());
+    currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
     currentCall.on('disconnected error', hangupCall);
 
     $('#hangup-call').on('click', () => {
       currentCall.off('disconnected error', hangupCall);
       hangupCall();
     });
-
-    initializeVideoOverlays();
 
     $('#toggle-outgoing-video').on('click', toggleSendingVideo);
     $('#toggle-outgoing-audio').on('click', toggleSendingAudio);
@@ -44,33 +40,33 @@ const activeCallTemplate = {
   }
 };
 
-function receivingVideoChanged(){
-  let incomingOverlay = $('#incoming-call-video-overlay');
-  $('#toggle-incoming-video').toggleClass('off');
-
-  if(currentCall.receivingVideo){
-    incomingOverlay.hide();
-  } else {
-    incomingOverlay.show();
-  }
-}
-
-function initializeVideoOverlays() {
+function updateOutgoingVideo() {
   let outgoingOverlay = $('#outgoing-call-video-overlay');
   if (currentCall.sendingVideo) {
+    $('#toggle-outgoing-video').removeClass('off');
     outgoingOverlay.hide();
   } else {
     $('#toggle-outgoing-video').addClass('off');
     outgoingOverlay.show();
   }
+}
 
+function updateIncomingVideo() {
   let incomingOverlay = $('#incoming-call-video-overlay');
-
-  if (currentCall.receivingVideo) {
+  if(currentCall.receivingVideo && !currentCall.remoteVideoMuted) {
     incomingOverlay.hide();
   } else {
-    $('#toggle-incoming-video').addClass('off');
     incomingOverlay.show();
+  }
+
+  $('#toggle-incoming-video').prop('disabled', currentCall.remoteVideoMuted);
+
+  if(!currentCall.remoteVideoMuted) {
+    if(currentCall.receivingVideo) {
+      $('#toggle-incoming-video').addClass('off');
+    } else {
+      $('#toggle-incoming-video').removeClass('off');
+    }
   }
 }
 
