@@ -81,6 +81,11 @@ Each html page within the app has an associated javascript file to handle busine
 
 * The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer is not supported by the Spark SDK.
 * **Chrome**: When developing without a webcam, start Chrome with the ```--use-fake-device-for-media-stream``` and ```--use-fake-ui-for-media-stream``` flags.
+
+### Useful snippets
+
+* Log all events on a call: `call.on('all', (name) => console.log('currentCall event: ', name));`
+
 <!---
 ## TODO
 
