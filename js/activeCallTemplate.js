@@ -61,12 +61,10 @@ function updateIncomingVideo() {
 
   $('#toggle-incoming-video').prop('disabled', currentCall.remoteVideoMuted);
 
-  if(!currentCall.remoteVideoMuted) {
-    if(currentCall.receivingVideo) {
-      $('#toggle-incoming-video').addClass('off');
-    } else {
-      $('#toggle-incoming-video').removeClass('off');
-    }
+  if(currentCall.receivingVideo) {
+    $('#toggle-incoming-video').removeClass('off');
+  } else {
+    $('#toggle-incoming-video').addClass('off');
   }
 }
 
