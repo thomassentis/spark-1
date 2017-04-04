@@ -515,6 +515,21 @@ main {
     }
   }
 
+  .include-logs {
+    display: flex;
+    align-self: center;
+    width: 70%;
+    margin-top: 0.75rem;
+
+    input {
+      margin-left: 0.75rem;
+    }
+
+    div {
+      margin-left: 0.5rem;
+    }
+  }
+
   .buttons {
     margin-top: 4rem;
 

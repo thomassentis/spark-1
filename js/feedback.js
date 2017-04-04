@@ -28,8 +28,10 @@ function prepareEventListeners() {
 function submitUserFeedback() {
   if($('#feedback-comments').val() === '') return;
   let feedback = {
-    userComments: $('#feedback-comments').val()
+    userComments: $('#feedback-comments').val(),
+    includeLogs: $('input[name=include-logs]:checked').val() === 'true' ? true : false
   };
+
   currentCall.sendFeedback(feedback);
   removeOverlay();
 }
