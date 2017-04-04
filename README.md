@@ -160,6 +160,9 @@ In order to allow users to send feedback about their experience with a given cal
 
 * **Firefox**: Required - If the app is not secured with SSL, microphone and camera permissions will be denied. This can be overriden by changing the ```media.navigator.permission.disabled``` flag to true within the ```about:config``` of Firefox.
 
+### Further Documentation
+Also see [Cisco's Documentation](https://ciscospark.github.io/spark-js-sdk/) regarding the SDK.
+
 ### Useful snippets
 
 * Log all events on a call: `call.on('all', (name) => console.log('currentCall event: ', name));`
