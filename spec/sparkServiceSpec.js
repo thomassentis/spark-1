@@ -13,7 +13,6 @@ describe('sparkService', () => {
   let mockSpark,
     mockCallback,
     mockCall,
-    mockLocalMediaStream,
     sparkService,
     authenticationCallback,
     incomingCallback,
@@ -29,8 +28,6 @@ describe('sparkService', () => {
       answer: jasmine.createSpy('answer'),
       reject: jasmine.createSpy('reject')
     };
-
-    mockLocalMediaStream = { who: 'BATMAN' };
 
     fakeListener = 'BEES!?';
 
@@ -51,8 +48,6 @@ describe('sparkService', () => {
       },
       phone: {
         register: jasmine.createSpy('register').and.returnValue(Promise.resolve()),
-        createLocalMediaStream: jasmine.createSpy('createLocalMediaStream')
-          .and.returnValue(Promise.resolve(mockLocalMediaStream)),
         dial: jasmine.createSpy('dial').and.returnValue(mockCall),
         on: (event, callback) => {
           incomingCallback = callback;
@@ -180,20 +175,12 @@ describe('sparkService', () => {
   });
 
   describe('answerCall', () => {
-    it('calls Spark Phone createLocalMediaStream', (done) => {
-      sparkService.answerCall(mockCall);
-      expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
-      done();
-    });
 
-    it('calls Spark Call answer', (done) => {
-      sparkService.answerCall(mockCall).then(() => {
-        expect(mockCall.answer).toHaveBeenCalledWith({
-          offerOptions: offerOptions,
-          constraints: constraints,
-          localMediaStream: mockLocalMediaStream
-        });
-        done();
+    it('calls Spark Call answer', () => {
+      sparkService.answerCall(mockCall);
+      expect(mockCall.answer).toHaveBeenCalledWith({
+        offerOptions: offerOptions,
+        constraints: constraints
       });
     });
   });
@@ -201,29 +188,16 @@ describe('sparkService', () => {
   describe('callUser', () => {
     const user = 'Your Father';
 
-    it('calls createLocalMediaStream', (done) => {
-      sparkService.callUser(user).then(() => {
-        expect(mockSpark.phone.createLocalMediaStream).toHaveBeenCalledWith(constraints);
-        done();
+    it('calls dial', () => {
+      sparkService.callUser(user);
+      expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
+        offerOptions: offerOptions,
+        constraints: constraints
       });
     });
 
-    it('calls dial', (done) => {
-      sparkService.callUser(user).then(() => {
-        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
-          offerOptions: offerOptions,
-          constraints: constraints,
-          localMediaStream: mockLocalMediaStream
-        });
-        done();
-      });
-    });
-
-    it('resolves with a call', (done) => {
-      sparkService.callUser(user).then((call) => {
-        expect(call).toEqual(mockCall);
-        done();
-      });
+    it('returns a call', () => {
+      expect(sparkService.callUser(user)).toEqual(mockCall);
     });
 
     describe('when passed video=false', () => {
@@ -233,17 +207,14 @@ describe('sparkService', () => {
         options = { video: false };
       });
 
-      it('doesn\'t send or offer to receive video', (done) => {
-        sparkService.callUser(user, options).then(() => {
-          expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
-            offerOptions: {
-              offerToReceiveAudio: true,
-              offerToReceiveVideo: false
-            },
-            constraints: Object.assign({}, constraints, options),
-            localMediaStream: mockLocalMediaStream
-          });
-          done();
+      it('doesn\'t send or offer to receive video', () => {
+        sparkService.callUser(user, options);
+        expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
+          offerOptions: {
+            offerToReceiveAudio: true,
+            offerToReceiveVideo: false
+          },
+          constraints: Object.assign({}, constraints, options)
         });
       });
     });

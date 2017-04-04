@@ -9,26 +9,25 @@ const outgoingCallTemplate = {
     event.preventDefault();
     const email = $('#user-email').val();
 
-    sparkService.callUser(email, constraints).then((call) => {
-      $('#main-content').append($('#calling-template').html().trim());
-      $('#callee-email').html(email);
+    const call = sparkService.callUser(email, constraints);
+    $('#main-content').append($('#calling-template').html().trim());
+    $('#callee-email').html(email);
 
-      feedback.displayFeedbackButton(call);
+    feedback.displayFeedbackButton(call);
 
-      avatar.display(email, '#callee-image');
+    avatar.display(email, '#callee-image');
 
-      call.on('disconnected error', outgoingCallFailure);
+    call.on('disconnected error', outgoingCallFailure);
 
-      call.on('connected', () => {
-        $('#calling-overlay').remove();
-        call.off('disconnected error', outgoingCallFailure);
-        activeCallTemplate.display(call);
-      });
+    call.on('connected', () => {
+      $('#calling-overlay').remove();
+      call.off('disconnected error', outgoingCallFailure);
+      activeCallTemplate.display(call);
+    });
 
-      $('#hangup-calling').on('click', () => {
-        call.hangup();
-        $('#calling-overlay').remove();
-      });
+    $('#hangup-calling').on('click', () => {
+      call.hangup();
+      $('#calling-overlay').remove();
     });
   }
 };
