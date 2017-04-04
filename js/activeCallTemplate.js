@@ -35,6 +35,8 @@ const activeCallTemplate = {
   }
 };
 
+// Registers all of the events for a call - necessary to update UI and handle
+// call actions appropriately
 function registerCallEvents() {
   currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
   currentCall.on('localMediaStream:change', () => updateLocalStream());

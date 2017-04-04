@@ -1,5 +1,7 @@
 const $ = require('jquery');
 
+// This lookup dictionary is used to contain all of the various parameters and
+// information for the different types of calls that can occur.
 const dict = {
   audioOutgoing: {
     mediaType: { audio: true, video: false },
@@ -31,6 +33,8 @@ const dict = {
   }
 };
 
+// The mediaValidator is used in order to check for device availability and
+// permissions (specifically for webcam and microphone).
 const mediaValidator = {
   validateMedia: () => {
     validateAMedia(dict.audioOutgoing).then(() => validateAMedia(dict.videoOutgoing)).catch(() => {});

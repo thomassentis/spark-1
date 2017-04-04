@@ -39,10 +39,8 @@ const sparkService = {
 
   listenForCall: (callback) => {
     spark.phone.on('call:incoming', (call) => {
-      /*
-      The call:incoming event is triggered for both incoming and outgoing calls.
-      Outgoing calls are handled by SparkService.callUser(...).
-      */
+      // The call:incoming event is triggered for both incoming and outgoing calls.
+      // Outgoing calls are handled by SparkService.callUser(...).
       if (call.direction === 'out') {
         return;
       }
