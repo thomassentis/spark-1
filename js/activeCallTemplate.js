@@ -42,7 +42,12 @@ function registerCallEvents() {
   currentCall.on('change:receivingAudio', () => updateIncomingAudio());
   currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
   currentCall.on('remoteAudioMuted:change', () => updateIncomingAudio());
-  currentCall.on('disconnected error', hangupCall);
+  currentCall.on('disconnected', hangupCall);
+  currentCall.on('error', handleError);
+}
+
+function handleError(error) {
+  console.error('call error: ', error);
 }
 
 function updateOutgoingVideoOverlayVisibility() {
