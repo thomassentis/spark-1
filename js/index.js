@@ -4,6 +4,12 @@ const mediaValidator = require('./mediaValidator');
 const outgoingCallTemplate = require('./outgoingCallTemplate');
 const incomingCallTemplate = require('./incomingCallTemplate');
 
+$(() => {
+  if(window.location.href.indexOf('error=access_denied') !== -1) {
+    $('#logout-button').click();
+  }
+});
+
 $('#logout-button').on('click', () => sparkService.logout());
 
 sparkService.register().then(() => {
