@@ -31,7 +31,7 @@ The login process for the user is handled by the login page. Once the user has b
 ## Installation and Usage
 
 <a name="integration"></a>
-### Key Spark Integration Steps
+### Spark Integration Process
 
 Before integrating Spark's JavaScript SDK into your app, there are a few major processes that you should familiarize yourself with. 
 
