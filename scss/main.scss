@@ -302,7 +302,7 @@ button:enabled {
   float: right;
   cursor: pointer;
   font-size: 2.25rem;
-  margin: 0 0.25rem;
+  padding: 0 0.25rem;
 
   &:before {
     content: '\e909';
@@ -556,12 +556,17 @@ main {
 #user-feedback-overlay {
   h1 {
     align-self: center;
+    margin: 0;
   }
 
   .comments {
     display: flex;
     width: 70%;
     flex-direction: column;
+
+    h1 {
+      margin: 0.5rem 1rem 1rem 1rem;
+    }
 
     textarea {
       text-align: justify;
@@ -593,7 +598,7 @@ main {
   }
 
   .buttons {
-    margin-top: 4rem;
+    margin-top: 2rem;
 
     button {
       font-size: 1rem;
