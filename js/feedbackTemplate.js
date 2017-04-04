@@ -26,8 +26,9 @@ function prepareEventListeners() {
 }
 
 function submitUserFeedback() {
-  if($('#feedback-comments').val() === '') return;
+  if($('#feedback-comments').val() === '' && $('input[name=rating]:checked').length === 0) return;
   let feedback = {
+    userRating: $('input[name=rating]:checked').val(),
     userComments: $('#feedback-comments').val(),
     includeLogs: $('input[name=include-logs]:checked').val() === 'true' ? true : false
   };

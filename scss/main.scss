@@ -42,6 +42,40 @@ $black: #000000;
 $transition-speed: 200ms;
 $video-border-width: 2px;
 
+@mixin star-border {
+  position: absolute;
+  margin-left: -2.4rem;
+  content: '\e90a';
+  font-family: 'Kitchen Sink';
+  color: #a78802;
+}
+
+@mixin full-star {
+  &:before {
+    content: '\e90b';
+    font-family: 'Kitchen Sink';
+    color: #E6C21A;
+  }
+
+  &:after {
+    @include star-border;
+  }
+
+  @include hover-star;
+}
+
+@mixin hover-star {
+  &:hover:before {
+    content: '\e90b';
+    font-family: 'Kitchen Sink';
+    color: #FDD835;
+  }
+
+  &:hover:after {
+    @include star-border;
+  }
+}
+
 button, input, textarea {
   font-family: inherit;
   letter-spacing: .03rem;
@@ -248,6 +282,38 @@ button:enabled {
   &:before {
     content: '\e903';
     font-family: 'Kitchen Sink';
+  }
+}
+
+.rating {
+  border: none;
+  position: relative;
+}
+
+.star-radio {
+  display: none;
+
+  &:checked ~ .star-label {
+    @include full-star;
+  }
+}
+
+.star-label {
+  float: right;
+  cursor: pointer;
+  font-size: 2.25rem;
+  margin: 0 0.25rem;
+
+  &:before {
+    content: '\e909';
+    font-family: 'Kitchen Sink';
+    color: $light-gray;
+  }
+
+  @include hover-star;
+
+  &:hover ~ .star-label {
+    @include full-star;
   }
 }
 

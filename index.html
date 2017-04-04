@@ -94,6 +94,18 @@
     <template id="feedback-template">
       <section id="user-feedback-overlay" class="overlay">
         <h1>Please rate your experience</h1>
+        <fieldset class="rating">
+          <input type="radio" name="rating" class="star-radio" id="five-stars" value="5" />
+          <label class="star-label icon" for="five-stars"></label>
+          <input type="radio" name="rating" class="star-radio" id="four-stars" value="4" />
+          <label class="star-label icon" for="four-stars"></label>
+          <input type="radio" name="rating" class="star-radio" id="three-stars" value="3" />
+          <label class="star-label icon" for="three-stars"></label>
+          <input type="radio" name="rating" class="star-radio" id="two-stars" value="2" />
+          <label class="star-label icon" for="two-stars"></label>
+          <input type="radio" name="rating" class="star-radio" id="one-star" value="1" />
+          <label class="star-label icon" for="one-star"></label>
+        </fieldset>
         <div class="comments">
           <h1>Comments</h1>
           <textarea id="feedback-comments" placeholder="How was the call quality?"></textarea>
@@ -104,8 +116,8 @@
           <input type="radio" name="include-logs" value="false">No</input>
         </div>
         <div class="buttons">
-          <button id="submit-feedback" class="primary-button">Send Feedback</button>
-          <button id="cancel" class="cancel primary-button">Cancel</button>
+          <button class="primary-button" id="submit-feedback">Send Feedback</button>
+          <button class="cancel primary-button" id="cancel">Cancel</button>
         </div>
       </section>
     </template>
