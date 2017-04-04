@@ -38,6 +38,7 @@ $yellow: #EEEE44;
 $dark-yellow: darken($yellow, 20%);
 $light-border: #e0e0e0;
 $white: #ffffff;
+$black: #000000;
 
 $transition-speed: 200ms;
 $video-border-width: 2px;
@@ -46,6 +47,10 @@ button, input, textarea {
   font-family: inherit;
   letter-spacing: .03rem;
   outline: none;
+}
+
+textarea {
+  border: 1px solid $black;
 }
 
 body, html {
@@ -533,7 +538,6 @@ main {
 
 .video {
   background: black;
-  border: $video-border-width solid $navy-blue;
 }
 
 #incoming-call, .incoming-controls {
@@ -542,13 +546,14 @@ main {
 
 #outgoing-call, .outgoing-controls {
   width: 14rem;
-  border-left: none;
   margin-left: -$video-border-width;
 }
 
 .outgoing-video, .incoming-video {
   display: inline-block;
   position: relative;
+  border: $video-border-width solid $navy-blue;
+  z-index: 2;
 }
 
 .incoming-video {
@@ -557,10 +562,11 @@ main {
 
 .outgoing-video {
   height: 10.5rem;
+  border-left: none;
 }
 
 .video-overlay {
-  top: 2px;
+  top: 0px;
   left: 0px;
   display: flex;
   justify-content: center;
@@ -580,7 +586,6 @@ main {
 #incoming-call-video-overlay {
   width: 32rem;
   height: 18rem;
-  left: 2px;
 
   &:after {
     font-size: 8rem;
