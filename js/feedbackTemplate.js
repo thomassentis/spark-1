@@ -1,7 +1,7 @@
 const $ = require('jquery');
 let currentCall = null;
 
-const feedback = {
+const feedbackTemplate = {
   displayFeedbackButton: (call) => {
     $('#feedback-button').removeClass('hidden');
     $('#feedback-button').off('click');
@@ -15,7 +15,7 @@ const feedback = {
 
 function displayFeedbackOverlay(call) {
   currentCall = call;
-  $('#main-content').append($('#user-feedback-template').html().trim());
+  $('#main-content').append($('#feedback-template').html().trim());
   prepareEventListeners();
   $('#feedback-button').addClass('hidden');
 }
@@ -42,4 +42,4 @@ function removeOverlay() {
   $('#feedback-button').removeClass('hidden');
 }
 
-module.exports = feedback;
+module.exports = feedbackTemplate;

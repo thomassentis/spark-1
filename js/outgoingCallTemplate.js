@@ -2,7 +2,7 @@ const $ = require('jquery');
 const sparkService = require('./sparkService');
 const activeCallTemplate = require('./activeCallTemplate');
 const avatar = require('./avatar');
-const feedback = require('./feedback');
+const feedbackTemplate = require('./feedbackTemplate');
 
 const outgoingCallTemplate = {
   callByEmail: (event, constraints) => {
@@ -10,10 +10,10 @@ const outgoingCallTemplate = {
     const email = $('#user-email').val();
 
     const call = sparkService.callUser(email, constraints);
-    $('#main-content').append($('#calling-template').html().trim());
+    $('#main-content').append($('#outgoing-call-template').html().trim());
     $('#callee-email').html(email);
 
-    feedback.displayFeedbackButton(call);
+    feedbackTemplate.displayFeedbackButton(call);
 
     avatar.display(email, '#callee-image');
 

@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const feedback = require('./feedback');
+const feedbackTemplate = require('./feedbackTemplate');
 
 let currentCall = null;
 
@@ -11,9 +11,9 @@ const activeCallTemplate = {
 
     currentCall = call;
 
-    feedback.displayFeedbackButton(currentCall);
+    feedbackTemplate.displayFeedbackButton(currentCall);
 
-    $('#main-content').append($('#call-template').html().trim());
+    $('#main-content').append($('#active-call-template').html().trim());
 
     updateRemoteStream();
     updateLocalStream();

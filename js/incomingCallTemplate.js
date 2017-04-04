@@ -3,7 +3,7 @@ const sparkService = require('./sparkService');
 const mediaValidator = require('./mediaValidator');
 const avatar = require('./avatar');
 const activeCallTemplate = require('./activeCallTemplate');
-const feedback = require('./feedback');
+const feedbackTemplate = require('./feedbackTemplate');
 
 let currentCall = null;
 
@@ -18,7 +18,7 @@ const incomingCallTemplate = {
 
     currentCall = call;
 
-    feedback.displayFeedbackButton(currentCall);
+    feedbackTemplate.displayFeedbackButton(currentCall);
 
     const email = currentCall.from.person.email;
 
