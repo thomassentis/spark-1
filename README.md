@@ -129,7 +129,7 @@ In order to allow users to send feedback about their experience with a given cal
     - CISCOSPARK_LOG_LEVEL (defaults to 'info'. Alternative log levels are: silent, error, warn, log, info, debug, and trace)
 * `$ npm install -g browserify node-sass`
 * `$ npm start`
-* In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer is not supported)
+* In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer and Safari are not supported)
 
 <a name="usage"></a>
 ### How to Use the App
@@ -155,7 +155,7 @@ In order to allow users to send feedback about their experience with a given cal
 <a name="browsers"></a>
 ### Supported Browsers
 
-* The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer is not supported by the Spark SDK.
+* The app is intended for Google Chrome or Mozilla Firefox. Internet Explorer & Safari are not supported by the Spark SDK.
 * **Chrome**: Optional - When developing without a webcam, start Chrome with the ```--use-fake-device-for-media-stream``` and ```--use-fake-ui-for-media-stream``` flags to simulate a webcam.
 
 * **Firefox**: Required - If the app is not secured with SSL, microphone and camera permissions will be denied. This can be overriden by changing the ```media.navigator.permission.disabled``` flag to true within the ```about:config``` of Firefox.
@@ -169,7 +169,5 @@ In order to allow users to send feedback about their experience with a given cal
 
 * Link to live app
 * Put more comments in the code
-* Details on how to use the SDK
 * Do we support Edge?
-* Consider tooltips within the app
 ---!>
