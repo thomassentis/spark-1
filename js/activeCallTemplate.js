@@ -54,13 +54,9 @@ function handleError(error) {
 
 function updateOutgoingVideoOverlayVisibility() {
   let outgoingOverlay = $('#outgoing-call-video-overlay');
-  if (currentCall.sendingVideo) {
-    $('#toggle-outgoing-video').removeClass('off');
-    outgoingOverlay.hide();
-  } else {
-    $('#toggle-outgoing-video').addClass('off');
-    outgoingOverlay.show();
-  }
+  $('#toggle-outgoing-video').toggleClass('off');
+
+  currentCall.sendingVideo ? outgoingOverlay.hide() : outgoingOverlay.show();
 }
 
 function updateIncomingVideo() {
@@ -79,20 +75,12 @@ function updateIncomingVideoOverlayVisibility() {
 
 function updateIncomingVideoButton() {
   $('#toggle-incoming-video').prop('disabled', currentCall.remoteVideoMuted);
-  if(currentCall.receivingVideo) {
-    $('#toggle-incoming-video').removeClass('off');
-  } else {
-    $('#toggle-incoming-video').addClass('off');
-  }
+  $('#toggle-incoming-video').toggleClass('off');
 }
 
 function updateIncomingAudio() {
   $('#toggle-incoming-audio').prop('disabled', currentCall.remoteAudioMuted);
-  if(currentCall.receivingAudio) {
-    $('#toggle-incoming-audio').removeClass('off');
-  } else {
-    $('#toggle-incoming-audio').addClass('off');
-  }
+  $('#toggle-incoming-audio').toggleClass('off');
 }
 
 function toggleReceivingVideo() {
