@@ -75,12 +75,7 @@ describe('sparkService', () => {
     spyOn(mockSpark.phone, 'on').and.callThrough();
 
     sparkService = proxyquire('../js/sparkService', {
-      'ciscospark': mockSpark,
-      'jquery': () => {
-        return {
-          attr: () => {}
-        };
-      }
+      'ciscospark': mockSpark
     });
   });
 
