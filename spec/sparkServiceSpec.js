@@ -245,33 +245,5 @@ describe('sparkService', () => {
         done();
       });
     });
-
-    describe('when there are no people in the call', () => {
-      beforeEach(() => {
-        fakePeople.items = [];
-      });
-
-      it('rejects', (done) => {
-        sparkService.getAvatarUrl('hi').then(() => {
-          fail('Promise unexpectedly resolved');
-        }).catch(() => {
-          done();
-        });
-      });
-    });
-
-    describe('when the first person does not have an avatar', () => {
-      beforeEach(() => {
-        fakePeople.items[0].avatar = null;
-      });
-
-      it('rejects', (done) => {
-        sparkService.getAvatarUrl('hi').then(() => {
-          fail('Promise unexpectedly resolved');
-        }).catch(() => {
-          done();
-        });
-      });
-    });
   });
 });

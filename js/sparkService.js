@@ -69,10 +69,8 @@ const sparkService = {
 
   getAvatarUrl: (email) => {
     return spark.people.list({ email: email }).then((people) => {
-      if(people.count === 0 || !people.items[0].avatar) {
-        return Promise.reject('No avatar found');
-      } else {
-        return Promise.resolve(people.items[0].avatar);
+      if(people.items.length && people.items[0].avatar) {
+        return people.items[0].avatar;
       }
     });
   },
