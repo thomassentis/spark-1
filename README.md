@@ -148,9 +148,14 @@ In order to allow users to send feedback about their experience with a given cal
 <a name="tests"></a>
 ### How to Run the Tests
 
+#### Unit Tests
 * `$ npm install -g jasmine`
 * From within the app's root directory:
 * `$ npm test`
+
+##### Integration Tests
+* From within the app's root directory:
+* npm run integration-test
 
 <a name="browsers"></a>
 ### Supported Browsers
