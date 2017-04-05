@@ -21,8 +21,8 @@ sparkService.register().then(() => {
     if($('#user-email').val().length !== 0) {
       mediaValidator.validateMedia();
     } else {
-      $('#call-audio-only').attr('disabled', true);
-      $('#call-audio-video').attr('disabled', true);
+      $('#call-audio-only').prop('disabled', true);
+      $('#call-audio-video').prop('disabled', true);
     }
   });
 

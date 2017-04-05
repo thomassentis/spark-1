@@ -99,16 +99,16 @@ function updateIncomingAudio() {
 }
 
 function toggleReceivingVideo() {
-  $('#toggle-incoming-video').attr('disabled', true);
+  $('#toggle-incoming-video').prop('disabled', true);
   currentCall.toggleReceivingVideo().then(() => {
-    $('#toggle-incoming-video').attr('disabled', false);
+    $('#toggle-incoming-video').prop('disabled', false);
   });
 }
 
 function toggleReceivingAudio() {
-  $('#toggle-incoming-audio').attr('disabled', true);
+  $('#toggle-incoming-audio').prop('disabled', true);
   currentCall.toggleReceivingAudio().then(() => {
-    $('#toggle-incoming-audio').attr('disabled', false);
+    $('#toggle-incoming-audio').prop('disabled', false);
   });
 }
 
@@ -135,11 +135,11 @@ function clearTemplate() {
 }
 
 function updateRemoteStream() {
-  $('#incoming-call').attr('src', currentCall.remoteMediaStreamUrl);
+  $('#incoming-call').prop('src', currentCall.remoteMediaStreamUrl);
 }
 
 function updateLocalStream() {
-  $('#outgoing-call').attr('src', currentCall.localMediaStreamUrl);
+  $('#outgoing-call').prop('src', currentCall.localMediaStreamUrl);
 }
 
 module.exports = activeCallTemplate;

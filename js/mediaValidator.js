@@ -66,7 +66,7 @@ function getVideoErrorMessage(error) {
 
 function enableCallButtons(ids) {
   ids.forEach((id) => {
-    if($('#user-email').val().length === 0) return $(`#${id}`).attr('disabled', true);
+    if($('#user-email').val().length === 0) return $(`#${id}`).prop('disabled', true);
     enableButton(id);
   });
 }
@@ -77,14 +77,14 @@ function enableButtons(ids) {
 
 function enableButton(id) {
   const buttonElement = $(`#${id}`);
-  buttonElement.attr('disabled', false).removeClass('unavailable');
+  buttonElement.prop('disabled', false).removeClass('unavailable');
   $(`#${id} > .invalid-call-message`).remove();
 }
 
 function disableButton(id, message) {
   const buttonElement = $(`#${id}`);
   const messageElement = $(`#${id} > .invalid-call-message`);
-  buttonElement.attr('disabled', true).addClass('unavailable');
+  buttonElement.prop('disabled', true).addClass('unavailable');
   if (messageElement.length === 0) {
     buttonElement.append(`<span class="invalid-call-message">${message}</span>`);
   } else {
