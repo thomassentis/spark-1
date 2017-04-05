@@ -210,10 +210,7 @@ describe('sparkService', () => {
       it('doesn\'t send or offer to receive video', () => {
         sparkService.callUser(user, options);
         expect(mockSpark.phone.dial).toHaveBeenCalledWith(user, {
-          offerOptions: {
-            offerToReceiveAudio: true,
-            offerToReceiveVideo: false
-          },
+          offerOptions: offerOptions,
           constraints: Object.assign({}, constraints, options)
         });
       });
