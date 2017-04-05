@@ -37,6 +37,8 @@
     "build-images": "mkdir -p public/images; cp -r images public/",
     "build-fonts": "mkdir -p public/fonts; cp node_modules/mki-font-ciscosans/files/CiscoSansExtraLight.otf public/fonts/; cp -r fonts/ public/fonts/",
     "build-font-awesome": "mkdir -p public/fonts; mkdir -p public/css; cp -r node_modules/font-awesome/css/ public/css; cp -r node_modules/font-awesome/fonts/ public/fonts",
-    "test": "jasmine"
+    "test": "npm run unit-test && npm run integration-test",
+    "unit-test": "jasmine",
+    "integration-test": "./scripts/integrationTest.sh"
   }
 }

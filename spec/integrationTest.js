@@ -8,7 +8,10 @@ describe('Search for a user', () => {
 
   beforeAll(() => {
     browser.get(sparkUrl);
-    login();
+    login(env.calleeUsername, env.calleePassword);
+    dv.sleep(1000);
+    logout();
+    login(env.sparkUsername, env.sparkPassword)
   });
 
   afterAll(() => {
@@ -19,7 +22,8 @@ describe('Search for a user', () => {
 
     callUserByEmail(env.fakeUser);
     waitForTextToBePresentInElementByID('calling-status', 'Fail');
-    hangup();
+    expect(EC.presenceOf(element(By.id('calling-status'))));
+    hangup('hangup-calling');
 
   });
 
@@ -27,46 +31,73 @@ describe('Search for a user', () => {
 
     callUserByEmail(env.calleeUsername);
     waitForElementByIDToBeVisible('hangup-calling');
-    hangup();
+    hangup('hangup-calling');
 
   });
 
-  it('should answer an incoming call', () => {
+  describe('when logged in', () => {
 
-    let incomingBrowser = browser.forkNewDriverInstance();
-    incomingBrowser.ignoreSynchronization = true;
-    incomingBrowser.get(sparkUrl);
+    it('should answer an incoming audio-video call', () => {
 
-    incomingBrowser.element(By.id('login-button')).click();
-    incomingBrowser.element(By.id('IDToken1')).sendKeys(env.calleeUsername);
-    incomingBrowser.element(By.id('IDButton2')).click();
+      let incomingBrowser = browser.forkNewDriverInstance();
+      incomingBrowser.ignoreSynchronization = true;
+      incomingBrowser.get(sparkUrl);
 
-    dv.sleep(1000);
-    incomingBrowser.element(By.id('IDToken2')).sendKeys(env.calleePassword);
-    incomingBrowser.element(By.id('Button1')).click();
+      incomingBrowser.element(By.id('login-button')).click();
+      incomingBrowser.element(By.id('IDToken1')).sendKeys(env.calleeUsername);
+      incomingBrowser.element(By.id('IDButton2')).click();
 
-    dv.sleep(3000);
-    incomingBrowser.element(By.id('user-email')).sendKeys(env.sparkUsername);
-    dv.sleep(500);
-    incomingBrowser.element(By.id('submit-user-email')).click();
+      dv.sleep(1000);
+      incomingBrowser.element(By.id('IDToken2')).sendKeys(env.calleePassword);
+      incomingBrowser.element(By.id('Button1')).click();
 
-    dv.sleep(70000);
-    clickButtonByIdOnceClickable('answer-video');
-    waitForElementByIDToBeVisible('hangup-call');
-    hangup();
+      dv.sleep(3000);
+      incomingBrowser.element(By.id('user-email')).sendKeys(env.sparkUsername);
+      dv.sleep(500);
+      incomingBrowser.element(By.id('call-audio-video')).click();
 
+      dv.sleep(3000);
+      clickButtonByIdOnceClickable('answer-audio-video');
+
+    });
+
+    it('should be able to toggle incoming video', () => {
+      clickButtonByIdOnceClickable('toggle-incoming-video');
+      waitForElementByIDToBeVisible('incoming-call-video-overlay');
+      clickButtonByIdOnceClickable('toggle-incoming-video');
+      waitForElementByIDToBeInvisible('incoming-call-video-overlay');
+    });
+
+    it('should be able to toggle outgoing video', () => {
+      clickButtonByIdOnceClickable('toggle-outgoing-video');
+      waitForElementByIDToBeVisible('outgoing-call-video-overlay');
+      clickButtonByIdOnceClickable('toggle-outgoing-video');
+      waitForElementByIDToBeInvisible('outgoing-call-video-overlay');
+    });
+
+    it('should be able to toggle outgoing audio', () => {
+      clickButtonByIdOnceClickable('toggle-outgoing-audio');
+      expect(hasClass(element(By.id('toggle-outgoing-audio')), 'off')).toBe(true);
+      clickButtonByIdOnceClickable('toggle-outgoing-audio');
+      expect(hasClass(element(By.id('toggle-outgoing-audio')), 'off')).toBe(false);
+      hangup('hangup-call');
+    });
   });
-
 });
 
-function login() {
+function login(username, password) {
 
   clickButtonByIdOnceClickable('login-button');
-  sendKeysToElementByIdWhenReady('IDToken1', env.sparkUsername);
+  sendKeysToElementByIdWhenReady('IDToken1', username);
   clickButtonByIdOnceClickable('IDButton2');
-  sendKeysToElementByIdWhenReady('IDToken2', env.sparkPassword);
+  sendKeysToElementByIdWhenReady('IDToken2', password);
   clickButtonByIdOnceClickable('Button1');
-  clickButtonByNameOnceClickable('accept');
+
+  browser.getCurrentUrl().then((url) => {
+    if (url !== "http://localhost:8000/index.html") {
+      clickButtonByNameOnceClickable('accept');
+    }
+  });
 
 }
 
@@ -92,14 +123,13 @@ function logout() {
   clickButtonByIdOnceClickable('logout-button');
 }
 
-function hangup() {
-  clickButtonByIdOnceClickable('hangup-calling');
+function hangup(id) {
+  clickButtonByIdOnceClickable(id);
 }
 
 function callUserByEmail(email) {
 
   expectStalenessOfElementByID('spark-message');
-  waitForElementByIDToBeClickable('logout-button');
   sendKeysToElementByIdWhenReady('user-email', email);
   clickButtonByIdOnceClickable('call-audio-video');
 
@@ -121,7 +151,42 @@ function waitForElementByIDToBeVisible(id) {
   browser.wait(EC.visibilityOf(element(By.id(id))), waitTimeout);
 }
 
+function waitForElementByIDToBeInvisible(id) {
+  browser.wait(EC.invisibilityOf(element(By.id(id))), waitTimeout);
+}
+
 function waitForTextToBePresentInElementByID(id, text) {
   waitForElementByIDToBeVisible(id);
   browser.wait(EC.textToBePresentInElement(element(By.id(id)), text), waitTimeout);
 }
+
+function toggleAllCapabilities() {
+
+  it('should be able to toggle incoming video', () => {
+    //waitForElementByIDToBeVisible('toggle-incoming-video');
+    clickButtonByIdOnceClickable('toggle-incoming-video');
+    waitForElementByIDToBeVisible('incoming-call-video-overlay');
+  });
+
+  xit('should be able to toggle incoming audio', () => {
+    clickButtonByIdOnceClickable('toggle-incoming-audio');
+    //waitForElementByIDToBeVisible('incoming-call-video-overlay');
+  });
+
+  xit('should be able to toggle outgoing video', () => {
+    clickButtonByIdOnceClickable('toggle-outgoing-video');
+    waitForElementByIDToBeVisible('outgoing-call-video-overlay');
+  });
+
+  xit('should be able to toggle outgoing audio', () => {
+    clickButtonByIdOnceClickable('toggle-outgoing-audio');
+    expect(hasClass(element(By.id('toggle-outgoing-audio')), 'off')).toBe(false);
+  });
+
+}
+
+var hasClass = function (element, cls) {
+    return element.getAttribute('class').then(function (classes) {
+        return classes.split(' ').indexOf(cls) !== -1;
+    });
+};
