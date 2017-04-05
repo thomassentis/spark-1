@@ -33,7 +33,7 @@ The login process for the user is handled by the login page. Once the user has b
 <a name="integration"></a>
 ### Spark Integration Process
 
-Before integrating Spark's JavaScript SDK into your app, there are a few major processes that you should familiarize yourself with. 
+Before integrating Spark's JavaScript SDK into your app, there are a few major processes that you should familiarize yourself with.
 
 #### Authorization
  * Before utilizing Spark's functionality, you must first authorize the user in order to have them receive a valid auth token. This can be done by calling ```spark.authorize()```. This function returns a promise, and once it is successful, you can handle your app-specific login process accordingly.
@@ -41,7 +41,7 @@ Before integrating Spark's JavaScript SDK into your app, there are a few major p
 #### Registration
  * After being successfully authorized, the user's device needs to be registered with Spark. This needs to happen after Spark is completely authenticated, which can be done by assigning an event listener to Spark's authenticated flag:  ```spark.on('change:isAuthenticated', () => { spark.phone.register() });```
  * **In our demo app, we wrap the authentication function within a promise so that we can know precisely when Spark is finished authenticating and registering the device.**
- 
+
 #### Events
  There are multiple events that trigger upon the use of various functionality in the Spark SDK. Events occur on different objects within the Spark SDK (Spark.phone, Spark.call, Spark, etc...). This demo application makes use of the following events:
  * ```Spark.on('change:isAuthenticating', () => {})```
@@ -55,7 +55,7 @@ Before integrating Spark's JavaScript SDK into your app, there are a few major p
  * ```Spark.call.on('remoteAudioMuted:change', () => {})```
  * ```Spark.call.on('disconnected', () => {})```
  * ```Spark.call.on('error', () => {})```
- 
+
 #### Calls
 After the user is registered with Spark they can receive or create a call. You will also need to pass in certain parameters (like constraints) in order to dictate the nature of the call (audio, video, audio-video). When calling a user, that user's email must be specified in the ```Spark.phone.dial``` function call. In order to make or receive a call, you will need to supply an ```offerOptions``` and a ```constraints``` object.
 ```
@@ -75,7 +75,7 @@ After the user is registered with Spark they can receive or create a call. You w
   * In order to listen for any incoming calls, you need to register an event for the Spark Phone's incoming call: ```spark.phone.on('call:incoming', (call) => { // Your code here });```. To let the caller know that their call to the user has become visible, you can use ```call.acknowledge()```.
   * You can answer a call using ```call.answer(offerOptions, constraints)``` on the call returned from the 'incoming' event.
 ##### Calling a User
-  * In order to make a call, you will need to supply the user's email, an ```offerOptions``` object, and a ```constraints``` object. 
+  * In order to make a call, you will need to supply the user's email, an ```offerOptions``` object, and a ```constraints``` object.
   ```
   return spark.phone.dial(userEmail, {
     offerOptions,
@@ -89,12 +89,12 @@ After the user is registered with Spark they can receive or create a call. You w
   });
   ```
   * Once a call has connected, you can set the src attribute of your video tag to ```call.remoteMediaStreamUrl``` or ```call.localMediaStreamUrl``` (remote being incoming stream, local being outgoing).
-  
+
 ##### Active-Call Functionality
 Once in a call, there are other various functions that you can execute such as toggling the receiving / sending audio and video. As well as a basic function to hangup the call - ```call.hangup()```.
 
 ##### Call Feedback
-In order to allow users to send feedback about their experience with a given call, you can supply them with a page or fields to capture that information and execute the following: 
+In order to allow users to send feedback about their experience with a given call, you can supply them with a page or fields to capture that information and execute the following:
  ```
  call.sendFeedback({
   // String
@@ -154,8 +154,9 @@ In order to allow users to send feedback about their experience with a given cal
 * `$ npm test`
 
 ##### Integration Tests
+* `$ npm install -g protractor`
 * From within the app's root directory:
-* npm run integration-test
+* `$ npm run integration-test`
 
 <a name="browsers"></a>
 ### Supported Browsers
