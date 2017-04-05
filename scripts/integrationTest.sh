@@ -2,10 +2,6 @@
 
 function test() {
 
-  echo "Updating webdriver-manager and node packages"
-  nohup webdriver-manager update &>/dev/null
-  nohup npm update &>/dev/null
-
   echo "Spinning up local servers"
   nohup npm start &>/dev/null &
   nohup webdriver-manager start &>/dev/null &

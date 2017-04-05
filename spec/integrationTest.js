@@ -1,4 +1,4 @@
-const env = require('./support/.env.json');
+const env = require('../.env.json');
 const until = protractor.until;
 const EC = protractor.ExpectedConditions;
 const waitTimeout = 5000;
