@@ -20,9 +20,12 @@
   "devDependencies": {
     "jasmine": "^2.5.3",
     "node-sass": "^4.5.0",
+    "protractor": "^5.1.1",
     "proxyquire": "^1.7.11",
     "proxyquire-universal": "^1.0.8",
-    "proxyquireify": "^3.2.1"
+    "proxyquireify": "^3.2.1",
+    "selenium": "^2.20.0",
+    "webdriver-manager": "^12.0.4"
   },
   "scripts": {
     "start": "npm run build && node server.js",
