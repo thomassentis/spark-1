@@ -250,6 +250,12 @@ button:enabled {
   }
 }
 
+#active-call-overlay .invalid-call-message {
+  top: -1.9rem;
+  right: -1.35rem;
+  z-index: 4;
+}
+
 .button-divider {
     border-left: 1px solid $dark-white;
     height: 2.5rem;

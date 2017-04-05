@@ -1,5 +1,6 @@
 const $ = require('jquery');
 const feedbackTemplate = require('./feedbackTemplate');
+const mediaValidator = require('./mediaValidator');
 
 let currentCall = null;
 
@@ -32,6 +33,8 @@ const activeCallTemplate = {
     $('#toggle-incoming-video').on('click', toggleReceivingVideo);
     $('#toggle-incoming-audio').on('click', toggleReceivingAudio);
     $('#logout-button').on('click', hangupCall);
+
+    mediaValidator.validateMedia();
   }
 };
 
