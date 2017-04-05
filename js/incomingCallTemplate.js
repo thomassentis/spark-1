@@ -13,7 +13,7 @@ const incomingCallTemplate = {
       call.reject();
       return;
     } else if(currentCall) {
-      clearIncomingCall();
+      removeIncomingCallOverlay();
     }
 
     currentCall = call;
@@ -43,7 +43,7 @@ const incomingCallTemplate = {
         currentCall.reject();
       }
       currentCall = null;
-      clearIncomingCall();
+      removeIncomingCallOverlay();
     });
   }
 };
@@ -54,10 +54,10 @@ function answerCall(constraints) {
     currentCall.off('disconnected error', incomingCallFailure);
     currentCall = null;
   });
-  clearIncomingCall();
+  removeIncomingCallOverlay();
 }
 
-function clearIncomingCall() {
+function removeIncomingCallOverlay() {
   $('#incoming-call-overlay').remove();
 }
 
