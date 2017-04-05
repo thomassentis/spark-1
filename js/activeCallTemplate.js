@@ -106,7 +106,10 @@ function toggleReceivingVideo() {
 }
 
 function toggleReceivingAudio() {
-  currentCall.toggleReceivingAudio();
+  $('#toggle-incoming-audio').attr('disabled', true);
+  currentCall.toggleReceivingAudio().then(() => {
+    $('#toggle-incoming-audio').attr('disabled', false);
+  });
 }
 
 function toggleSendingVideo() {
