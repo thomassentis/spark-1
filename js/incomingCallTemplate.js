@@ -42,6 +42,7 @@ const incomingCallTemplate = {
       if (currentCall.status !== 'disconnected') {
         currentCall.reject();
       }
+      currentCall = null;
       clearIncomingCall();
     });
   }
