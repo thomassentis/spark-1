@@ -54,7 +54,7 @@ const sparkService = {
   callUser: (user, options) => {
     const constraints = Object.assign({}, defaultConstraints, options);
     return spark.phone.dial(user, {
-      offerOptions: Object.assign({}, defaultOfferOptions, { offerToReceiveVideo: constraints.video }),
+      offerOptions: defaultOfferOptions,
       constraints: constraints
     });
   },
