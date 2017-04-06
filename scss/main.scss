@@ -262,32 +262,37 @@ button:enabled {
     align-self: center;
 }
 
-.audio-button, .audio-button:disabled {
+.audio-button {
   &:before {
     content: '\e905';
     font-family: 'Kitchen Sink';
   }
 
-  &.unavailable:before {
+  &.unavailable:before, &.audio-button:disabled:before {
     content: '\e904';
   }
 }
 
-.phone-button, .phone-button:disabled {
+.phone-button {
   &:before {
     content: '\e900';
     font-family: 'Kitchen Sink';
+    margin-right: .5rem;
   }
 
-  &.unavailable:before {
+  &.unavailable:before, &.phone-button:disabled:before {
     content: '\e901';
   }
 }
 
-.video-button, .video-button:disabled {
+.video-button {
   &:before {
     content: '\e903';
     font-family: 'Kitchen Sink';
+  }
+
+  &.video-button:disabled:before {
+    content: '\e902';
   }
 }
 
@@ -339,13 +344,6 @@ button:enabled {
 
     &:hover:enabled {
       background: lighten($dark-white, 10%);
-    }
-  }
-
-  &.video-button.off {
-    &:before {
-      content: '\e902';
-      font-family: 'Kitchen Sink';
     }
   }
 }
