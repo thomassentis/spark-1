@@ -78,10 +78,24 @@ The demo app is broken into two parts. The login page begins the authentication 
 
 #### Unit Tests
 * `$ npm install -g jasmine`
-* From within the app's root directory: `$ npm test`
+* From within the app's root directory: `$ npm run unit-test`
 
 ##### Integration Tests
-* `$ npm install -g protractor`
+* Java SDK is required
+* `$ npm install -g protractor webdriver-manager`
+* `$ webmanager-driver update`
+
+* You will need to add test user environment variables by adding them to the .env.json file:
+``` .env.json
+{
+  "sparkUsername": "Insert Spark User E-mail inside these quotes",
+  "sparkPassword": "Insert Spark User Password inside these quotes",
+  "calleeUsername": "Insert Second Spark User E-mail inside these quotes",
+  "calleePassword": "Insert Second Spark User Password inside these quotes",
+  "fakeUser": "test"
+}
+```
+
 * From within the app's root directory: `$ npm run integration-test`
 
 <a name="browsers"></a>
