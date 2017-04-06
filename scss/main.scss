@@ -341,6 +341,13 @@ button:enabled {
       background: lighten($dark-white, 10%);
     }
   }
+
+  &.video-button.off {
+    &:before {
+      content: '\e902';
+      font-family: 'Kitchen Sink';
+    }
+  }
 }
 
 i.fa {
@@ -595,7 +602,7 @@ main {
 
     input {
       margin-left: 0.75rem;
-      margin-right: 0.75rem;
+      margin-right: 0.5rem;
     }
 
     div {
