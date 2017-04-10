@@ -37,6 +37,7 @@ function outgoingCallFailure(error) {
   $('#calling-status').html(message).css('display', 'inline');
   $('#hangup-calling').removeClass('red').addClass('wide').text('Home');
   $('.avatar-image').addClass('failed');
+  $('.loader').addClass('inactive');
 }
 
 module.exports = outgoingCallTemplate;

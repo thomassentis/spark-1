@@ -14,7 +14,7 @@
       <header>
         <span class="branding">Kitchen Sink</span>
         <button class="logout" id="logout-button">
-          <i class="fa action fa-sign-out"></i>
+          <i class="sign-out action"></i>
           <span>Sign Out</span>
         </button>
       </header>
@@ -69,6 +69,13 @@
         </div>
         <span class="call-email" id="callee-email"></span>
         <span class="call-status" id="calling-status"></span>
+        <div class="loader">
+          <span class="circle"></span>
+          <span class="circle"></span>
+          <span class="circle"></span>
+          <span class="circle"></span>
+          <span class="circle"></span>
+        </div>
         <button id="hangup-calling" class="primary-button small red">
           <i class="fa fa-phone" aria-hidden="true"></i> Hangup
         </button>
@@ -107,7 +114,7 @@
           <label class="star-label icon" for="one-star"></label>
         </fieldset>
         <div class="comments">
-          <h1>Comments</h1>
+          <h2>Comments</h2>
           <textarea id="feedback-comments" placeholder="How was the call quality?"></textarea>
         </div>
         <div class="include-logs">

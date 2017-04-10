@@ -26,5 +26,11 @@ sparkService.register().then(() => {
     }
   });
 
+  $('#user-email').on('focus', () => {
+    $('form.container').addClass('active');
+  }).on('blur', () => {
+    $('form.container').removeClass('active');
+  });
+
   sparkService.listenForCall(incomingCallTemplate.display);
 });
