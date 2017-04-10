@@ -34,8 +34,8 @@ $light-blue: #64b8d8;
 $red: #DF3C3C;
 $dark-red: #A40B0B;
 $light-red: #FF7676;
-$yellow: #EEEE44;
-$dark-yellow: darken($yellow, 20%);
+$yellow: #f7e137;
+$dark-yellow: #e4c202;
 $white: #ffffff;
 $black: #000000;
 
@@ -47,14 +47,14 @@ $video-border-width: 2px;
   margin-left: -2.4rem;
   content: '\e90a';
   font-family: 'Kitchen Sink';
-  color: #a78802;
+  color: $dark-yellow;
 }
 
 @mixin full-star {
   &:before {
     content: '\e90b';
     font-family: 'Kitchen Sink';
-    color: #E6C21A;
+    color: $yellow;
   }
 
   &:after {
@@ -68,11 +68,12 @@ $video-border-width: 2px;
   &:hover:before {
     content: '\e90b';
     font-family: 'Kitchen Sink';
-    color: #FDD835;
+    color: #e6c300;
   }
 
   &:hover:after {
     @include star-border;
+    color: #c1a503;
   }
 }
 
