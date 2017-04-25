@@ -83,7 +83,7 @@ The demo app is broken into two parts. The login page begins the authentication 
 ##### Integration Tests
 * Java SDK is required
 * `$ npm install -g protractor webdriver-manager`
-* `$ webmanager-driver update`
+* `$ webdriver-manager update`
 
 * You will need to add test user environment variables by adding them to the .env.json file:
 ``` .env.json
