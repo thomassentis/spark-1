@@ -12,15 +12,15 @@ function test() {
 
   protractorResult=$(protractor spec/support/conf.js)
 
-  nodeServerPID=$(ps S | tail -10 | cut -c1-5 | head -n 1)
-  webdriverPID1=$(ps S | tail -11 | cut -c1-5 | head -n 1)
-  webdriverPID3=$(ps S | tail -9 | cut -c1-5 | head -n 1)
-  chromePID1=$(ps S | tail -8 | cut -c1-5 | head -n 1)
+  nodeServerPID=$(ps -ef | grep 'node server.js' | grep -v 'grep' | grep -v 'npm run build' | awk '{print $2}')
+  webdriverPID1=$(ps -ef | grep 'webdriver-manager/selenium' | grep -v 'grep' | head -n 1 | awk '{print $2}')
+  webdriverPID2=$(ps -ef | grep 'webdriver-manager/selenium' | grep -v 'grep' | tail -n 1 | awk '{print $2}')
+  chromePID=$(ps -Sf | grep 'Google Chrome' | grep -v 'grep' | grep -v 'Helper' | head -n 1 | awk '{print $2}')
 
   kill $nodeServerPID
   kill $webdriverPID1
-  kill $webdriverPID3
-  kill $chromePID1
+  kill $webdriverPID2
+  kill $chromePID
 
   echo $protractorResult | grep -q "0 failures"
   if [ $? -eq 0 ]; then
