@@ -33,16 +33,16 @@
     "start-dev": "npm run build && npm run watch | node server.js",
     "build": "npm run build-js && npm run build-css && npm run build-html && npm run build-images && npm run build-fonts && npm run build-font-awesome",
     "watch": "npm run watch-js | npm run watch-css",
-    "build-js": "mkdir -p public/js; $(npm bin)/browserify js/index.js -o public/js/indexBundle.js && $(npm bin)/browserify js/login.js -o public/js/loginBundle.js",
-    "watch-js": "mkdir -p public/js; $(npm bin)/watchify js/index.js -o public/js/indexBundle.js | $(npm bin)/watchify js/login.js -o public/js/loginBundle.js",
-    "build-css": "mkdir -p public/css; $(npm bin)/node-sass --include-path scss scss/main.scss public/css/main.css",
-    "watch-css": "mkdir -p public/css; $(npm bin)/node-sass -w --include-path scss scss/main.scss public/css/main.css",
+    "build-js": "mkdir -p public/js; browserify js/index.js -o public/js/indexBundle.js && browserify js/login.js -o public/js/loginBundle.js",
+    "watch-js": "mkdir -p public/js; watchify js/index.js -o public/js/indexBundle.js | watchify js/login.js -o public/js/loginBundle.js",
+    "build-css": "mkdir -p public/css; node-sass --include-path scss scss/main.scss public/css/main.css",
+    "watch-css": "mkdir -p public/css; node-sass -w --include-path scss scss/main.scss public/css/main.css",
     "build-html": "mkdir -p public; ln -f index.html public/index.html && ln -f login.html public/login.html",
     "build-images": "mkdir -p public/images; cp -r images public/",
     "build-fonts": "mkdir -p public/fonts; cp node_modules/mki-font-ciscosans/files/CiscoSansExtraLight.otf public/fonts/; cp -r fonts/ public/fonts/",
     "build-font-awesome": "mkdir -p public/fonts; mkdir -p public/css; cp -r node_modules/font-awesome/css/ public/css; cp -r node_modules/font-awesome/fonts/ public/fonts",
     "test": "npm run unit-test && npm run integration-test",
-    "unit-test": "$(npm bin)/jasmine",
+    "unit-test": "jasmine",
     "integration-test": "./scripts/integrationTest.sh"
   }
 }
