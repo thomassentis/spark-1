@@ -53,7 +53,6 @@ The demo app is broken into two parts. The login page begins the authentication 
     - CISCOSPARK_SCOPE
     - CISCOSPARK_REDIRECT_URI (needs to be changed if hosting anywhere aside from localhost:8000)
     - CISCOSPARK_LOG_LEVEL (defaults to 'info'. Alternative log levels are: silent, error, warn, log, info, debug, and trace)
-* `$ npm install -g browserify node-sass`
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer and Safari are not supported)
 
@@ -77,13 +76,11 @@ The demo app is broken into two parts. The login page begins the authentication 
 ### How to Run the Tests
 
 #### Unit Tests
-* `$ npm install -g jasmine`
 * From within the app's root directory: `$ npm run unit-test`
 
 ##### Integration Tests
 * Java SDK is required
-* `$ npm install -g protractor webdriver-manager`
-* `$ webdriver-manager update`
+* `$ $(npm bin)/webdriver-manager update`
 
 * You will need to add test user environment variables by adding them to the .env.json file:
 ``` .env.json

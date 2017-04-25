@@ -4,13 +4,13 @@ function test() {
 
   echo "Spinning up local servers"
   nohup npm start &>/dev/null &
-  nohup webdriver-manager start &>/dev/null &
+  nohup $(npm bin)/webdriver-manager start &>/dev/null &
 
   while ! nc -z localhost 8000; do
     sleep 0.1
   done
 
-  protractorResult=$(protractor spec/support/conf.js)
+  protractorResult=$($(npm bin)/protractor spec/support/conf.js)
 
   nodeServerPID=$(ps -ef | grep 'node server.js' | grep -v 'grep' | grep -v 'npm run build' | awk '{print $2}')
   webdriverPID1=$(ps -ef | grep 'webdriver-manager/selenium' | grep -v 'grep' | head -n 1 | awk '{print $2}')
