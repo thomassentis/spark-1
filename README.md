@@ -46,7 +46,7 @@ The demo app is broken into two parts. The login page begins the authentication 
 ``` .env.json
 {
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
-  "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes"
+  "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
   “CISCOSPARK_SCOPE": "Spark:all"
 }
 ```
