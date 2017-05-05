@@ -47,11 +47,10 @@ The demo app is broken into two parts. The login page begins the authentication 
 {
   "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
   "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
-  “CISCOSPARK_SCOPE": "Spark:all"
+  "CISCOSPARK_SCOPE": "Spark:all"
 }
 ```
 * You can also override the following environment variables by adding them to the .env.json file:
-    - CISCOSPARK_SCOPE
     - CISCOSPARK_REDIRECT_URI (needs to be changed if hosting anywhere aside from localhost:8000)
     - CISCOSPARK_LOG_LEVEL (defaults to 'info'. Alternative log levels are: silent, error, warn, log, info, debug, and trace)
 * `$ npm start`
