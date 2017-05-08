@@ -8,28 +8,32 @@ const dict = {
     enableFunction: enableCallButtons,
     enableIds: ['call-audio-only'],
     disableIds: ['call-audio-only', 'call-audio-video'],
-    errorFunction: getAudioErrorMessage
+    errorFunction: getAudioErrorMessage,
+    successFunction: getAudioSuccessMessage
   },
   videoOutgoing: {
     mediaType: { audio: false, video: true },
     enableFunction: enableCallButtons,
     enableIds: ['call-audio-video', 'toggle-outgoing-video'],
     disableIds: ['call-audio-video', 'toggle-outgoing-video'],
-    errorFunction: getVideoErrorMessage
+    errorFunction: getVideoErrorMessage,
+    successFunction: getVideoSuccessMessage
   },
   audioIncoming: {
     mediaType: { audio: true, video: false },
     enableFunction: enableButtons,
     enableIds: ['answer-audio-only'],
     disableIds: ['answer-audio-only', 'answer-audio-video'],
-    errorFunction: getAudioErrorMessage
+    errorFunction: getAudioErrorMessage,
+    successFunction: getAudioSuccessMessage
   },
   videoIncoming: {
     mediaType: { audio: false, video: true },
     enableFunction: enableButtons,
     enableIds: ['answer-audio-video'],
     disableIds: ['answer-audio-video'],
-    errorFunction: getVideoErrorMessage
+    errorFunction: getVideoErrorMessage,
+    successFunction: getVideoSuccessMessage
   }
 };
 
@@ -44,7 +48,7 @@ const mediaValidator = {
 
 function validateAMedia(options) {
   return navigator.mediaDevices.getUserMedia(options.mediaType).then(() => {
-    options.enableFunction(options.enableIds);
+    options.enableFunction(options.enableIds, options.successFunction());
     return Promise.resolve();
   }).catch((error) => {
     return disableButtons(options.disableIds, options.errorFunction(error));
@@ -60,36 +64,43 @@ function getAudioErrorMessage(error) {
   return error.name === 'NotFoundError' ? 'No microphone found' : 'Requires microphone permission';
 }
 
+function getAudioSuccessMessage() {
+  return 'Call with audio only';
+}
+
 function getVideoErrorMessage(error) {
   return error.name === 'NotFoundError' ? 'No camera found' : 'Requires camera permission';
 }
 
-function enableCallButtons(ids) {
+function getVideoSuccessMessage() {
+  return 'Call with video and audio';
+}
+
+function enableCallButtons(ids, message) {
   ids.forEach((id) => {
-    if($('#user-email').val().length === 0) return $(`#${id}`).prop('disabled', true);
-    enableButton(id);
+    if ($('#user-email').val().length === 0) {
+      $(`#${id} > .tooltip-message`).html('Email required');
+      return $(`#${id}`).prop('disabled', true);
+    }
+    enableButton(id, message);
   });
 }
 
-function enableButtons(ids) {
-  ids.forEach(enableButton);
+function enableButtons(ids, message) {
+  ids.forEach(enableButton(message));
 }
 
-function enableButton(id) {
+function enableButton(id, message) {
   const buttonElement = $(`#${id}`);
   buttonElement.prop('disabled', false).removeClass('unavailable');
-  $(`#${id} > .invalid-call-message`).remove();
+  $(`#${id} > .tooltip-message`).html(message);
 }
 
 function disableButton(id, message) {
   const buttonElement = $(`#${id}`);
-  const messageElement = $(`#${id} > .invalid-call-message`);
+  const messageElement = $(`#${id} > .tooltip-message`);
   buttonElement.prop('disabled', true).addClass('unavailable');
-  if (messageElement.length === 0) {
-    buttonElement.append(`<span class="invalid-call-message">${message}</span>`);
-  } else {
-    messageElement.html(message);
-  }
+  messageElement.html(message);
 }
 
 module.exports = mediaValidator;

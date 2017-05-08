@@ -255,7 +255,7 @@ button:enabled {
   }
 }
 
-.call-button:disabled, .primary-button:disabled {
+.call-button, .primary-button {
   position: relative;
   cursor: auto;
 
@@ -263,17 +263,17 @@ button:enabled {
     display: none;
   }
 
-  &:hover .invalid-call-message {
+  &:hover .tooltip-message {
     display: inline;
   }
 
-  .invalid-call-message {
+  .tooltip-message {
     font-family: 'Cisco Sans Extra Light';
     position: absolute;
     color: $dark-gray;
-    top: -2.15rem;
+    top: -2.35rem;
     font-size: 0.75rem;
-    right: -0.75rem;
+    right: -0.85rem;
     border: 1px #bcbcbc solid;
     border-radius: 1rem;
     padding: 0.4rem 1rem;
@@ -307,7 +307,7 @@ button:enabled {
   }
 }
 
-#active-call-overlay .invalid-call-message {
+#active-call-overlay .tooltip-message {
   top: -1.9rem;
   right: -1.35rem;
   z-index: 4;
