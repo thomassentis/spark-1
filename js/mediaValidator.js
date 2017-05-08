@@ -47,7 +47,8 @@ const mediaValidator = {
 };
 
 function validateAMedia(options) {
-  return navigator.mediaDevices.getUserMedia(options.mediaType).then(() => {
+  return navigator.mediaDevices.getUserMedia(options.mediaType).then((stream) => {
+    stream.getTracks().forEach((track) => track.stop());
     options.enableFunction(options.enableIds, options.successFunction());
     return Promise.resolve();
   }).catch((error) => {
