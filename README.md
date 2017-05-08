@@ -52,6 +52,7 @@ The demo app is broken into two parts. The login page begins the authentication 
 ```
 * You can also override the following environment variables by adding them to the .env.json file:
     - CISCOSPARK_REDIRECT_URI (needs to be changed if hosting anywhere aside from localhost:8000)
+        - NOTE: You still must include /index.html at the end of your redirect URI in order for the app to work
     - CISCOSPARK_LOG_LEVEL (defaults to 'info'. Alternative log levels are: silent, error, warn, log, info, debug, and trace)
 * `$ npm start`
 * In your browser of choice, go to `http://localhost:8000` (Note: Internet Explorer and Safari are not supported)
