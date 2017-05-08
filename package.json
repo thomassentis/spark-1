@@ -7,7 +7,33 @@
     "type": "git",
     "url": "git@github.com:ciscospark/spark-js-sdk-example.git"
   },
-  "author": "Asynchrony",
+  "author": "Cisco",
+  "contributors": [
+    {
+      "name": "Roger Landreth",
+      "email": "roger.landreth@asynchrony.com"
+    },
+    {
+      "name": "Kara Kimmel",
+      "email": "kara.kimmel@asynchrony.com"
+    },
+    {
+      "name": "Chike Orjih",
+      "email": "chike.orjih@asynchrony.com"
+    },
+    {
+      "name": "Jason Baird",
+      "email": "jason.baird@asynchrony.com"
+    },
+    {
+      "name": "Joe Still",
+      "email": "joe.still@asynchrony.com"
+    },
+    {
+      "name": "Phil King",
+      "email": "phil.king@asynchrony.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "browserify": "^14.1.0",
