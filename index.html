@@ -24,11 +24,11 @@
         <form class="container">
           <input type="text" id="user-email" placeholder="Email" />
           <button class="primary-button call-button phone-button icon" id="call-audio-video" disabled>
-            <span class="tooltip-message">Email required.</span>
+            <span class="tooltip-message">Email required</span>
           </button>
           <span class="button-divider"></span>
           <button class="primary-button call-button audio-button icon" id="call-audio-only" disabled>
-            <span class="tooltip-message">Email required.</span>
+            <span class="tooltip-message">Email required</span>
           </button>
         </form>
       </section>
@@ -54,13 +54,21 @@
         </div>
         <div class="controls-container">
           <div class="incoming-controls">
-            <button class="primary-button toggle video-button icon" id="toggle-incoming-video"></button>
-            <button class="primary-button toggle audio-button icon" id="toggle-incoming-audio"></button>
+            <button class="primary-button toggle video-button icon" id="toggle-incoming-video">
+              <span class="tooltip-message">Toggle incoming video</span>
+            </button>
+            <button class="primary-button toggle audio-button icon" id="toggle-incoming-audio">
+              <span class="tooltip-message">Toggle incoming audio</span>
+            </button>
             <button class="primary-button phone-button icon small red" id="hangup-call">Hangup</button>
           </div>
           <div class="outgoing-controls">
-            <button class="primary-button toggle video-button icon" id="toggle-outgoing-video"></button>
-            <button class="primary-button toggle audio-button icon" id="toggle-outgoing-audio"></button>
+            <button class="primary-button toggle video-button icon" id="toggle-outgoing-video">
+              <span class="tooltip-message">Toggle outgoing video</span>
+            </button>
+            <button class="primary-button toggle audio-button icon" id="toggle-outgoing-audio">
+              <span class="tooltip-message">Toggle outgoing audio</span>
+            </button>
           </div>
         </div>
       </section>

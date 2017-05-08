@@ -93,7 +93,7 @@ function enableButtons(ids, message) {
 function enableButton(id, message) {
   const buttonElement = $(`#${id}`);
   buttonElement.prop('disabled', false).removeClass('unavailable');
-  $(`#${id} > .tooltip-message`).html(message);
+  $(`#${id}:not(.toggle) > .tooltip-message`).html(message);
 }
 
 function disableButton(id, message) {
