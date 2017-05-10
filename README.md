@@ -39,7 +39,7 @@ The demo app is broken into two parts. The login page begins the authentication 
 * `$ cd spark-js-sdk-example`
 * `$ npm install`
 * To launch the example app, you'll need Spark Integration credentials. These can be obtained by [creating a Spark account](https://web.ciscospark.com/signin) and following [this guide](https://developer.ciscospark.com/authentication.html).
-    - Under Scope, enable spark:people_read
+    - Under Scope, enable spark:all
     - Under Redirect_URI, enter "http://localhost:8000/index.html"
     - Place the following in a new file named ".env.json" in the root directory of the project:
 
