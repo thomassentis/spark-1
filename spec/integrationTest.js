@@ -167,11 +167,13 @@ function toggleAllCapabilities() {
     clickButtonByIdOnceClickable('toggle-incoming-video');
     waitForElementByIDToBeVisible('incoming-call-video-overlay');
   });
-
+  
+  /*
   xit('should be able to toggle incoming audio', () => {
     clickButtonByIdOnceClickable('toggle-incoming-audio');
     //waitForElementByIDToBeVisible('incoming-call-video-overlay');
   });
+  */
 
   xit('should be able to toggle outgoing video', () => {
     clickButtonByIdOnceClickable('toggle-outgoing-video');

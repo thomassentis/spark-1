@@ -31,7 +31,7 @@ const activeCallTemplate = {
     $('#toggle-outgoing-video').on('click', toggleSendingVideo);
     $('#toggle-outgoing-audio').on('click', toggleSendingAudio);
     $('#toggle-incoming-video').on('click', toggleReceivingVideo);
-    $('#toggle-incoming-audio').on('click', toggleReceivingAudio);
+    // $('#toggle-incoming-audio').on('click', toggleReceivingAudio);
     $('#logout-button').on('click', hangupCall);
 
     mediaValidator.validateMedia();
@@ -44,9 +44,9 @@ function registerCallEvents() {
   currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
   currentCall.on('localMediaStream:change', () => updateLocalStream());
   currentCall.on('change:receivingVideo', () => updateIncomingVideo());
-  currentCall.on('change:receivingAudio', () => updateIncomingAudio());
+  // currentCall.on('change:receivingAudio', () => updateIncomingAudio());
   currentCall.on('remoteVideoMuted:change', () => updateIncomingVideo());
-  currentCall.on('remoteAudioMuted:change', () => updateIncomingAudio());
+  // currentCall.on('remoteAudioMuted:change', () => updateIncomingAudio());
   currentCall.on('disconnected', hangupCall);
   currentCall.on('error', handleError);
 }
