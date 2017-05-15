@@ -41,15 +41,7 @@ The demo app is broken into two parts. The login page begins the authentication 
 * To launch the example app, you'll need Spark Integration credentials. These can be obtained by [creating a Spark account](https://web.ciscospark.com/signin) and following [this guide](https://developer.ciscospark.com/authentication.html).
     - Under Scope, enable spark:all
     - Under Redirect_URI, enter "http://localhost:8000/index.html"
-    - Place the following in a new file named ".env.json" in the root directory of the project:
-
-``` .env.json
-{
-  "CISCOSPARK_CLIENT_ID": "insert client id from Spark in these quotes",
-  "CISCOSPARK_CLIENT_SECRET": "insert client secret from Spark in these quotes",
-  "CISCOSPARK_SCOPE": "spark:all"
-}
-```
+    - Place your client id and your client secret in the .env.json file in the root directory of the project.
 * You can also override the following environment variables by adding them to the .env.json file:
     - CISCOSPARK_REDIRECT_URI (needs to be changed if hosting anywhere aside from localhost:8000)
         - NOTE: You still must include /index.html at the end of your redirect URI in order for the app to work
