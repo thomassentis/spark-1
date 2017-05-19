@@ -61,13 +61,6 @@ describe('Search for a user', () => {
 
     });
 
-    it('should be able to toggle incoming video', () => {
-      clickButtonByIdOnceClickable('toggle-incoming-video');
-      waitForElementByIDToBeVisible('incoming-call-video-overlay');
-      clickButtonByIdOnceClickable('toggle-incoming-video');
-      waitForElementByIDToBeInvisible('incoming-call-video-overlay');
-    });
-
     it('should be able to toggle outgoing video', () => {
       clickButtonByIdOnceClickable('toggle-outgoing-video');
       waitForElementByIDToBeVisible('outgoing-call-video-overlay');
@@ -161,19 +154,6 @@ function waitForTextToBePresentInElementByID(id, text) {
 }
 
 function toggleAllCapabilities() {
-
-  it('should be able to toggle incoming video', () => {
-    //waitForElementByIDToBeVisible('toggle-incoming-video');
-    clickButtonByIdOnceClickable('toggle-incoming-video');
-    waitForElementByIDToBeVisible('incoming-call-video-overlay');
-  });
-  
-  /*
-  xit('should be able to toggle incoming audio', () => {
-    clickButtonByIdOnceClickable('toggle-incoming-audio');
-    //waitForElementByIDToBeVisible('incoming-call-video-overlay');
-  });
-  */
 
   xit('should be able to toggle outgoing video', () => {
     clickButtonByIdOnceClickable('toggle-outgoing-video');
