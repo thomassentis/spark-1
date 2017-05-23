@@ -88,7 +88,7 @@ function enableCallButtons(ids, message) {
 }
 
 function enableButtons(ids, message) {
-  ids.forEach(enableButton(message));
+  ids.forEach((id) => enableButton(id, message));
 }
 
 function enableButton(id, message) {
