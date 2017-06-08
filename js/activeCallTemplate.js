@@ -18,6 +18,7 @@ const activeCallTemplate = {
 
     updateRemoteStream();
     updateLocalStream();
+    updateIncomingVideo();
     updateOutgoingVideoOverlayVisibility();
 
     registerCallEvents();
@@ -40,6 +41,8 @@ const activeCallTemplate = {
 function registerCallEvents() {
   currentCall.on('remoteMediaStream:change', () => updateRemoteStream());
   currentCall.on('localMediaStream:change', () => updateLocalStream());
+  currentCall.on('change:receivingVideo', () => updateIncomingVideo());
+  currentCall.on('change:receivingAudio', () => updateIncomingAudio());
   currentCall.on('disconnected', hangupCall);
   currentCall.on('error', handleError);
 }
@@ -59,6 +62,36 @@ function updateOutgoingVideoOverlayVisibility() {
   }
 }
 
+function updateIncomingVideo() {
+  updateIncomingVideoOverlayVisibility();
+  updateIncomingVideoButton()
+}
+ 
+function updateIncomingVideoOverlayVisibility() {
+  let incomingOverlay = $('#incoming-call-video-overlay');
+  if(currentCall.receivingVideo && !currentCall.remoteVideoMuted) {
+    incomingOverlay.hide();
+  } else {
+    incomingOverlay.show();
+  }
+}
+
+function updateIncomingVideoButton() {
+  $('#toggle-incoming-video').prop('disabled', currentCall.remoteVideoMuted);
+  if(currentCall.receivingVideo) {
+    $('#toggle-incoming-video').removeClass('off');
+  } else {
+    $('#toggle-incoming-video').addClass('off');
+  }
+}
+
+function toggleReceivingVideo() {
+  $('#toggle-incoming-video').prop('disabled', true);
+  currentCall.toggleReceivingVideo().then(() => {
+    $('#toggle-incoming-video').prop('disabled', false);
+  });
+}
+ 
 function toggleSendingVideo() {
   currentCall.toggleSendingVideo().then(() => {
     updateLocalStream();

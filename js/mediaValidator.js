@@ -79,7 +79,7 @@ function getVideoSuccessMessage() {
 
 function enableCallButtons(ids, message) {
   ids.forEach((id) => {
-    if ($('#user-email').val().length === 0) {
+    if ($('#user-email').val().length === 0 && id !== 'toggle-outgoing-video') {
       $(`#${id} > .tooltip-message`).html('Email required');
       return $(`#${id}`).prop('disabled', true);
     }
