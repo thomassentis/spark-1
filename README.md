@@ -1,4 +1,4 @@
-# Spark JavaScript SDK Example
+# Cisco Spark in Pzartech
 * [Purpose](#purpose)
 * [Design Decisions](#design)
   * [Lack of Frameworks/Libraries](#frameworks)
