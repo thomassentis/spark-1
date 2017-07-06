@@ -5,137 +5,77 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Spark JavaScript SDK Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="//cdn.muicss.com/mui-0.9.17/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.9.17/js/mui.min.js"></script>
+    <style type="text/css">
+        #sidebar {
+          background-color: #E57373;
+          padding: 15px;
+        }
+
+        @media (min-width: 768px) {
+          #sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 180px;
+            height: 100%;
+            padding-top: 30px;
+          }
+
+          #chat{
+            margin-left: 300px;
+            margin-top: 50px;
+            margin-right: 100px;
+          }
+        }
+    </style>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   </head>
   <body>
-    <main>
-      <header>
-        <span class="branding">Kitchen Sink</span>
-        <button class="logout" id="logout-button">
-          <i class="sign-out action"></i>
-          <span>Sign Out</span>
+    
+    <div id = "sidebar">
+      
+        <button class="mui-btn mui-btn--flat" id="logout-button">
+        Sign out
         </button>
-      </header>
+        <button class="mui-btn mui-btn--flat" id="bottom-button">
+        bottom
+        </button>
+      
 
-      <section id="main-content">
-        <h1>Initiate call with user</h1>
-        <form class="container">
-          <input type="text" id="user-email" placeholder="Email" />
-          <button class="primary-button call-button phone-button icon" id="call-audio-video" disabled>
-            <span class="tooltip-message">Email required</span>
-          </button>
-          <span class="button-divider"></span>
-          <button class="primary-button call-button audio-button icon" id="call-audio-only" disabled>
-            <span class="tooltip-message">Email required</span>
-          </button>
+        <div class="mui-form">
+            <div class="mui-select" id="select-box" hidden>
+              <select id="room-select" class="mui-select">
+              </select>
+            </div>
+        </div>
+    </div>
+    
+<div class="mui-container mui-panel" id="chat">
+
+        
+
+        <div id="messages-box" style="/*height: 430px; overflow:scroll*/">
+        </div>
+        <div class="mui-divider"></div>
+        <form class="mui-form--group" id="message-form">
+          <div class="mui-col-md-10">
+          <div class="mui-textfield">
+            <input type="text" id="message-input" placeholder="Type your message..." >
+          </div>
+          </div>
+          <div class="mui-col-md-2">
+          <button class="mui-btn" type="submit">Send</button>
+          </div>
         </form>
-      </section>
+
+</div>
 
       <footer>
-        <span></span>
-        <button class="feedback-button icon hidden" id="feedback-button">Call Feedback</button>
       </footer>
-    </main>
+    
 
-    <template id="active-call-template">
-      <section id="active-call-overlay" class="overlay">
-        <div class="video-container">
-          <div class="incoming-video">
-            <div class="video-overlay" id="incoming-call-video-overlay"></div>
-            <video class="video" id="incoming-call" autoplay></video>
-          </div>
-
-          <div class="outgoing-video">
-            <div class="video-overlay" id="outgoing-call-video-overlay"></div>
-            <video class="video" id="outgoing-call" muted autoplay></video>
-          </div>
-        </div>
-        <div class="controls-container">
-          <div class="incoming-controls">
-            <button class="primary-button phone-button icon small red" id="hangup-call">Hangup</button>
-          </div>
-          <div class="outgoing-controls">
-            <button class="primary-button toggle video-button icon" id="toggle-outgoing-video">
-              <span class="tooltip-message">Toggle outgoing video</span>
-            </button>
-            <button class="primary-button toggle audio-button icon" id="toggle-outgoing-audio">
-              <span class="tooltip-message">Toggle outgoing audio</span>
-            </button>
-          </div>
-        </div>
-      </section>
-    </template>
-
-    <template id="outgoing-call-template">
-      <section id="calling-overlay" class="overlay">
-        <div class="avatar-image">
-          <img id="callee-image" src="images/Recipient.svg" />
-        </div>
-        <span class="call-email" id="callee-email"></span>
-        <span class="call-status" id="calling-status"></span>
-        <div class="loader">
-          <span class="circle"></span>
-          <span class="circle"></span>
-          <span class="circle"></span>
-          <span class="circle"></span>
-          <span class="circle"></span>
-        </div>
-        <button id="hangup-calling" class="primary-button small red">
-          <i class="fa fa-phone" aria-hidden="true"></i> Hangup
-        </button>
-      </section>
-    </template>
-
-    <template id="incoming-call-template">
-      <section id="incoming-call-overlay" class="overlay">
-        <h1>Incoming Call</h1>
-        <div class="avatar-image">
-          <img id="caller-image" src="images/Recipient.svg" />
-        </div>
-        <span class="call-email" id="caller-email"></span>
-        <span class="call-status" id="incoming-call-status"></span>
-        <section class="incoming-call-controls">
-          <button class="primary-button answer-button small phone-button icon" id="answer-audio-video">Answer</button>
-          <button class="primary-button answer-button small audio-button icon" id="answer-audio-only">Audio Only</button>
-          <button class="primary-button answer-button small phone-button icon red" id="reject">Reject</button>
-        </section>
-      </section>
-    </template>
-
-    <template id="feedback-template">
-      <section id="user-feedback-overlay" class="overlay">
-        <h1>Please rate your experience</h1>
-        <fieldset class="rating">
-          <input type="radio" name="rating" class="star-radio" id="five-stars" value="5" />
-          <label class="star-label icon" for="five-stars"></label>
-          <input type="radio" name="rating" class="star-radio" id="four-stars" value="4" />
-          <label class="star-label icon" for="four-stars"></label>
-          <input type="radio" name="rating" class="star-radio" id="three-stars" value="3" />
-          <label class="star-label icon" for="three-stars"></label>
-          <input type="radio" name="rating" class="star-radio" id="two-stars" value="2" />
-          <label class="star-label icon" for="two-stars"></label>
-          <input type="radio" name="rating" class="star-radio" id="one-star" value="1" />
-          <label class="star-label icon" for="one-star"></label>
-        </fieldset>
-        <div class="comments">
-          <h2>Comments</h2>
-          <textarea id="feedback-comments" placeholder="How was the call quality?"></textarea>
-        </div>
-        <div class="include-logs">
-          <div>Include Logs:</div>
-          <input id="include-logs-yes" type="radio" name="include-logs" value="true">
-          <label for="include-logs-yes">Yes</label>
-          <input id="include-logs-no" type="radio" name="include-logs" value="false">
-          <label for="include-logs-no">No</label>
-        </div>
-        <div class="buttons">
-          <button class="primary-button" id="submit-feedback">Send Feedback</button>
-          <button class="cancel primary-button" id="cancel">Cancel</button>
-        </div>
-      </section>
-    </template>
 
     <script src="js/indexBundle.js"></script>
   </body>

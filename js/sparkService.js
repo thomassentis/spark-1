@@ -22,6 +22,59 @@ const sparkService = {
   If you attempt to make any calls to Spark before it finishes, Spark will throw
   an error.
   */
+
+  promiseRooms: (limit)=>{
+    return spark.rooms.list({
+      max: limit
+    });
+  },
+
+  selectRoom: (rooms, roomTitle)=>{
+    return rooms.then(function(rooms) {
+        var room = rooms.items.filter(function(room) {
+          return room.title === 'My First Room';
+        })[0];
+        return room;
+      });
+
+  },
+
+  promiseRoomByTitle: (limit, roomTitle)=>{
+    return spark.rooms.list({
+      max: 10
+    })
+      .then(function(rooms) {
+        var room = rooms.items.filter(function(room) {
+          return room.title === 'My First Room';
+        })[0];
+        return room;
+      });
+
+  },
+
+  sendMessage: (message, roomId) => {
+    
+    spark.messages.create({
+          text: message,
+          roomId: roomId
+        })
+      .catch(function(reason) {
+        console.error(reason);
+        process.exit(1);
+      });    
+  },
+
+  promiseMessages: (roomId)=>{
+
+    return spark.messages.list({roomId: roomId});
+  },
+
+  promiseLastMessage: (roomId)=>{
+    return spark.messages.list(
+      {roomId: roomId,
+        max: 1});
+  },
+
   register: () => {
     return new Promise((resolve) => {
       let authenticationUpdate = () => {
