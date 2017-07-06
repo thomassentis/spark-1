@@ -1,8 +1,5 @@
 const $ = require('jquery');
 const sparkService = require('./sparkService');
-const mediaValidator = require('./mediaValidator');
-const outgoingCallTemplate = require('./outgoingCallTemplate');
-const incomingCallTemplate = require('./incomingCallTemplate');
 
 var roomSelect = $('#room-select');
 var messagesBox = $('#messages-box');
@@ -79,7 +76,4 @@ function displayMessages(roomId){
 
 function scrollDown(){
     window.scrollTo(0,document.body.scrollHeight);
-}/*
-
-$('#bottom-button').on('click', scrollDown);
-*/
+}

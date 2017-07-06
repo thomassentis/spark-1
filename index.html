@@ -9,8 +9,9 @@
     <script src="//cdn.muicss.com/mui-0.9.17/js/mui.min.js"></script>
     <style type="text/css">
         #sidebar {
-          background-color: #E57373;
+          background-color: #1c375e;
           padding: 15px;
+
         }
 
         @media (min-width: 768px) {
@@ -27,6 +28,7 @@
             margin-left: 300px;
             margin-top: 50px;
             margin-right: 100px;
+            margin-bottom: 20px;
           }
         }
     </style>
@@ -36,17 +38,14 @@
     
     <div id = "sidebar">
       
-        <button class="mui-btn mui-btn--flat" id="logout-button">
+        <button class="mui-btn mui-btn--raised" id="logout-button">
         Sign out
-        </button>
-        <button class="mui-btn mui-btn--flat" id="bottom-button">
-        bottom
         </button>
       
 
         <div class="mui-form">
             <div class="mui-select" id="select-box" hidden>
-              <select id="room-select" class="mui-select">
+              <select id="room-select" class="mui-select" style="color:white">
               </select>
             </div>
         </div>

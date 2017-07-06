@@ -75,7 +75,7 @@ const sparkService = {
         max: 1});
   },
 
-  register: () => {
+  /*register: () => {
     return new Promise((resolve) => {
       let authenticationUpdate = () => {
         if (spark.isAuthenticated) {
@@ -134,7 +134,7 @@ const sparkService = {
       offerOptions: defaultOfferOptions,
       constraints: constraints
     });
-  }
+  }*/
 };
 
 module.exports = sparkService;
