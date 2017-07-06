@@ -3,7 +3,10 @@ const sparkService = require('./sparkService');
 
 var roomSelect = $('#room-select');
 var messagesBox = $('#messages-box');
+var membersBox = $('#members-box');
 var currentRoomId;
+
+var namesD = {};
 
 $(() => {
   if(window.location.href.indexOf('error=access_denied') !== -1) {
@@ -18,10 +21,15 @@ $(() => {
       roomSelect.value = rooms.items[0].id;
       currentRoomId = roomSelect.value;
   }).then(()=>{
-      displayMessages(roomSelect.value);
+    return displayMembers(currentRoomId);
+  })
+  .then((members)=>{
+      namesD = namesDictionary(members);
+      displayMessages(roomSelect.value, members);
       $('#select-box').show();
-      setInterval(()=>{displayMessages(currentRoomId);}, 4000);
+      setInterval(()=>{displayMessages(currentRoomId, members);}, 4000);
       scrollDown();
+      displayMembers(currentRoomId);
   });
     
   
@@ -29,51 +37,101 @@ $(() => {
 
 });
 
+// Changing the room
 roomSelect.on('change', function(){
   currentRoomId = roomSelect.val();
   
-  displayMessages(currentRoomId)
-  .then(()=>scrollDown());
+  displayMembers(currentRoomId)
+  .then((members)=>{
+    return displayMessages(currentRoomId, members);
+  }).then(()=>{
+    scrollDown();
+  })
 });
 
+// Logging out
 $('#logout-button').on('click', () => {
   sparkService.logout();
 });
 
+
+// Sending a message
 $('#message-form').on('submit', (event) => {
   event.preventDefault();
-  var message = $('#message-input').val();
-  if(message){
+  var messageText = $('#message-input').val();
+  if(messageText){
     //var rooms = sparkService.getRooms(10);
     var currentRoomId = roomSelect.val();
     //alert(currentRoomId);
-    sparkService.sendMessage(message, currentRoomId);
+    sparkService.sendMessage(messageText, currentRoomId)
+    .then((message)=>{
+      addLastMessage(currentRoomId, message);
+    });
+
+    $('#message-input').val('');
+    
   }
     
-  $('#message-input').val('');
-  addLastMessage(currentRoomId);
-  
   
 });
 
-function addLastMessage(roomId){
-  return sparkService.promiseLastMessage(roomId).then((messages)=>{
-        messagesBox.append('<p id="#last-message">'+messages.items[0].text+'</p>');
-        }).then(()=>scrollDown());
+function namesDictionary(members){
+  
+  var namesDict = {};
+  members.forEach((member)=>{
+    namesDict[member.id] = member.displayName;
+  });
+  return namesDict;
 }
 
-function displayMessages(roomId){
+
+
+function addLastMessage(roomId, message){
+  if(namesD){
+    console.log('OK BANANA');
+    return sparkService.promiseLastMessage(roomId).then((messages)=>{
+          messagesBox.append(formatMessage(messages.items[0], namesD[message.personId]));
+          }).then(()=>{
+            scrollDown();
+            alert('ok')});
+  }
+}
+
+function displayMessages(roomId, members){
+  
   var newMessages = '';
+  //var namesDictionary = namesDictionary(members);
+  
   return sparkService.promiseMessages(roomId).then((messages)=>{
         messages.items.forEach((message)=>{
-          newMessages = '<p>'+message.text+'</p>' + newMessages;
+          newMessages = formatMessage(message, namesD[message.personId]) + newMessages;
         });
         messagesBox.html(newMessages);
-        //window.scrollTo(0,messagesBox.scrollHeight);
-        //messagesBox.append('<p></p>');
+        
       });
+}
+
+function displayMembers(roomId){
+  membersBox.html('');
+  return sparkService.promiseMembers(roomId)
+  .then((members)=>{
+    members.forEach((member)=>{
+      membersBox.append('<div>'+member.displayName+'</div>');
+    });
+    return members;
+  });
 }
 
 function scrollDown(){
     window.scrollTo(0,document.body.scrollHeight);
 }
+
+function convertDate(stringDate){
+  d = new Date(stringDate);
+  return d;
+}
+
+function formatMessage(message, name){
+  return '<p><div class="mui--text-caption">'+name+' '+convertDate(message.created)+'</div>'+message.text+'</p>';
+}
+

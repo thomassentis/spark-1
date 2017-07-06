@@ -54,7 +54,7 @@ const sparkService = {
 
   sendMessage: (message, roomId) => {
     
-    spark.messages.create({
+    return spark.messages.create({
           text: message,
           roomId: roomId
         })
@@ -75,66 +75,14 @@ const sparkService = {
         max: 1});
   },
 
-  /*register: () => {
-    return new Promise((resolve) => {
-      let authenticationUpdate = () => {
-        if (spark.isAuthenticated) {
-          spark.off('change:isAuthenticated', authenticationUpdate);
-          spark.phone.register().then(() => {
-            resolve();
-          });
-        }
-      };
-
-      spark.on('change:isAuthenticated', authenticationUpdate);
+  promiseMembers: (roomId)=>{
+    
+    return spark.memberships.list({roomId: roomId})
+    .then((memberships)=>{
+      return Promise.all(
+        memberships.items.map((membership)=>spark.people.get(membership.personId)));
     });
-  },
-
-  listenForCall: (callback) => {
-    spark.phone.on('call:incoming', (call) => {
-      // The call:incoming event is triggered for both incoming and outgoing calls.
-      // Outgoing calls are handled by SparkService.callUser(...).
-      if (call.direction === 'out') {
-        return;
-      }
-
-      callback(call);
-
-      call.acknowledge();
-    });
-  },
-
-  callUser: (user, options) => {
-    const constraints = Object.assign({}, defaultConstraints, options);
-    return spark.phone.dial(user, {
-      offerOptions: defaultOfferOptions,
-      constraints: constraints
-    });
-  },
-
-  logout: () => {
-    if(spark.isAuthenticated) {
-      return spark.logout({ goto: window.location.protocol + '//' + window.location.host + '/' });
-    } else {
-      window.location = window.location.protocol + '//' + window.location.host + '/';
-    }
-  },
-
-  getAvatarUrl: (email) => {
-    return spark.people.list({ email: email }).then((people) => {
-      if(people.items.length && people.items[0].avatar) {
-        return people.items[0].avatar;
-      }
-    });
-  },
-
-  answerCall: (call, options) => {
-    const constraints = Object.assign({}, defaultConstraints, options);
-    return call.answer({
-      offerOptions: defaultOfferOptions,
-      constraints: constraints
-    });
-  }*/
+  }
 };
 
 module.exports = sparkService;
