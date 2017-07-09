@@ -6,91 +6,122 @@
     <title>Spark JavaScript SDK Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//cdn.muicss.com/mui-0.9.17/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/activity-spinner.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src="//cdn.muicss.com/mui-0.9.17/js/mui.min.js"></script>
     <style type="text/css">
-        #sidebar {
+        /*#sidebar {
           background-color: #1c375e;
           padding: 15px;
 
         }
 
-        /*#members-box{
+        #members-box{
           position: fixed;
           margin-left: 300px;
           margin-top: -100px;
         }*/
 
-        @media (min-width: 768px) {
-          #sidebar {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 180px;
-            height: 100%;
-            padding-top: 30px;
-          }
+        
 
-          .content-block{
-            margin-left: 300px;
-            margin-top: 50px;
-            margin-right: 100px;
-            margin-bottom: 20px;
+          #messages-box{
+
+            margin: 20px;
           }
+        
+
+        #loader{
+          position:fixed;
+          top: 50%;
+          left: 50%;
         }
+
+        #message-form-block{
+          display:block;
+          position: fixed;
+          bottom: 0px;
+          background-color: white;
+          width:100%;
+          padding-left: 10%;
+          padding-right: 10%;
+
+        }
+
     </style>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   </head>
   <body>
-    
-    <div id = "sidebar">
-      
-        <button class="mui-btn mui-btn--raised" id="logout-button">
-        Sign out
-        </button>
-            
+  <div id="room-id-stock" hidden></div>
+<div id="loader">
+<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>    
+</div>
+    <div id="page" style="display:none">
+        <!--<div id = "sidebar">
+          
+            <button class="mui-btn mui-btn--raised" id="logout-button" hidden>
+            Sign out
+            </button>
+                
 
-        <div class="mui-form">
-            <div class="mui-select" id="select-box" hidden>
-              <select id="room-select" class="mui-select" style="color:white">
-              </select>
+            <div class="mui-form">
+                <div class="mdl-selectfield mdl-js-selectfield" id="select-box">
+                  <select id="room-select" class="mdl-selectfield__select" style="color:white">
+                  </select>
+                </div>
+
             </div>
 
+            <div id="members-box" style="color:white"></div>
+
+            
+
+        </div>-->
+
+
+
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" style="height: 90%;" id="scrolled-block">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">Room: <span id="current-room"></span></span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation. We hide it in small screens. -->
         </div>
-
-        <div id="members-box" style="color:white"></div>
-
-        
-
+      </header>
+      <div class="mdl-layout__drawer" id="sidebar">
+        <span class="mdl-layout-title">Rooms</span>
+        <nav class="mdl-navigation" id="room-select">
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+        <div id="messages-box">
+        </div>
+        </div>
+      </main>
     </div>
+
+
+
     
-
-
-
-<div class="mui-container mui-panel content-block">
-
-        
-
-        <div id="messages-box" style="/*height: 430px; overflow:scroll*/">
-        </div>
-        <div class="mui-divider"></div>
-        <form class="mui-form--group" id="message-form">
-          <div class="mui-col-md-10">
-          <div class="mui-textfield">
-            <input type="text" id="message-input" placeholder="Type your message..." >
-          </div>
-          </div>
-          <div class="mui-col-md-2">
-          <button class="mui-btn" type="submit">Send</button>
-          </div>
-        </form>
-
-</div>
-
-      <footer>
-      </footer>
-    
-
-
-    <script src="js/indexBundle.js"></script>
+     
+    <div id="message-form-block" >
+              
+              <form id="message-form">
+                <div class="mdl-textfield mdl-js-textfield">
+                  <input class="mdl-textfield__input" type="text" id="message-input">
+                  <label class="mdl-textfield__label" for="message-input">Type your message...</label>
+                  
+                </div><button class="mdl-button mdl-js-button mdl-button--icon" type="submit">
+                  <i class="material-icons">send</i>
+                </button>
+              
+              </form>
+    </div>
+    </div>
+        <script src="js/indexBundle.js"></script>
   </body>
 </html>

@@ -52,11 +52,12 @@ const sparkService = {
 
   },
 
-  sendMessage: (message, roomId) => {
+  sendMessage: (messageText, roomId) => {
     
     return spark.messages.create({
-          text: message,
+          text: messageText,
           roomId: roomId
+          //files: ["http://www.cutestpaw.com/wp-content/uploads/2011/11/friend.jpg"]
         })
       .catch(function(reason) {
         console.error(reason);
