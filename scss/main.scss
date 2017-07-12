@@ -10,8 +10,13 @@
     font-style: normal;
 }
 
+.msg-label {
+  background-color: black;
+}
 .icon {
   speak: none;
+  width: 24px;
+  height: 24px;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -19,6 +24,8 @@
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
+  fill: #ffffff;
 }
 
 $light-gray: #aaaaaa;

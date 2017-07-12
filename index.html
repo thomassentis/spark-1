@@ -7,19 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//cdn.muicss.com/mui-0.9.17/css/mui.min.css" rel="stylesheet" type="text/css" />
     <script src="//cdn.muicss.com/mui-0.9.17/js/mui.min.js"></script>
+    <script src="qwebchannel.js"></script>
     <style type="text/css">
         #sidebar {
           background-color: #1c375e;
           padding: 15px;
-
         }
+	.msg-label {
+	    font-weight: 700;
+         }
+	.msg-date {
+            color: #666666;
+	}
+	.msg {
+	    margin-bottom: 1em;
+	}
+	.mui-btn--primary {
+	    background-color: #1c375e;
+	}
+	.mui-btn--accent {
+	    background-color: #bb2e46;
+	}
 
-        /*#members-box{
-          position: fixed;
-          margin-left: 300px;
-          margin-top: -100px;
-        }*/
-
+	/*
         @media (min-width: 768px) {
           #sidebar {
             position: fixed;
@@ -36,7 +46,7 @@
             margin-right: 100px;
             margin-bottom: 20px;
           }
-        }
+        }*/
     </style>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   </head>
@@ -44,8 +54,10 @@
     
     <div id = "sidebar">
       
-        <button class="mui-btn mui-btn--raised" id="logout-button">
-        Sign out
+        <button class="mui-btn mui-btn--fab mui-btn--accent" id="logout-button">
+<svg style="width: 24px; height:24px; vertical-align: middle;" viewBox="0 0 24 24">
+    <path fill="#FFFFFF" d="M17,17.25V14H10V10H17V6.75L22.25,12L17,17.25M13,2A2,2 0 0,1 15,4V8H13V4H4V20H13V16H15V20A2,2 0 0,1 13,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2H13Z" />
+</svg>
         </button>
             
 
@@ -68,8 +80,6 @@
 
 <div class="mui-container mui-panel content-block">
 
-        
-
         <div id="messages-box" style="/*height: 430px; overflow:scroll*/">
         </div>
         <div class="mui-divider"></div>
@@ -80,7 +90,7 @@
           </div>
           </div>
           <div class="mui-col-md-2">
-          <button class="mui-btn" type="submit">Send</button>
+          <button class="mui-btn mui-btn--primary" type="submit">Send</button>
           </div>
         </form>
 
@@ -89,7 +99,6 @@
       <footer>
       </footer>
     
-
 
     <script src="js/indexBundle.js"></script>
   </body>

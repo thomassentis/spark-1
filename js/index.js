@@ -93,7 +93,8 @@ function addLastMessage(roomId, message){
           messagesBox.append(formatMessage(messages.items[0], namesD[message.personId]));
           }).then(()=>{
             scrollDown();
-            alert('ok')});
+            //alert('ok')
+	  });
   }
 }
 
@@ -127,11 +128,16 @@ function scrollDown(){
 }
 
 function convertDate(stringDate){
-  d = new Date(stringDate);
+  let d = new Date(stringDate);
   return d;
 }
 
-function formatMessage(message, name){
-  return '<p><div class="mui--text-caption">'+name+' '+convertDate(message.created)+'</div>'+message.text+'</p>';
+// Message creation
+function formatMessage(message, name) {
+  let body = '<p class="msg"><div class="mui--text-caption"> <div class="msg-label">'
+  body += name +'</div> <div class="msg-date">'
+  body += convertDate(message.created)+'</div></div>'
+  body += message.text+'</p>';
+  return body;
 }
 
