@@ -4,6 +4,7 @@ const sparkService = require('./sparkService');
 var roomSelect = $('#room-select');
 var messagesBox = $('#messages-box');
 var membersBox = $('#members-box');
+var roomIdStock = $('#room-id-stock');
 var currentRoomId;
 
 var namesD = {};
@@ -13,33 +14,61 @@ $(() => {
     $('#logout-button').click();
   }
   $('#message-input').focus();
-  var p = sparkService.promiseRooms(10).then((rooms)=>{
 
-      rooms.items.forEach((room)=>{
-          roomSelect.append('<option value="'+room.id+'">'+room.title+'</option>');
-      });
-      roomSelect.value = rooms.items[0].id;
-      currentRoomId = roomSelect.value;
-  }).then(()=>{
-    return displayMembers(currentRoomId);
-  })
-  .then((members)=>{
-      namesD = namesDictionary(members);
-      displayMessages(roomSelect.value, members);
-      $('#select-box').show();
-      setInterval(()=>{displayMessages(currentRoomId, members);}, 4000);
-      scrollDown();
-      displayMembers(currentRoomId);
-  });
-    
-  
-//alert(roomSelect.val());
+  initializeRoom();
+
 
 });
 
+function initializeRoom(){
+    startLoadingPage();
+    var p = sparkService.promiseRooms(10).then((rooms)=>{
+
+      rooms.items.forEach((room)=>{
+          roomSelect.append('<a class="mdl-navigation__link" href="#'+room.id+'" >'+room.title+'</a>');
+      });
+      roomIdStock.html(rooms.items[0].id);
+      currentRoomId = roomIdStock.html();
+      $('#current-room').html(rooms.items[0].title);
+      //currentRoomId = roomSelect.value;
+      //alert(currentRoomId);
+      return currentRoomId;
+  }).then((currentRoomId)=>{
+
+    displayMembers(currentRoomId)
+    .then((members)=>{
+      currentRoomId = roomIdStock.html();
+      namesD = namesDictionary(members);
+      displayMessages(currentRoomId, members);
+      setInterval(()=>displayMessages(currentRoomId, members), 4000);
+      scrollDown();
+      displayMembers(currentRoomId);
+      $('a').on('click', ()=>{
+          var url = window.location.hash;
+          var hash = url.substring(url.indexOf("#")+1);
+          roomIdStock.html(hash);
+          currentRoomId = hash; 
+          //alert(currentRoomId);
+          $('#current-room').html($('[href=\'#'+currentRoomId+'\']').html());
+          displayMembers(currentRoomId)
+          .then((members)=>{
+            return displayMessages(currentRoomId, members);
+          }).then(()=>{
+            $('#sidebar').attr('class','mdl-layout__drawer');
+            $('.mdl-layout__obfuscator').remove();
+            scrollDown();
+          });
+
+      });
+  }).then(()=>stopLoadingPage());
+  });
+}
+
+
+
 // Changing the room
-roomSelect.on('change', function(){
-  currentRoomId = roomSelect.val();
+/*roomSelect.on('change', function(){
+  //currentRoomId = roomSelect.val();
   
   displayMembers(currentRoomId)
   .then((members)=>{
@@ -48,6 +77,9 @@ roomSelect.on('change', function(){
     scrollDown();
   })
 });
+*/
+
+
 
 // Logging out
 $('#logout-button').on('click', () => {
@@ -58,10 +90,11 @@ $('#logout-button').on('click', () => {
 // Sending a message
 $('#message-form').on('submit', (event) => {
   event.preventDefault();
+  currentRoomId = roomIdStock.html();
   var messageText = $('#message-input').val();
   if(messageText){
     //var rooms = sparkService.getRooms(10);
-    var currentRoomId = roomSelect.val();
+    //var currentRoomId = roomSelect.val();
     //alert(currentRoomId);
     sparkService.sendMessage(messageText, currentRoomId)
     .then((message)=>{
@@ -75,6 +108,15 @@ $('#message-form').on('submit', (event) => {
   
 });
 
+function startLoadingPage(){
+  $('#page').hide();
+}
+
+function stopLoadingPage(){
+  $('#loader').hide();
+  $('#page').show();
+}
+
 function namesDictionary(members){
   
   var namesDict = {};
@@ -83,8 +125,6 @@ function namesDictionary(members){
   });
   return namesDict;
 }
-
-
 
 function addLastMessage(roomId, message){
   if(namesD){
@@ -106,6 +146,7 @@ function displayMessages(roomId, members){
   return sparkService.promiseMessages(roomId).then((messages)=>{
         messages.items.forEach((message)=>{
           newMessages = formatMessage(message, namesD[message.personId]) + newMessages;
+          //console.log(message.roomType);
         });
         messagesBox.html(newMessages);
         
@@ -114,6 +155,7 @@ function displayMessages(roomId, members){
 
 function displayMembers(roomId){
   membersBox.html('');
+  //alert(roomId);
   return sparkService.promiseMembers(roomId)
   .then((members)=>{
     members.forEach((member)=>{
@@ -124,13 +166,14 @@ function displayMembers(roomId){
 }
 
 function scrollDown(){
-    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0,$('#scrolled-block').scrollHeight);
 }
 
 function convertDate(stringDate){
   let d = new Date(stringDate);
   return d;
 }
+
 
 // Message creation
 function formatMessage(message, name) {
@@ -139,6 +182,20 @@ function formatMessage(message, name) {
   body += convertDate(message.created)+'</div></div>'
   body += message.text+'</p>';
   return body;
+/*
+function formatMessage(message, name){
+  format = '<p><div>'+name+' '+convertDate(message.created)+'</div>'+message.text+'</p>';
+  
+  if (message.files){
+    images = message.files;
+    images.forEach((image)=>{
+      //format += '<img src="'+image+'" >';
+      format += image;
+    });
+    
+  }
+  return format;
+*/
 }
 
 // Sending a part info
