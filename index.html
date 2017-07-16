@@ -53,13 +53,14 @@
   <body>
     
     <div id = "sidebar">
-      
+     
+	<!--
         <button class="mui-btn mui-btn--fab mui-btn--accent" id="logout-button">
 <svg style="width: 24px; height:24px; vertical-align: middle;" viewBox="0 0 24 24">
     <path fill="#FFFFFF" d="M17,17.25V14H10V10H17V6.75L22.25,12L17,17.25M13,2A2,2 0 0,1 15,4V8H13V4H4V20H13V16H15V20A2,2 0 0,1 13,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2H13Z" />
 </svg>
         </button>
-            
+        -->
 
         <div class="mui-form">
             <div class="mui-select" id="select-box" hidden>
@@ -70,14 +71,8 @@
         </div>
 
         <div id="members-box" style="color:white"></div>
-
-        
-
     </div>
     
-
-
-
 <div class="mui-container mui-panel content-block">
 
         <div id="messages-box" style="/*height: 430px; overflow:scroll*/">
@@ -89,11 +84,12 @@
             <input type="text" id="message-input" placeholder="Type your message..." >
           </div>
           </div>
-          <div class="mui-col-md-2">
+          <div class="mui-col-md-3" id="buttonMenu">
           <button class="mui-btn mui-btn--primary" type="submit">Send</button>
+          <button id="#part-sent" class="mui-btn mui-btn--accent" disabled type="submit">Send part</button>
           </div>
         </form>
-
+ 
 </div>
 
       <footer>

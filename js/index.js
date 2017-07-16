@@ -141,3 +141,9 @@ function formatMessage(message, name) {
   return body;
 }
 
+// Sending a part info
+$('#part-sent').on('click', (event) => {
+  event.preventDefault();
+  $('#message-input').val(JSON.stringify(window.PART));
+  console.log("Test message");
+});
