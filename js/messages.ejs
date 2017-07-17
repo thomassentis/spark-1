@@ -1,0 +1,14 @@
+<% messages.reverse().forEach((message)=>{ %>
+	<div class="message">
+		<div> 
+			<span class="mdl-color-text--grey">
+				<%= message.nameAuthor %>
+			</span>
+			&nbsp;&nbsp;
+			<span class="message-date mdl-color-text--grey">
+				<%= convertDate(message.created) %>
+			</span>
+		</div>
+	<%= message.text %>
+	</div>
+<% }); %>

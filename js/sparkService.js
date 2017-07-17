@@ -13,7 +13,24 @@ const defaultOfferOptions = {
 const sparkService = {
 
   authorize: () => {
-    return spark.authorize();
+
+    var sp = spark.init({
+      config: {
+        credentials: {
+          authorizationString: 'https://api.ciscospark.com/v1/authorize?client_id=C2bd67830b569b3d130edaef22e266bd1e080a4bb4aa71e20eec44da5e56689e0&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Findex.html&scope=spark%3Aall%20spark%3Akms'
+        }
+      }
+    });
+
+      sp.authorize();
+      /*sp.once(`ready`, function() {
+        if (sp.canAuthorize) {
+
+        }else {
+          sp.authorization.initiateLogin()
+        }
+      });*/
+
   },
 
   /*
@@ -83,6 +100,14 @@ const sparkService = {
       return Promise.all(
         memberships.items.map((membership)=>spark.people.get(membership.personId)));
     });
+  },
+
+  logout: () => {
+    if(spark.isAuthenticated) {
+      return spark.logout({ goto: window.location/*.protocol + '//' + window.location.host + '/' */});
+    } else {
+      window.location = window.location.protocol + '//' + window.location.host + '/';
+    }
   }
 };
 
