@@ -25,12 +25,17 @@ const sparkService = {
       sp.authorize();
       /*sp.once(`ready`, function() {
         if (sp.canAuthorize) {
-            
+            return true;
         }else {
-          sp.authorization.initiateLogin()
+          sp.authorization.initiateLogin();
+          return true;
         }
       });*/
 
+  },
+
+  canAuthorize: ()=>{
+    return spark.canAuthorize();
   },
 
   /*

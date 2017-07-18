@@ -8,8 +8,6 @@ var moment = require('moment');
 require('material-design-lite');
 
 
-
-
 var messagesDisplay = fs.readFileSync(join(__dirname, '/messages.ejs'), 'utf8');
 var messageDisplay = fs.readFileSync(join(__dirname, '/message.ejs'), 'utf8');
 var membersDisplay = fs.readFileSync(join(__dirname, '/members.ejs'), 'utf8');
@@ -19,6 +17,12 @@ var roomSelect = $('#room-select');
 var messagesBox = $('#messages-box');
 var membersBox = $('#members-box');
 
+$('#attach-file-button').on('click', (event)=>{
+    event.preventDefault();
+    $('#attached-file').val('http://images4.fanpop.com/image/photos/22400000/Cute-Kitten-kittens-22438020-480-360.jpg');
+    
+});
+
 var namesDictionary = {};
 var xhr = {};
 
@@ -27,7 +31,7 @@ $(() => {
     $('#logout-button').click();
   }
   $('#message-input').focus();
-
+  $('#attached-file').val('');
   initializeRoom();
 
 
@@ -52,7 +56,7 @@ function initializeRoom(){
       currentRoomId = urlRoomId();
       namesDictionary = namesDictionaryComposer(members);
       displayMessages(currentRoomId, members);
-      setInterval(()=>displayMessages(urlRoomId(), members), 4000);
+      setInterval(()=>updateMessagesDisplay(urlRoomId(), members), 4000);
       scrollDown();
       displayMembers(currentRoomId);
 
@@ -82,10 +86,13 @@ function submitMessageForm(){
 
   currentRoomId = urlRoomId();
   var messageText = $('#message-input').val();
+  var attachedFile = $('#attached-file').val();
+  console.log(attachedFile);
   if(messageText){
-    sparkService.sendMessage(messageText, currentRoomId)
+    var content = {text: messageText, file: attachedFile};
+    sparkService.sendMessage(content, currentRoomId)
     .then((message)=>{
-      addLastMessage(currentRoomId, message);
+      updateMessagesDisplay(currentRoomId);
     });
 
     $('#message-input').val('');
@@ -107,7 +114,7 @@ function changeRoom(){
     return displayMessages(currentRoomId, members);
   }).then(()=>{
     $('#sidebar').attr('class','mdl-layout__drawer');
-    $('.mdl-layout__obfuscator').remove();
+    $('.mdl-layout__obfuscator').hide();
     scrollDown();
   });
 }
@@ -164,23 +171,23 @@ function displayMessages(roomId, members){
           if(message.files) {
             apiUrl = message.files[0];
             console.log(apiUrl);
-            xhr[apiUrl] = new XMLHttpRequest();
-            xhr[apiUrl].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
-            xhr[apiUrl].setRequestHeader("Accept", "application/json");
-            xhr[apiUrl].setRequestHeader("Content-Type", "application/json");
-            xhr[apiUrl].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-            xhr[apiUrl].setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr[apiUrl].responseType = "arraybuffer";
+            xhr[messageId] = new XMLHttpRequest();
+            xhr[messageId].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
+            xhr[messageId].setRequestHeader("Accept", "application/json");
+            xhr[messageId].setRequestHeader("Content-Type", "application/json");
+            xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
+            xhr[messageId].setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr[messageId].responseType = "arraybuffer";
             
-            xhr[apiUrl].onload = function(){
-              if(xhr[apiUrl].readyState == 4){
-                var u8 = new Uint8Array(xhr[apiUrl].response);
+            xhr[messageId].onload = function(){
+              if(xhr[messageId].readyState == 4){
+                var u8 = new Uint8Array(xhr[messageId].response);
                 var b64encoded = btoa(String.fromCharCode.apply(null, u8));
                 var imgSrc = 'data:image/png;base64,'+b64encoded;
                 
               }
             }
-            xhr[apiUrl].send(null);
+            xhr[messageId].send(null);
           }else{
             var imgSrc = 'images/cat.jpg';
           }
@@ -200,35 +207,22 @@ function displayMessages(roomId, members){
         messagesBox.html(newMessages);*/
         messagesBox.html('');
         messages.items.reverse().forEach((message)=>{
-          message = Object.assign(message, {nameAuthor : namesDictionary[message.personId]});
-          newMessage = ejs.render(messageDisplay, {message: message, convertDate: convertDate});
-          messagesBox.append(newMessage);
-          if(message.files){
-            apiUrl = message.files[0];
-            console.log(apiUrl);
-            xhr[apiUrl] = new XMLHttpRequest();
-            xhr[apiUrl].open('GET', apiUrl, true);
-            xhr[apiUrl].setRequestHeader("Accept", "application/json");
-            xhr[apiUrl].setRequestHeader("Content-Type", "application/json");
-            xhr[apiUrl].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-            xhr[apiUrl].setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr[apiUrl].responseType = "arraybuffer";
-            
-            xhr[apiUrl].onload = function(){
-              if(xhr[apiUrl].readyState == 4){
-                var u8 = new Uint8Array(xhr[apiUrl].response);
-                var b64encoded = btoa(String.fromCharCode.apply(null, u8));
-                var imageSrc = 'data:image/png;base64,'+b64encoded;
-                $('#'+message.id).attr('src', imageSrc);
-              }
-            }
-            xhr[apiUrl].send(null);
-          }
+          displayMessage(message);
           //newMessage = ejs.render(messageDisplay, {message: message, convertDate: convertDate});
           //messagesBox.append(newMessage);
         });
         
       });
+}
+
+function updateMessagesDisplay(roomId, members){
+    return sparkService.updateMessages(roomId).then((messages)=>{
+      lastMessageId = $('.message').last().attr('id');
+      newMessage = messages.items[0];
+      if(lastMessageId != newMessage.id){
+        displayMessage(newMessage);
+      }
+    });
 }
 
 function displayMembers(roomId){
@@ -242,6 +236,17 @@ function displayMembers(roomId){
   });
 }
 
+function displayMessage(message){
+
+  message = Object.assign(message, {nameAuthor : namesDictionary[message.personId]});
+  newMessage = ejs.render(messageDisplay, {message: message, convertDate: convertDate});
+  messagesBox.append(newMessage);
+  if(message.files){
+    addFileToMessage(message);
+    
+  }
+}
+
 function scrollDown(){
     window.scrollTo(0,$('#scrolled-block').scrollHeight);
 }
@@ -252,38 +257,38 @@ function convertDate(stringDate){
   return d;
 }
 
-function getImageSrc(apiUrl){
-  /*xhr[apiUrl] = new XMLHttpRequest();
-  xhr[apiUrl].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
-  xhr[apiUrl].setRequestHeader("Accept", "application/json");
-  xhr[apiUrl].setRequestHeader("Content-Type", "application/json");
-  xhr[apiUrl].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
+/*function getImageSrc(apiUrl){
+  /*xhr[messageId] = new XMLHttpRequest();
+  xhr[messageId].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
+  xhr[messageId].setRequestHeader("Accept", "application/json");
+  xhr[messageId].setRequestHeader("Content-Type", "application/json");
+  xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
   //console.log(apiUrl);
-  xhr[apiUrl].send();
+  xhr[messageId].send();
   console.log('request sent!');
-  xhr[apiUrl].onreadystatechange = function(){
-    if(xhr[apiUrl].readyState == 4){
-      //console.log(JSON.parse(xhr[apiUrl].responseText));
-      console.log(xhr[apiUrl].status);
-      console.log(xhr[apiUrl].getAllResponseHeaders());
+  xhr[messageId].onreadystatechange = function(){
+    if(xhr[messageId].readyState == 4){
+      //console.log(JSON.parse(xhr[messageId].responseText));
+      console.log(xhr[messageId].status);
+      console.log(xhr[messageId].getAllResponseHeaders());
     }
-  }*/
+  }
   var pr;
-  xhr[apiUrl] = new XMLHttpRequest();
-  xhr[apiUrl].open('GET', apiUrl, true);
-  xhr[apiUrl].setRequestHeader("Accept", "application/json");
-  xhr[apiUrl].setRequestHeader("Content-Type", "application/json");
-  xhr[apiUrl].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-  xhr[apiUrl].setRequestHeader("X-Requested-With", "XMLHttpRequest");
-  xhr[apiUrl].responseType = "arraybuffer";
-  xhr[apiUrl].onload = function(){
-    if(xhr[apiUrl].readyState == 4){
-      var u8 = new Uint8Array(xhr[apiUrl].response);
+  xhr[messageId] = new XMLHttpRequest();
+  xhr[messageId].open('GET', apiUrl, true);
+  xhr[messageId].setRequestHeader("Accept", "application/json");
+  xhr[messageId].setRequestHeader("Content-Type", "application/json");
+  xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
+  xhr[messageId].setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr[messageId].responseType = "arraybuffer";
+  xhr[messageId].onload = function(){
+    if(xhr[messageId].readyState == 4){
+      var u8 = new Uint8Array(xhr[messageId].response);
       var b64encoded = btoa(String.fromCharCode.apply(null, u8));
       pr = Promise.resolve('data:image/png;base64,'+b64encoded);
     }
   };
-  xhr[apiUrl].send(null);
+  xhr[messageId].send(null);
   return pr;
   /*$.get(apiUrl,
       {"Accept" : "application/json",
@@ -292,13 +297,37 @@ function getImageSrc(apiUrl){
       (data)=>{
         console.log('GRAPEFRUIT');
         console.log(data);
-      });*/
+      });
 
+}*/
+
+function addFileToMessage(message){
+
+  apiUrl = message.files[0];
+  var messageId = message.id;
+  xhr[messageId] = new XMLHttpRequest();
+  xhr[messageId].open('GET', apiUrl, true);
+  xhr[messageId].setRequestHeader("Accept", "application/json");
+  xhr[messageId].setRequestHeader("Content-Type", "application/json");
+  xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
+  xhr[messageId].setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr[messageId].responseType = "arraybuffer";
+  
+  xhr[messageId].onload = function(){
+    if(xhr[messageId].readyState == 4){
+      var u8 = new Uint8Array(xhr[messageId].response);
+      var b64encoded = btoa(String.fromCharCode.apply(null, u8));
+      var imageSrc = 'data:image/png;base64,'+b64encoded;
+      //console.log(message.text);
+      $('#'+messageId+' > img').attr('src', imageSrc);
+    }
+  }
+  xhr[messageId].send(null);
 }
 
 // Sending a part info
 $('#part-sent').on('click', (event) => {
   event.preventDefault();
   $('#message-input').val(JSON.stringify(window.PART));
-  console.log("Test message");
+  
 });
