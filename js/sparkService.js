@@ -25,7 +25,7 @@ const sparkService = {
       sp.authorize();
       /*sp.once(`ready`, function() {
         if (sp.canAuthorize) {
-
+            
         }else {
           sp.authorization.initiateLogin()
         }
@@ -73,7 +73,7 @@ const sparkService = {
     
     return spark.messages.create({
           text: messageText,
-          roomId: roomId
+          roomId: roomId//,
           //files: ["http://www.cutestpaw.com/wp-content/uploads/2011/11/friend.jpg"]
         })
       .catch(function(reason) {
