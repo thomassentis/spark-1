@@ -69,22 +69,27 @@ const sparkService = {
 
   },
 
-  sendMessage: (messageText, roomId) => {
+  sendMessage: (content, roomId) => {
+    var envelope = {text: content.text,
+          roomId: roomId};
+    if(content.file){
+      envelope.files = [content.file];
+    }
     
-    return spark.messages.create({
-          text: messageText,
-          roomId: roomId//,
-          //files: ["http://www.cutestpaw.com/wp-content/uploads/2011/11/friend.jpg"]
-        })
+    return spark.messages.create(envelope)
       .catch(function(reason) {
         console.error(reason);
         process.exit(1);
-      });    
+      });
   },
 
   promiseMessages: (roomId)=>{
 
     return spark.messages.list({roomId: roomId});
+  },
+
+  updateMessages: (roomId)=>{
+    return spark.messages.list({roomId: roomId, max: 1});
   },
 
   promiseLastMessage: (roomId)=>{

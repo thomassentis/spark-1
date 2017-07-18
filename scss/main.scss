@@ -16,14 +16,18 @@
   bottom: 0px;
   background-color: white;
   width:100%;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 10px;
 
 }
 
 .message{
   
   margin: 10px;
+}
+
+.message img{
+  width: 100%;
+
 }
 
 .message-date{
@@ -42,4 +46,8 @@
 .member-letter{
   font-size: 14px;
   margin: 5px;
+}
+
+#message-form{
+  display: inline;
 }
