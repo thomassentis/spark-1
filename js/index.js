@@ -19,7 +19,7 @@ var membersBox = $('#members-box');
 
 $('#attach-file-button').on('click', (event)=>{
     event.preventDefault();
-    $('#attached-file').val('http://images4.fanpop.com/image/photos/22400000/Cute-Kitten-kittens-22438020-480-360.jpg');
+    $('#attached-file').val('http://www.projx-services.com/wp-content/uploads/2014/12/spare-parts.jpg');
     
 });
 
@@ -27,18 +27,22 @@ var namesDictionary = {};
 var xhr = {};
 
 $(() => {
+  
   if(window.location.href.indexOf('error=access_denied') !== -1) {
+    
     $('#logout-button').click();
+    
   }
   $('#message-input').focus();
   $('#attached-file').val('');
   initializeRoom();
-
+  
 
 });
 
 function initializeRoom(){
     startLoadingPage();
+    
     sparkService.promiseRooms(10).then((rooms)=>{
 
       rooms.items.forEach((room)=>{
@@ -48,7 +52,7 @@ function initializeRoom(){
       $('#current-room').html(currentRoom.title);
       updateUrlRoomId(currentRoom.id);
       return currentRoom;
-  })
+  }, (error)=>handleUnauthorize(error))
   .then((currentRoom)=>{
 
     displayMembers(currentRoom.id)
@@ -68,8 +72,9 @@ function initializeRoom(){
 }
 
 // Logging out
-$('#logout-button').on('click', () => {
-  //event.preventDefault();
+$('#logout-button').on('click', (event) => {
+  event.preventDefault();
+  startLoadingPage();
   sparkService.logout();
 
 });
@@ -87,7 +92,6 @@ function submitMessageForm(){
   currentRoomId = urlRoomId();
   var messageText = $('#message-input').val();
   var attachedFile = $('#attached-file').val();
-  console.log(attachedFile);
   if(messageText){
     var content = {text: messageText, file: attachedFile};
     sparkService.sendMessage(content, currentRoomId)
@@ -162,54 +166,10 @@ function addLastMessage(roomId, message){
 
 function displayMessages(roomId, members){
   
-  //var newMessages = '';
-  
   return sparkService.promiseMessages(roomId).then((messages)=>{
-        /*var apiUrl;
-        messages.items.forEach((message)=>{
-          
-          if(message.files) {
-            apiUrl = message.files[0];
-            console.log(apiUrl);
-            xhr[messageId] = new XMLHttpRequest();
-            xhr[messageId].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
-            xhr[messageId].setRequestHeader("Accept", "application/json");
-            xhr[messageId].setRequestHeader("Content-Type", "application/json");
-            xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-            xhr[messageId].setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr[messageId].responseType = "arraybuffer";
-            
-            xhr[messageId].onload = function(){
-              if(xhr[messageId].readyState == 4){
-                var u8 = new Uint8Array(xhr[messageId].response);
-                var b64encoded = btoa(String.fromCharCode.apply(null, u8));
-                var imgSrc = 'data:image/png;base64,'+b64encoded;
-                
-              }
-            }
-            xhr[messageId].send(null);
-          }else{
-            var imgSrc = 'images/cat.jpg';
-          }
-          message = Object.assign(message, {nameAuthor : namesDictionary[message.personId], imageSrc: 'images/cat.jpg'});
-/*
-            getImageSrc(message.files[0]).then((imageSrc)=>{
-              message = Object.assign(message, {nameAuthor : namesDictionary[message.personId], imageSrc: imageSrc});
-            })
-          
-        });
-        return messages;
-      }).then((messages)=>{
-        console.log(messages.items[0].nameAuthor);
-        //var str = '<% messages.forEach((message)=>{ %><%= message.nameAuthor %><%= convertDate(message.created) %><% }); %>';
-        //var str = fs.readFile(join(__dirname, '/messages.ejs'), 'utf8');
-        newMessages = ejs.render(messagesDisplay, {messages : messages.items, convertDate : convertDate});
-        messagesBox.html(newMessages);*/
         messagesBox.html('');
         messages.items.reverse().forEach((message)=>{
           displayMessage(message);
-          //newMessage = ejs.render(messageDisplay, {message: message, convertDate: convertDate});
-          //messagesBox.append(newMessage);
         });
         
       });
@@ -257,50 +217,6 @@ function convertDate(stringDate){
   return d;
 }
 
-/*function getImageSrc(apiUrl){
-  /*xhr[messageId] = new XMLHttpRequest();
-  xhr[messageId].open('GET', 'https://api.ciscospark.com/v1/contents/Y2lzY29zcGFyazovL3VzL0NPTlRFTlQvZmY4NDcwNDAtNmFmOS0xMWU3LWIwODItYjc2NjE4ZTcyNDcwLzA', true);
-  xhr[messageId].setRequestHeader("Accept", "application/json");
-  xhr[messageId].setRequestHeader("Content-Type", "application/json");
-  xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-  //console.log(apiUrl);
-  xhr[messageId].send();
-  console.log('request sent!');
-  xhr[messageId].onreadystatechange = function(){
-    if(xhr[messageId].readyState == 4){
-      //console.log(JSON.parse(xhr[messageId].responseText));
-      console.log(xhr[messageId].status);
-      console.log(xhr[messageId].getAllResponseHeaders());
-    }
-  }
-  var pr;
-  xhr[messageId] = new XMLHttpRequest();
-  xhr[messageId].open('GET', apiUrl, true);
-  xhr[messageId].setRequestHeader("Accept", "application/json");
-  xhr[messageId].setRequestHeader("Content-Type", "application/json");
-  xhr[messageId].setRequestHeader("Authorization", "Bearer NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi");
-  xhr[messageId].setRequestHeader("X-Requested-With", "XMLHttpRequest");
-  xhr[messageId].responseType = "arraybuffer";
-  xhr[messageId].onload = function(){
-    if(xhr[messageId].readyState == 4){
-      var u8 = new Uint8Array(xhr[messageId].response);
-      var b64encoded = btoa(String.fromCharCode.apply(null, u8));
-      pr = Promise.resolve('data:image/png;base64,'+b64encoded);
-    }
-  };
-  xhr[messageId].send(null);
-  return pr;
-  /*$.get(apiUrl,
-      {"Accept" : "application/json",
-      "Content-Type":"application/json",
-      "Authorization": "Bearer "+"NGJhMTkyNzMtMjIzZi00YjlkLTk3YTEtM2E3NzZjMGFhNWMyZWQzMDdiN2EtZmZi"},
-      (data)=>{
-        console.log('GRAPEFRUIT');
-        console.log(data);
-      });
-
-}*/
-
 function addFileToMessage(message){
 
   apiUrl = message.files[0];
@@ -318,16 +234,22 @@ function addFileToMessage(message){
       var u8 = new Uint8Array(xhr[messageId].response);
       var b64encoded = btoa(String.fromCharCode.apply(null, u8));
       var imageSrc = 'data:image/png;base64,'+b64encoded;
-      //console.log(message.text);
       $('#'+messageId+' > img').attr('src', imageSrc);
     }
   }
   xhr[messageId].send(null);
 }
 
+function handleUnauthorize(error){
+  if(error.message == "not authenticated") sparkService.authorize();
+  window.location.hash = "";
+  window.location.assign("index.html");
+  
+}
+
 // Sending a part info
-$('#part-sent').on('click', (event) => {
+$('#part-send-button').on('click', (event) => {
   event.preventDefault();
   $('#message-input').val(JSON.stringify(window.PART));
-  
+  submitMessageForm();
 });
