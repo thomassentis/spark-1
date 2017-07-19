@@ -5,10 +5,9 @@ require('material-design-lite');
 
 $(() => {
   try{
-  	sparkService.authorize().then(() => {
-    window.location.pathname = 'index.html';
-  }, ()=>alert('SAN FRANCISCO'));
+  	sparkService.authorize().catch((err)=>{window.location.pathname = "index.html"} );
   }catch(err){
-  	window.location.pathname = 'index.html';
+  	console.log(err.message);
+  	
   }
 });

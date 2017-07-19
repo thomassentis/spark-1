@@ -13,7 +13,7 @@ const defaultOfferOptions = {
 const sparkService = {
 
   authorize: () => {
-
+    //alert('BEIJING');
     var sp = spark.init({
       config: {
         credentials: {
@@ -21,16 +21,7 @@ const sparkService = {
         }
       }
     });
-
-      sp.authorize();
-      /*sp.once(`ready`, function() {
-        if (sp.canAuthorize) {
-            return true;
-        }else {
-          sp.authorization.initiateLogin();
-          return true;
-        }
-      });*/
+      return sp.authorize();
 
   },
 

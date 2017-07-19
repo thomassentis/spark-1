@@ -6,7 +6,7 @@ const fs = require('fs');
 var join = require('path').join;
 var moment = require('moment');
 require('material-design-lite');
-
+//require('jquery.scrollTo');
 
 var messagesDisplay = fs.readFileSync(join(__dirname, '/messages.ejs'), 'utf8');
 var messageDisplay = fs.readFileSync(join(__dirname, '/message.ejs'), 'utf8');
@@ -28,16 +28,9 @@ var xhr = {};
 
 $(() => {
   
-  if(window.location.href.indexOf('error=access_denied') !== -1) {
-    
-    $('#logout-button').click();
-    
-  }
   $('#message-input').focus();
   $('#attached-file').val('');
   initializeRoom();
-  
-
 });
 
 function initializeRoom(){
@@ -176,6 +169,7 @@ function displayMessages(roomId, members){
 }
 
 function updateMessagesDisplay(roomId, members){
+    scrollDown();
     return sparkService.updateMessages(roomId).then((messages)=>{
       lastMessageId = $('.message').last().attr('id');
       newMessage = messages.items[0];
@@ -201,14 +195,15 @@ function displayMessage(message){
   message = Object.assign(message, {nameAuthor : namesDictionary[message.personId]});
   newMessage = ejs.render(messageDisplay, {message: message, convertDate: convertDate});
   messagesBox.append(newMessage);
+  scrollDown();
   if(message.files){
     addFileToMessage(message);
-    
   }
 }
 
 function scrollDown(){
-    window.scrollTo(0,$('#scrolled-block').scrollHeight);
+    //$('#scrolled-block').scrollTo(100);
+    
 }
 
 function convertDate(stringDate){
@@ -241,7 +236,11 @@ function addFileToMessage(message){
 }
 
 function handleUnauthorize(error){
-  if(error.message == "not authenticated") sparkService.authorize();
+  if(error.message == "not authenticated" || error.message == "Authorization cannot be refreshed"){
+    
+    sparkService.authorize();
+  } 
+  
   window.location.hash = "";
   window.location.assign("index.html");
   
