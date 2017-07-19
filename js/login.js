@@ -1,14 +1,14 @@
 const $ = require('jquery');
 const sparkService = require('./sparkService');
+require('material-design-lite');
 
-$(()=>{
-	if(sparkService.canAuthorize){
-    	window.location.pathname = 'index.html';
-	}
-});
 
-$('#login-button').on('click', () => {
-  sparkService.authorize().then(() => {
+$(() => {
+  try{
+  	sparkService.authorize().then(() => {
     window.location.pathname = 'index.html';
-  });
+  }, ()=>alert('SAN FRANCISCO'));
+  }catch(err){
+  	window.location.pathname = 'index.html';
+  }
 });
